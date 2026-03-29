@@ -27,24 +27,35 @@
 }
 
 .gacha-btn {
-  display: block;
+  display: flex;
+  align-items: center;
   width: 100%;
   background: #111;
   color: #fff;
   border: 1px solid #444;
-  padding: 1rem;
+  padding: 0.8rem;
   margin-bottom: 0.5rem;
   text-align: left;
   font-size: 1rem;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s;
+  gap: 1rem;
+}
+
+.gacha-btn-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #444;
+  background: #222;
 }
 
 .gacha-btn:hover {
   background: rgba(61, 243, 108, 0.1);
   border-color: var(--chara-main);
-  padding-left: 1.5rem;
+  transform: translateX(5px);
 }
 
 

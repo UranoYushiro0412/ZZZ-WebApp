@@ -122,7 +122,22 @@ if (listChars && listWpns) {
   gachaBanners.forEach(banner => {
     const btn = document.createElement('button');
     btn.className = 'gacha-btn';
-    btn.textContent = banner.name;
+    
+    // アイコン追加
+    const imgPath = gachaImageMap[banner.pickupS];
+    if (imgPath) {
+      const baseUrl = import.meta.env.BASE_URL || "/";
+      const fullPath = baseUrl.endsWith("/") ? `${baseUrl}${imgPath}` : `${baseUrl}/${imgPath}`;
+      const img = document.createElement('img');
+      img.src = fullPath;
+      img.className = 'gacha-btn-icon';
+      btn.appendChild(img);
+    }
+
+    const textSpan = document.createElement('span');
+    textSpan.textContent = banner.name;
+    btn.appendChild(textSpan);
+
     btn.onclick = () => {
       currentGacha = new GachaSystem(banner);
       showView('view-gacha-main');
