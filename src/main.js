@@ -190,7 +190,11 @@ function appendRow(resArray, startIndex) {
 
     const imgPath = gachaImageMap[res.name];
     if (imgPath) {
-      card.style.backgroundImage = `url("${imgPath}")`;
+      // ViteのベースURL（GitHub Pagesのリポジトリ名など）を自動取得して結合
+      const baseUrl = import.meta.env.BASE_URL || "/";
+      const fullPath = baseUrl.endsWith("/") ? `${baseUrl}${imgPath}` : `${baseUrl}/${imgPath}`;
+      
+      card.style.backgroundImage = `url("${fullPath}")`;
       // 画像がある場合は名前を上部に、ランクを左下に
       card.innerHTML = `
         <div class="name-overlay">${res.name}</div>
