@@ -52,13 +52,13 @@
 .gacha-main-container {
   display: flex;
   flex-direction: column;
-  /* 上部ヘッダー類を引いた高さいっぱいに広げる（PCウルトラワイド対策） */
-  height: calc(100vh - 80px);
+  /* サイトヘッダー等を除いた、画面内に収まる高さに調整 */
+  height: calc(100vh - 140px);
   max-width: 900px;
   margin: 0 auto;
   background: #000;
-  border-radius: 12px;
   border: 1px solid #333;
+  border-radius: 8px;
   position: relative;
   overflow: hidden;
 }
@@ -192,8 +192,8 @@
 /* カード左下のランク文字 */
 .card-rank-label {
   position: absolute;
-  bottom: 3px;
-  left: 3px;
+  bottom: 2px;
+  left: 2px;
   font-size: 1.4rem;
   font-weight: 900;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 1);
@@ -322,6 +322,11 @@
 
 /* スマホ用レイアウト調整 */
 @media (max-width: 500px) {
+  .gacha-main-container {
+    /* スマホのブラウザUIや上部ヘッダーを考慮してさらに短く設定 */
+    height: calc(100vh - 180px);
+  }
+
   .gm-footer {
     flex-direction: column;
   }
