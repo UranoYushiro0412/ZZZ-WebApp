@@ -264,12 +264,12 @@
   justify-content: space-between;
   align-items: center;
   /* 縦ズレ防止 */
-  padding: 1rem 1.5rem;
+  padding: 1rem; /* 左右の余白を統一してズレを防止 */
   background: #111;
   border-top: 1px dashed #333;
   gap: 1rem;
   flex-wrap: wrap;
-  /* スマホで狭くなったら折り返す */
+  box-sizing: border-box; /* パディングを含めた幅計算を強制 */
 }
 
 .gm-pity-info {
@@ -333,8 +333,11 @@
 
   .gm-pity-info {
     width: 100%;
+    display: flex; /* 明示的にflex指定 */
     flex-direction: row;
     justify-content: space-between;
+    box-sizing: border-box;
+    margin: 0; /* 余計なマージンを排除 */
   }
 
   .gm-actions {
