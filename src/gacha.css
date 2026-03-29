@@ -1,0 +1,240 @@
+/* -------------------------------------
+   Gacha Simulator Complete Version
+------------------------------------- */
+
+/* Select Screen (ガチャ選択画面) */
+.gacha-select-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.gacha-list-section {
+  background: var(--bg-card);
+  border: 2px solid #333;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.gacha-list-header {
+  font-size: 1.2rem;
+  color: var(--chara-accent);
+  margin-bottom: 1rem;
+  border-bottom: 1px dashed #555;
+  padding-bottom: 0.5rem;
+}
+
+.gacha-btn {
+  display: block;
+  width: 100%;
+  background: #111;
+  color: #fff;
+  border: 1px solid #444;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+  text-align: left;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.gacha-btn:hover {
+  background: rgba(61, 243, 108, 0.1);
+  border-color: var(--chara-main);
+  padding-left: 1.5rem;
+}
+
+
+/* Main Pull Screen (ガチャ実行画面) */
+.gacha-main-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  background: #000;
+  border-radius: 12px;
+  border: 1px solid #333;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Header Area */
+.gm-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(to right, #1a1a1a, #0d0d0d);
+  border-bottom: 1px solid #333;
+}
+
+.gm-back-btn {
+  background: transparent;
+  border: 1px solid #555;
+  color: #fff;
+  font-size: 1.5rem;
+  border-radius: 50%;
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.gm-back-btn:hover { border-color: var(--chara-main); color: var(--chara-main); }
+
+.gm-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.gm-stats {
+  font-size: 0.9rem;
+  color: #aaa;
+  display: flex;
+  gap: 1rem;
+}
+.gm-stat-badge {
+  background: #222;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.gm-settings-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--chara-main);
+}
+.gm-settings-btn:hover { transform: rotate(45deg); transition: 0.2s; }
+
+/* Pyramid Display Area */
+.gm-display {
+  padding: 2rem;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* ピラミッドを下寄りか中央に積む */
+  align-items: center;
+}
+
+.pyramid-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: -10px; /* カードを少し重ねる？ */
+}
+
+/* Card 独自スタイル */
+.pull-card {
+  width: 70px;
+  height: 100px;
+  background: #222;
+  border: 2px solid #555;
+  border-radius: 4px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
+  font-size: 0.7rem;
+  text-align: center;
+  padding: 5px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: popIn 0.3s forwards ease-out;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+}
+
+@keyframes popIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.pull-card.rank-s { border-color: #ffd700; background: rgba(255,215,0,0.1); color: #ffd700; text-shadow: 0 0 5px rgba(255,215,0,0.5); }
+.pull-card.rank-a { border-color: #fca5f1; background: rgba(252,165,241,0.1); color: #fca5f1; }
+.pull-card.rank-b { border-color: #4da8da; background: rgba(77,168,218,0.1); color: #4da8da; }
+
+/* ピラミッドの行 */
+.pyramid-row {
+  display: flex;
+  justify-content: center;
+}
+
+/* Footer Area */
+.gm-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 1.5rem;
+  background: #111;
+  border-top: 1px dashed #333;
+}
+
+.gm-pity-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.gm-pity-box {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid #444;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+
+.gm-pity-box span { font-weight: bold; font-family: 'Jura', sans-serif; font-size: 1.2rem; }
+.s-pity { color: #ffd700; }
+.a-pity { color: #fca5f1; }
+
+.gm-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.gm-pull-btn {
+  background: #2c3e50;
+  color: #fff;
+  border: 2px solid #444;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.gm-pull-btn:hover { background: var(--chara-main); border-color: #fff; color: #000; }
+
+/* Settings Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.8);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 100;
+}
+.modal-overlay.hidden { display: none; }
+
+.modal-content {
+  background: #1a1a1a;
+  border: 2px solid var(--chara-main);
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+}
+
+.modal-title { color: var(--chara-main); margin-bottom: 1.5rem; font-size: 1.3rem; }
+
+.modal-group { margin-bottom: 1rem; }
+.modal-group label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #aaa; }
+.modal-group input[type="number"] { width: 100%; padding: 0.5rem; background: #000; color: #fff; border: 1px solid #444; }
+
+.modal-actions {
+  display: flex; justify-content: space-between; margin-top: 2rem; padding-top: 1rem; border-top: 1px dashed #555;
+}
+
+.btn-danger { background: #e74c3c; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; }
+.btn-primary { background: var(--chara-main); color: black; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-weight: bold; }

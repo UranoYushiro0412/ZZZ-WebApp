@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Zenless Zone Zero Tools</title>
+</head>
+
+<body>
+  <!-- ヘッダー部分 -->
+  <header class="navbar">
+    <div class="logo">ZZZ TOOLS // INTERKNOT</div>
+    <button id="btn-home" class="btn-nav">HOME</button>
+  </header>
+
+  <!-- メインコンテンツ -->
+  <main id="app-container">
+
+    <!-- 画面1: ホーム（メニュー） -->
+    <section id="view-home" class="view active">
+      <h1 class="page-title">SYSTEM_ACCESS: GRANTED</h1>
+      <p class="subtitle">利用するツールを選択してください。</p>
+
+      <div class="menu-grid">
+        <!-- アプリ1: ボスチェッカー -->
+        <div class="menu-card" data-target="view-boss">
+          <div class="card-icon">🎯</div>
+          <div class="card-content">
+            <h2>激変ノード ボス情報</h2>
+            <p>各層の弱点属性・防御力・耐性を確認する</p>
+          </div>
+        </div>
+
+        <!-- アプリ2: ポリクローム計算機 -->
+        <div class="menu-card" data-target="view-poly">
+          <div class="card-icon">💎</div>
+          <div class="card-content">
+            <h2>ポリクローム天井計算機</h2>
+            <p>手持ち石から確定回数を逆算する</p>
+          </div>
+        </div>
+
+        <!-- アプリ3: ガチャシミュ -->
+        <div class="menu-card" data-target="view-gacha">
+          <div class="card-icon">📺</div>
+          <div class="card-content">
+            <h2>変調シミュレーター</h2>
+            <p>ガチャ確率・天井システム搭載</p>
+          </div>
+        </div>
+
+        <!-- ミニゲームA: ホロウ探索 TV -->
+        <div class="menu-card" data-target="view-game-tv">
+          <div class="card-icon">🗺️</div>
+          <div class="card-content">
+            <h2>ホロウ探索 避けゲー</h2>
+            <p>侵蝕を避け、ギアコインを集めろ</p>
+          </div>
+        </div>
+
+        <!-- ミニゲームB: コインキャッチャー -->
+        <div class="menu-card" data-target="view-game-coin">
+          <div class="card-icon">🐾</div>
+          <div class="card-content">
+            <h2>にゃんきちのコイン集め</h2>
+            <p>落ちてくるコインを拾え（爆弾注意）</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 画面2: ボスチェッカー -->
+    <section id="view-boss" class="view hidden">
+      <h1 class="page-title">CRITICAL NODE // BOSS INTEL</h1>
+
+      <div class="boss-layout">
+        <!-- サイドバー：ボス選択 (スマホでは上部配置) -->
+        <aside class="boss-list-container">
+          <h3 class="section-heading">TARGET SELECTION</h3>
+          <ul id="boss-list" class="boss-ul">
+            <!-- JSで動的に追加 -->
+          </ul>
+        </aside>
+
+        <!-- メインエリア：ボスの詳細 -->
+        <article class="boss-detail-container">
+          <div id="boss-detail" class="boss-detail-card">
+            <p style="text-align:center; color:#888;">左のリストからボスを選択してください。</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 画面3-A: ガチャ選択画面 -->
+    <section id="view-gacha" class="view hidden">
+      <h1 class="page-title">SIGNAL SEARCH // 変調選択</h1>
+      <p class="subtitle">実行する変調（ガチャ）を選択してください。</p>
+
+      <div class="gacha-select-container">
+        <div class="gacha-list-section">
+          <h2 class="gacha-list-header">キャラ</h2>
+          <div id="gacha-list-chars">
+            <!-- JSでボタン生成 -->
+          </div>
+        </div>
+
+        <div class="gacha-list-section">
+          <h2 class="gacha-list-header">音動機</h2>
+          <div id="gacha-list-wpns">
+            <!-- JSでボタン生成 -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 画面3-B: ガチャ実行画面 (メイン) -->
+    <section id="view-gacha-main" class="view hidden">
+      <div class="gacha-main-container">
+        <!-- ヘッダー -->
+        <div class="gm-header">
+          <button id="gm-btn-back" class="gm-back-btn">⮌</button>
+          <div style="text-align:center;">
+            <div id="gm-title" class="gm-title">ガチャ名</div>
+            <div class="gm-stats">
+              <span class="gm-stat-badge">引いた回数: <span id="gm-stat-total">0</span> 回</span>
+              <span class="gm-stat-badge">Pick up: <span id="gm-stat-pickup">0</span> 回</span>
+              <span class="gm-stat-badge">すり抜け: <span id="gm-stat-suri">0</span> 回</span>
+            </div>
+          </div>
+          <button id="gm-btn-settings" class="gm-settings-btn">⚙️</button>
+        </div>
+
+        <!-- 中央のピラミッド表示枠 -->
+        <div class="gm-display">
+          <div id="gm-pyramid" class="pyramid-container">
+            <!-- 10連結果のカードがここに並ぶ -->
+          </div>
+        </div>
+
+        <!-- フッター (確定情報とボタン) -->
+        <div class="gm-footer">
+          <div class="gm-pity-info">
+            <div class="gm-pity-box">S級まで あと <span id="gm-pity-s" class="s-pity">90</span> 回</div>
+            <div class="gm-pity-box">A級まで あと <span id="gm-pity-a" class="a-pity">10</span> 回</div>
+          </div>
+          <div class="gm-actions">
+            <button id="gm-btn-pull-1" class="gm-pull-btn">1 回</button>
+            <button id="gm-btn-pull-10" class="gm-pull-btn" style="border-color:var(--chara-accent);">10 回</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 設定モーダル枠 -->
+      <div id="gm-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+          <h3 class="modal-title">ガチャ状態 設定</h3>
+
+          <div class="modal-group">
+            <label>S級までの確定回数 (1〜90/80)</label>
+            <input type="number" id="mod-pity-s" min="1" max="90">
+          </div>
+
+          <div class="modal-group">
+            <label>A級までの確定回数 (1〜10)</label>
+            <input type="number" id="mod-pity-a" min="1" max="10">
+          </div>
+
+          <div class="modal-group" style="display:flex; align-items:center; gap:10px;">
+            <input type="checkbox" id="mod-guaranteed" style="width:20px;height:20px;">
+            <label style="margin:0;">次回S級はPick up確定状態</label>
+          </div>
+
+          <div class="modal-actions">
+            <button id="mod-btn-reset" class="btn-danger">リセット</button>
+            <div style="display:flex; gap:10px;">
+              <button id="mod-btn-cancel" class="btn-primary" style="background:#555; color:white;">キャンセル</button>
+              <button id="mod-btn-save" class="btn-primary">保存</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 画面4: ポリクローム天井計算機 -->
+    <section id="view-poly" class="view hidden">
+      <h1 class="page-title">POLYCHROME // 計算機</h1>
+
+      <div class="poly-container">
+        <div class="poly-card">
+          <h2>INPUT DATA // 所持状況</h2>
+
+          <div class="input-group">
+            <span class="input-label poly-icon">ポリクローム所持数</span>
+            <input type="number" id="input-poly" class="input-field" value="0" min="0">
+          </div>
+
+          <div class="input-group">
+            <span class="input-label tape-icon">暗号化マスターテープ数</span>
+            <input type="number" id="input-tape" class="input-field" value="0" min="0">
+          </div>
+
+          <div class="input-group">
+            <span class="input-label pity-icon">S級確定まで残り（天井）</span>
+            <input type="number" id="input-pity" class="input-field" value="90" min="1" max="90">
+          </div>
+        </div>
+
+        <div class="poly-card">
+          <h2>CALCULATION // 計算結果</h2>
+          <div class="result-box">
+            <div class="result-item">
+              <span class="result-label">現在引ける回数（合計）</span>
+              <span id="res-total-pulls" class="result-value">0 回</span>
+            </div>
+            <div class="result-item" style="margin-top: 2rem;">
+              <span class="result-label">S級確定まで...</span>
+              <span id="res-status" class="result-value">あと 90 回</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 画面5: ミニゲーム TV避けゲー -->
+    <section id="view-game-tv" class="view hidden">
+      <h1 class="page-title">HOLLOW EXPLORATION</h1>
+      <p class="subtitle">赤いマス（侵蝕）を避け、ギアコインを集めよう！</p>
+
+      <div class="game-container">
+        <div class="game-header">
+          <span>SCORE: <span id="tv-score" class="score-board">0</span></span>
+          <button id="btn-tv-start" class="btn-gacha">EXPLORE START</button>
+        </div>
+
+        <div id="tv-board" class="tv-board">
+          <!-- JSでセル生成 -->
+        </div>
+
+        <!-- スマホ用 操作パッド -->
+        <div class="dpad">
+          <button id="btn-up" class="btn-dir btn-up">▲</button>
+          <button id="btn-left" class="btn-dir btn-left">◀</button>
+          <button id="btn-right" class="btn-dir btn-right">▶</button>
+          <button id="btn-down" class="btn-dir btn-down">▼</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 画面6: コインキャッチャー -->
+    <section id="view-game-coin" class="view hidden">
+      <h1 class="page-title">COIN CATCHER</h1>
+      <p class="subtitle">画面の左右をタップしてボンプを動かせ！爆弾は絶対避けて！</p>
+
+      <div class="coin-container">
+        <div class="coin-header">
+          <span>GET: <span id="coin-score" class="coin-score">0</span></span>
+          <button id="btn-coin-start" class="btn-gacha">GAME START</button>
+        </div>
+
+        <div id="coin-area" class="coin-game-area">
+          <div class="coin-player"></div>
+          <!-- タップ判定用 透明エリア -->
+          <div class="touch-zone-left"></div>
+          <div class="touch-zone-right"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+  <script type="module" src="/src/main.js"></script>
+  <script type="module" src="/src/style.css"></script>
+</body>
+
+</html>
