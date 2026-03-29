@@ -264,12 +264,14 @@
   justify-content: space-between;
   align-items: center;
   /* 縦ズレ防止 */
-  padding: 1rem; /* 左右の余白を統一してズレを防止 */
+  padding: 1rem;
+  /* 左右の余白を統一してズレを防止 */
   background: #111;
   border-top: 1px dashed #333;
   gap: 1rem;
   flex-wrap: wrap;
-  box-sizing: border-box; /* パディングを含めた幅計算を強制 */
+  box-sizing: border-box;
+  /* パディングを含めた幅計算を強制 */
 }
 
 .gm-pity-info {
@@ -324,7 +326,7 @@
 @media (max-width: 500px) {
   .gacha-main-container {
     /* スマホのブラウザUIや上部ヘッダーを考慮してさらに短く設定 */
-    height: calc(100vh - 160px);
+    height: calc(100vh - 150px);
   }
 
   .gm-footer {
@@ -333,11 +335,13 @@
 
   .gm-pity-info {
     width: 100%;
-    display: flex; /* 明示的にflex指定 */
+    display: flex;
+    /* 明示的にflex指定 */
     flex-direction: row;
     justify-content: space-between;
     box-sizing: border-box;
-    margin: 0; /* 余計なマージンを排除 */
+    margin: 0;
+    /* 余計なマージンを排除 */
   }
 
   .gm-actions {

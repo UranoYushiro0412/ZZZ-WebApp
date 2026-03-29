@@ -1,8 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Jura:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap');
 
 :root {
-  --chara-main: #3df36c;  /* ネオン系の緑 */
-  --chara-accent: #e2ff00; /* 黄色 */
+  --chara-main: #3df36c;
+  /* ネオン系の緑 */
+  --chara-accent: #e2ff00;
+  /* 黄色 */
   --bg-dark: #0f1012;
   --bg-card: #1a1c23;
   --text-main: #ffffff;
@@ -28,7 +30,10 @@ body {
 }
 
 /* Typography */
-h1, h2, h3, .logo {
+h1,
+h2,
+h3,
+.logo {
   font-family: 'Jura', sans-serif;
 }
 
@@ -38,7 +43,7 @@ h1, h2, h3, .logo {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background: rgba(0,0,0,0.8);
+  background: rgba(0, 0, 0, 0.8);
   border-bottom: 2px solid var(--chara-main);
   box-shadow: var(--border-glow);
 }
@@ -70,7 +75,7 @@ h1, h2, h3, .logo {
 /* Layout Core */
 #app-container {
   flex: 1;
-  padding: 2rem 1rem;
+  padding: 1rem 1rem;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
@@ -123,9 +128,11 @@ h1, h2, h3, .logo {
 .menu-card::before {
   content: '';
   position: absolute;
-  top: 0; left: -100%;
-  width: 100%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(61,243,108,0.1), transparent);
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(61, 243, 108, 0.1), transparent);
   transition: all 0.4s ease;
 }
 
@@ -193,19 +200,19 @@ h1, h2, h3, .logo {
 
 .boss-item {
   padding: 1rem;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
   border-left: 4px solid transparent;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .boss-item:hover {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
   border-left-color: var(--text-sub);
 }
 
 .boss-item.active-item {
-  background: rgba(61,243,108,0.1);
+  background: rgba(61, 243, 108, 0.1);
   border-left-color: var(--chara-main);
   color: var(--chara-main);
   font-weight: bold;
@@ -241,7 +248,7 @@ h1, h2, h3, .logo {
 }
 
 .stat-box {
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   padding: 1rem;
   border-radius: 4px;
   display: flex;
@@ -260,7 +267,8 @@ h1, h2, h3, .logo {
 }
 
 .stat-value.weakness {
-  color: #ff4757; /* 弱点は赤系に */
+  color: #ff4757;
+  /* 弱点は赤系に */
 }
 
 .stat-value.resistance {
@@ -300,7 +308,7 @@ h1, h2, h3, .logo {
 }
 
 .agent-list li {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255, 255, 255, 0.1);
   padding: 0.5rem 1rem;
   border-radius: 20px;
   font-size: 0.9rem;
@@ -309,8 +317,15 @@ h1, h2, h3, .logo {
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .fade-in {
@@ -322,6 +337,7 @@ h1, h2, h3, .logo {
   .boss-layout {
     flex-direction: column;
   }
+
   .page-title {
     font-size: 1.6rem;
   }
