@@ -190,7 +190,7 @@ function appendRow(resArray, startIndex) {
 
     const imgPath = gachaImageMap[res.name];
     if (imgPath) {
-      card.style.backgroundImage = `url(${imgPath})`;
+      card.style.backgroundImage = `url("${imgPath}")`;
       // 画像がある場合は名前を上部に、ランクを左下に
       card.innerHTML = `
         <div class="name-overlay">${res.name}</div>
