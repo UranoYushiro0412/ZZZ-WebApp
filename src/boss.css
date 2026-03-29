@@ -1,0 +1,196 @@
+/* Boss Intel 専用スタイル */
+:root {
+  --attr-ether: #ff69b4;   /* ピンク */
+  --attr-fire: #ff8c00;    /* オレンジ */
+  --attr-ice: #add8e6;     /* 氷っぽい水色 */
+  --attr-phys: #ffd700;    /* 黄色 */
+  --attr-elec: #1e90ff;    /* 青 */
+  --boss-card-bg: rgba(30, 30, 30, 0.9);
+  --boss-accent: #00ffcc;
+}
+
+/* レイアウト */
+.boss-layout {
+  display: flex;
+  gap: 20px;
+  height: calc(100vh - 180px);
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .boss-layout {
+    flex-direction: column;
+    height: auto;
+  }
+}
+
+/* 左側：リスト */
+.boss-list-container {
+  flex: 0 0 250px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid #444;
+  border-radius: 8px;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.boss-ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.boss-li {
+  padding: 12px 15px;
+  margin-bottom: 5px;
+  background: #222;
+  border-left: 4px solid transparent;
+  cursor: pointer;
+  transition: 0.2s;
+  border-radius: 0 4px 4px 0;
+  font-size: 0.9rem;
+}
+
+.boss-li:hover {
+  background: #333;
+}
+
+.boss-li.active {
+  background: #333;
+  border-color: var(--boss-accent);
+  color: var(--boss-accent);
+}
+
+/* 右側：詳細 */
+.boss-detail-container {
+  flex: 1;
+  background: var(--boss-card-bg);
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 20px;
+  overflow-y: auto;
+  position: relative;
+}
+
+.boss-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  border-bottom: 1px dashed #555;
+  padding-bottom: 15px;
+}
+
+.boss-name-area h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  color: #fff;
+  letter-spacing: 2px;
+}
+
+.boss-period-label {
+  font-size: 0.8rem;
+  color: var(--boss-accent);
+  font-family: monospace;
+}
+
+/* 属性アイコンエリア */
+.boss-attr-section {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.attr-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.attr-title {
+  font-size: 0.7rem;
+  color: #888;
+  text-transform: uppercase;
+}
+
+.attr-list {
+  display: flex;
+  gap: 8px;
+}
+
+.attr-badge {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #000;
+}
+
+.attr-badge.fire { background-color: var(--attr-fire); }
+.attr-badge.ice { background-color: var(--attr-ice); }
+.attr-badge.ether { background-color: var(--attr-ether); }
+.attr-badge.electric { background-color: var(--attr-elec); }
+.attr-badge.physical { background-color: var(--attr-phys); }
+.attr-badge.none { background-color: #555; color: #fff; }
+
+/* 6角形チャート・メインエリア */
+.boss-stats-main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  align-items: center;
+}
+
+.radar-chart-box {
+  flex: 0 0 300px;
+  height: 300px;
+  position: relative;
+  /* background: radial-gradient(circle, rgba(0,255,204,0.05) 0%, transparent 70%); */
+}
+
+.recent-values-list {
+  flex: 1;
+  min-width: 250px;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #333;
+  font-size: 0.9rem;
+}
+
+.stat-label { color: #aaa; }
+.stat-value { color: #fff; font-family: monospace; font-weight: bold; }
+
+/* SVG Radar Chart */
+.radar-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.radar-grid {
+  stroke: #444;
+  stroke-width: 1;
+  fill: none;
+}
+
+.radar-axis {
+  stroke: #555;
+  stroke-width: 1;
+}
+
+.radar-area {
+  fill: rgba(0, 255, 204, 0.3);
+  stroke: var(--boss-accent);
+  stroke-width: 2;
+  filter: drop-shadow(0 0 5px var(--boss-accent));
+}
+
+.radar-label {
+  fill: #888;
+  font-size: 10px;
+  text-anchor: middle;
+}

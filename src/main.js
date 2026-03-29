@@ -1,4 +1,4 @@
-import { bossData } from './data.js';
+import { BOSS_LIST, PERIOD_DATA } from './boss-data.js';
 import { GachaSystem } from './gacha.js';
 import { gachaBanners, gachaImageMap } from './gacha-data.js';
 import { gachaStateMgr } from './gacha-state.js';
@@ -61,53 +61,163 @@ document.querySelectorAll('.menu-card:not(.disabled)').forEach(card => {
 
 // Boss List Rendering
 function renderBossList() {
+  if (!bossList) return;
   bossList.innerHTML = '';
-  bossData.forEach(boss => {
+  BOSS_LIST.forEach(boss => {
     const li = document.createElement('li');
     li.textContent = boss.name;
-    li.classList.add('boss-item');
-    li.addEventListener('click', () => renderBossDetail(boss, li));
+    li.classList.add('boss-li');
+    li.addEventListener('click', () => showBossDetail(boss.id));
     bossList.appendChild(li);
   });
 }
 
-// Boss Detail Rendering
-function renderBossDetail(boss, selectedLi) {
-  // アクティブなリスト要素をハイライト
-  document.querySelectorAll('.boss-item').forEach(li => li.classList.remove('active-item'));
-  if (selectedLi) {
-    selectedLi.classList.add('active-item');
+/**
+ * 6角形レーダーチャートのSVGパスを生成
+ */
+function createRadarSvg(stats) {
+  const size = 300;
+  const center = size / 2;
+  const radius = 100;
+
+  // 各ステータスの正規化基準 (0-100にするための最大値想定)
+  const MAX_CONFIG = {
+    hp: 400000000,        // 4億
+    def: 1200,            // 防御
+    stun_mult: 2.5,       // ブレイク倍率 2.5(250%)
+    stun_time: 20,        // ブレイク時間 20s
+    stun_limit: 25000,    // ブレイク値上限 2.5万
+    anomaly_limit: 6000   // 異常蓄積上限 6000
+  };
+
+  const statKeys = ['hp', 'def', 'stun_mult', 'stun_time', 'stun_limit', 'anomaly_limit'];
+  const labels = ['HP', '防御', '倍率', '時間', 'ブレイク', '異常'];
+
+  const points = [];
+  statKeys.forEach((key, i) => {
+    const val = stats[key] || 0;
+    const ratio = Math.min(val / MAX_CONFIG[key], 1);
+    const angle = (Math.PI / 3) * i - (Math.PI / 2); // 60度ずつ
+    const x = center + radius * ratio * Math.cos(angle);
+    const y = center + radius * ratio * Math.sin(angle);
+    points.push(`${x},${y}`);
+  });
+
+  // グリッド（背景の6角形）
+  let gridXml = '';
+  [0.2, 0.4, 0.6, 0.8, 1.0].forEach(r => {
+    const gridPoints = [];
+    for (let i = 0; i < 6; i++) {
+      const angle = (Math.PI / 3) * i - (Math.PI / 2);
+      const x = center + radius * r * Math.cos(angle);
+      const y = center + radius * r * Math.sin(angle);
+      gridPoints.push(`${x},${y}`);
+    }
+    gridXml += `<polygon points="${gridPoints.join(' ')}" class="radar-grid" />`;
+  });
+
+  // 軸線
+  let axisXml = '';
+  for (let i = 0; i < 6; i++) {
+    const angle = (Math.PI / 3) * i - (Math.PI / 2);
+    const x = center + radius * Math.cos(angle);
+    const y = center + radius * Math.sin(angle);
+    axisXml += `<line x1="${center}" y1="${center}" x2="${x}" y2="${y}" class="radar-axis" />`;
+
+    // ラベル
+    const lx = center + (radius + 25) * Math.cos(angle);
+    const ly = center + (radius + 25) * Math.sin(angle);
+    axisXml += `<text x="${lx}" y="${ly}" class="radar-label">${labels[i]}</text>`;
   }
 
-  // アニメーション用にクラスを一度外して再付与
-  bossDetail.classList.remove('fade-in');
-  void bossDetail.offsetWidth; // Reflow
-  bossDetail.classList.add('fade-in');
+  return `
+    <svg viewBox="0 0 ${size} ${size}" class="radar-svg">
+      ${gridXml}
+      ${axisXml}
+      <polygon points="${points.join(' ')}" class="radar-area" />
+    </svg>
+  `;
+}
+
+/**
+ * ボス詳細の表示
+ */
+function showBossDetail(bossId) {
+  const boss = BOSS_LIST.find(b => b.id === bossId);
+  if (!boss) return;
+
+  // アクティブハイライトの更新
+  document.querySelectorAll('.boss-li').forEach(li => {
+    li.classList.toggle('active', li.textContent === boss.name);
+  });
+
+  // 最新期から順に、そのボスが現れたデータを探す
+  const allPeriods = Object.keys(PERIOD_DATA).map(Number).sort((a, b) => b - a); // [33, 32, 26, ...]
+  let foundPeriod = null;
+  let pData = null;
+
+  for (const period of allPeriods) {
+    if (PERIOD_DATA[period] && PERIOD_DATA[period][boss.name]) {
+      foundPeriod = period;
+      pData = PERIOD_DATA[period][boss.name];
+      break;
+    }
+  }
+
+  if (!pData) {
+    bossDetail.innerHTML = `
+      <div class="boss-detail-header">
+        <div class="boss-name-area">
+          <span class="boss-period-label">PERIOD: --</span>
+          <h2>${boss.name}</h2>
+        </div>
+      </div>
+      <p style="text-align:center; padding: 50px; color:#888;">全期間において計測データが見つかりませんでした。</p>
+    `;
+    return;
+  }
+
+  const formatLargeNum = (n) => n.toLocaleString();
 
   bossDetail.innerHTML = `
-    <h2 class="boss-name">${boss.name}</h2>
-    
-    <div class="stat-grid">
-      <div class="stat-box">
-        <span class="stat-label">弱点属性</span>
-        <span class="stat-value weakness">${boss.weakness.join(' / ')}</span>
-      </div>
-      <div class="stat-box">
-        <span class="stat-label">状態異常耐性</span>
-        <span class="stat-value resistance">${boss.resistance.length > 0 ? boss.resistance.join(' / ') : 'なし'}</span>
+    <div class="boss-detail-header">
+      <div class="boss-name-area">
+        <span class="boss-period-label">DATA SOURCE: PERIOD ${foundPeriod}</span>
+        <h2>${boss.name}</h2>
       </div>
     </div>
 
-    <div class="info-section">
-      <h3>ボス情報・攻略方針</h3>
-      <p class="boss-desc">${boss.description}</p>
+    <div class="boss-attr-section">
+      <div class="attr-group">
+        <span class="attr-title">弱点属性</span>
+        <div class="attr-list">
+          ${pData.weak.length ? pData.weak.map(w => `<span class="attr-badge ${w}">${w}</span>`).join('') : '<span class="attr-badge none">なし</span>'}
+        </div>
+      </div>
+      <div class="attr-group">
+        <span class="attr-title">耐性属性</span>
+        <div class="attr-list">
+          ${pData.resist.length ? pData.resist.map(r => `<span class="attr-badge ${r}">${r}</span>`).join('') : '<span class="attr-badge none">なし</span>'}
+        </div>
+      </div>
     </div>
-    
-    <div class="info-section">
-      <h3>おすすめ編成・エージェント</h3>
-      <ul class="agent-list">
-        ${boss.recommendedAgents.map(ag => `<li>★ ${ag}</li>`).join('')}
-      </ul>
+
+    <div class="boss-stats-main">
+      <div class="radar-chart-box">
+        ${createRadarSvg(pData)}
+      </div>
+      <div class="recent-values-list">
+        <div class="stat-row"><span class="stat-label">HP</span><span class="stat-value">${formatLargeNum(pData.hp)}</span></div>
+        <div class="stat-row"><span class="stat-label">防御力</span><span class="stat-value">${pData.def}</span></div>
+        <div class="stat-row"><span class="stat-label">ブレイク弱体倍率</span><span class="stat-value">${(pData.stun_mult * 100).toFixed(0)}%</span></div>
+        <div class="stat-row"><span class="stat-label">ブレイク時間</span><span class="stat-value">${pData.stun_time}s</span></div>
+        <div class="stat-row"><span class="stat-label">ブレイク値上限</span><span class="stat-value">${formatLargeNum(pData.stun_limit)}</span></div>
+        <div class="stat-row"><span class="stat-label">異常蓄積値上限</span><span class="stat-value">${formatLargeNum(pData.anomaly_limit)}</span></div>
+      </div>
+    </div>
+
+    <div style="margin-top: 30px; border-top: 1px solid #333; padding-top: 15px;">
+       <p style="font-size: 0.75rem; color: #666;">※数値は第${latestPeriod}期の計測値に基づく推定です。画像は準備中です。</p>
     </div>
   `;
 }
