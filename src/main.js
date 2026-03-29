@@ -216,9 +216,9 @@ function appendRow(resArray, startIndex) {
         <div class="card-rank-label rank-label-${res.rank.toLowerCase()}">${res.rank}</div>
       `;
     } else {
-      // 画像がない場合は従来のデザインをベースに、左下ランクを追加。上部のランク表示は削除。
+      // 画像がない場合は従来のデザインをベースに、左下ランクを追加。
       card.innerHTML = `
-        <div style="font-size:0.75rem; line-height:1.2; padding:0 10px;">${res.name}</div>
+        <div class="card-item-name">${res.name}</div>
         <div class="card-rank-label rank-label-${res.rank.toLowerCase()}">${res.rank}</div>
       `;
     }
