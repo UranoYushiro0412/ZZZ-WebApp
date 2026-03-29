@@ -42,7 +42,7 @@ export const gachaBanners = [
     shortName: "南宮羽",
     pityGroup: "char_group_1",
     pickupS: "南宮羽",
-    pickupA: ["アンビー", "ニコ"],
+    pickupA: ["ニコ", "パイパー"],
     rates: { baseS: 0.6, baseA: 9.4, softPityStart: 74, hardPity: 90 },
   },
   {
@@ -52,7 +52,7 @@ export const gachaBanners = [
     shortName: "イドリー",
     pityGroup: "char_group_1",
     pickupS: "イドリー",
-    pickupA: ["カリン", "ビリー"],
+    pickupA: ["ニコ", "パイパー"],
     rates: { baseS: 0.6, baseA: 9.4, softPityStart: 74, hardPity: 90 },
   },
   {
@@ -106,7 +106,7 @@ export const gachaImageMap = {
   "イドリー": "images/Scharas/Idori.png",
   "プロメイア": "images/Scharas/Promeia.png",
   "スターライト・ビリー": "images/Scharas/NewBilly.png",
-  
+
   // S級キャラ（恒常）
   "猫又": "images/StdScharas/Nekomata.png",
   "11号": "images/StdScharas/11gou.png",
@@ -114,13 +114,13 @@ export const gachaImageMap = {
   "ライカン": "images/StdScharas/Raikan.png",
   "グレース": "images/StdScharas/Grace.png",
   "リナ": "images/StdScharas/Rina.png",
-  
+
   // S級武器（限定）
   "南宮羽餅": "images/Sweapons/NanguYu_weapon.png",
   "イドリー餅": "images/Sweapons/Idori_weapon.png",
   "妄想ディスコテック": "images/Sweapons/NanguYu_weapon.png",
   "セイレーンクレードル": "images/Sweapons/Idori_weapon.png",
-  
+
   // S級武器（恒常）
   "猫又餅（鋼の肉球）": "images/StdSweapons/Nekomata_weapon.png",
   "「11号」餅（ブリムストーン）": "images/StdSweapons/11gou_weapon.png",
@@ -134,7 +134,7 @@ export const gachaImageMap = {
   "拘縛されし者": "images/StdSweapons/Raikan_weapon.png",
   "複合コンパイラ": "images/StdSweapons/Grace_weapon.png",
   "啜り泣くゆりかご": "images/StdSweapons/Rina_weapon.png",
-  
+
   // A級キャラ
   "アンビー": "images/Acharas/Anby.png",
   "ニコ": "images/Acharas/Nico.png",
