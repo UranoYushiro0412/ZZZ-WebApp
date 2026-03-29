@@ -92,3 +92,47 @@ export const gachaBanners = [
     rates: { baseS: 1.0, baseA: 15.0, softPityStart: 64, hardPity: 80 },
   }
 ];
+
+// 画像マッピングデータ
+export const gachaImageMap = {
+  // S級キャラ（限定）
+  "南宮羽": "/images/Scharas/NanguYu.png",
+  "イドリー": "/images/Scharas/Idori.png",
+  "プロメイア": "/images/Scharas/Promeia.png",
+  "スターライト・ビリー": "/images/Scharas/NewBilly.png",
+  
+  // S級キャラ（恒常）
+  "猫又": "/images/StdScharas/Nekomata.png",
+  "11号": "/images/StdScharas/11gou.png",
+  "クレタ": "/images/StdScharas/Kureta.png",
+  "ライカン": "/images/StdScharas/Raikan.png",
+  "グレース": "/images/StdScharas/Grace.png",
+  "リナ": "/images/StdScharas/Rina.png",
+  
+  // S級武器（限定）
+  "妄想ディスコテック": "/images/Sweapons/NanguYu_weapon.png",
+  "セイレーンクレードル": "/images/Sweapons/Idori_weapon.png",
+  
+  // S級武器（恒常）
+  "鋼の肉球": "/images/StdSweapons/Nekomata_weapon.png",
+  "ブリムストーン": "/images/StdSweapons/11gou_weapon.png",
+  "燃獄ギア": "/images/StdSweapons/Kureta_weapon.png",
+  "拘縛されし者": "/images/StdSweapons/Raikan_weapon.png",
+  "複合コンパイラ": "/images/StdSweapons/Grace_weapon.png",
+  "啜り泣くゆりかご": "/images/StdSweapons/Rina_weapon.png",
+  
+  // A級キャラ
+  "アンビー": "/images/Acharas/Anby.png",
+  "ニコ": "/images/Acharas/Nico.png",
+  "カリン": "/images/Acharas/Karin.png",
+  "ビリー": "/images/Acharas/Billy.png",
+  "アンドー": "/images/Acharas/Ando.png",
+  "ベン": "/images/Acharas/Ben.png",
+  "蒼角": "/images/Acharas/Soukaku.png",
+  "ルーシー": "/images/Acharas/Lucy.png",
+  "セス": "/images/Acharas/Seth.png",
+  "パイパー": "/images/Acharas/Piper.png",
+  "プルクラ": "/images/Acharas/Pulchra.png",
+  "潘引壺": "/images/Acharas/Pan.png",
+  "狛野真斗": "/images/Acharas/Komano.png"
+};

@@ -119,16 +119,16 @@
       <div class="gacha-main-container">
         <!-- ヘッダー -->
         <div class="gm-header">
-          <button id="gm-btn-back" class="gm-back-btn">⮌</button>
-          <div style="text-align:center;">
+          <div class="gm-top-bar">
+            <button id="gm-btn-back" class="gm-back-btn">⮌</button>
             <div id="gm-title" class="gm-title">ガチャ名</div>
-            <div class="gm-stats">
-              <span class="gm-stat-badge">引いた回数: <span id="gm-stat-total">0</span> 回</span>
-              <span class="gm-stat-badge">Pick up: <span id="gm-stat-pickup">0</span> 回</span>
-              <span class="gm-stat-badge">すり抜け: <span id="gm-stat-suri">0</span> 回</span>
-            </div>
+            <button id="gm-btn-settings" class="gm-settings-btn">⚙️</button>
           </div>
-          <button id="gm-btn-settings" class="gm-settings-btn">⚙️</button>
+          <div class="gm-stats">
+            <span class="gm-stat-badge">引いた回数: <span id="gm-stat-total" class="stat-num">0</span></span>
+            <span class="gm-stat-badge">Pick up: <span id="gm-stat-pickup" class="stat-num">0</span></span>
+            <span class="gm-stat-badge">すり抜け: <span id="gm-stat-suri" class="stat-num">0</span></span>
+          </div>
         </div>
 
         <!-- 中央のピラミッド表示枠 -->
@@ -141,12 +141,12 @@
         <!-- フッター (確定情報とボタン) -->
         <div class="gm-footer">
           <div class="gm-pity-info">
-            <div class="gm-pity-box">S級まで あと <span id="gm-pity-s" class="s-pity">90</span> 回</div>
-            <div class="gm-pity-box">A級まで あと <span id="gm-pity-a" class="a-pity">10</span> 回</div>
+            <div class="gm-pity-box"><span style="color:#ffd700; font-weight:bold;">S</span>級まで あと<span id="gm-pity-s" class="s-pity">90</span> 回</div>
+            <div class="gm-pity-box"><span style="color:#fca5f1; font-weight:bold;">A</span>級まで あと<span id="gm-pity-a" class="a-pity">10</span> 回</div>
           </div>
           <div class="gm-actions">
             <button id="gm-btn-pull-1" class="gm-pull-btn">1 回</button>
-            <button id="gm-btn-pull-10" class="gm-pull-btn" style="border-color:var(--chara-accent);">10 回</button>
+            <button id="gm-btn-pull-10" class="gm-pull-btn">10 回</button>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { bossData } from './data.js';
 import { GachaSystem } from './gacha.js';
-import { gachaBanners } from './gacha-data.js';
+import { gachaBanners, gachaImageMap } from './gacha-data.js';
 import { gachaStateMgr } from './gacha-state.js';
 import { GameTV } from './game-tv.js';
 import { GameCoin } from './game-coin.js';
@@ -23,7 +23,7 @@ function showView(viewId) {
     el.classList.remove('active');
     el.classList.add('hidden');
   });
-  
+
   // 指定されたviewを表示
   const target = document.getElementById(viewId);
   if (target) {
@@ -35,14 +35,14 @@ function showView(viewId) {
   if (viewId !== 'view-game-tv' && window.currentGameTV) {
     window.currentGameTV.stop();
     const startBtn = document.getElementById('btn-tv-start');
-    if(startBtn) startBtn.style.display = 'block';
+    if (startBtn) startBtn.style.display = 'block';
   }
 
   // もしゲーム画面以外に飛ぶならコインゲームを強制停止
   if (viewId !== 'view-game-coin' && window.currentGameCoin) {
     window.currentGameCoin.stop();
     const startBtn = document.getElementById('btn-coin-start');
-    if(startBtn) startBtn.style.display = 'block';
+    if (startBtn) startBtn.style.display = 'block';
   }
 }
 
@@ -146,26 +146,26 @@ const gmPityA = document.getElementById('gm-pity-a');
 const gmPyramid = document.getElementById('gm-pyramid');
 
 const gmBtnBack = document.getElementById('gm-btn-back');
-if(gmBtnBack) gmBtnBack.onclick = () => showView('view-gacha');
+if (gmBtnBack) gmBtnBack.onclick = () => showView('view-gacha');
 
 function updateGachaUI() {
   if (!currentGacha) return;
   const state = currentGacha.getState();
-  
+
   gmTitle.textContent = currentGacha.config.name;
-  
+
   // 累計、Pick up、すり抜け 累計などをStateから表示
   gmStatTotal.textContent = state.totalPulls || 0;
   gmStatPickup.textContent = state.pickupCount || 0;
   gmStatSuri.textContent = state.surinukeCount || 0;
-  
+
   gmPityS.textContent = state.pitySCount;
   gmPityA.textContent = state.pityACount;
 }
 
 function displayGachaResults(results) {
   gmPyramid.innerHTML = ''; // クリア
-  
+
   // 10連ならピラミッド風に配置
   if (results.length === 1) {
     appendRow(results, 0);
@@ -187,15 +187,23 @@ function appendRow(resArray, startIndex) {
     card.className = `pull-card rank-${res.rank.toLowerCase()}`;
     // 順番に応じてアニメーション遅延
     card.style.animationDelay = `${(startIndex + i) * 0.1}s`;
+
+    const imgPath = gachaImageMap[res.name];
+    if (imgPath) {
+      card.style.backgroundImage = `url(${imgPath})`;
+      // 画像がある場合は名前を上部に、ランクを左下に
+      card.innerHTML = `
+        <div class="name-overlay">${res.name}</div>
+        <div class="card-rank-label rank-label-${res.rank.toLowerCase()}">${res.rank}</div>
+      `;
+    } else {
+      // 画像がない場合は従来のデザインをベースに、左下ランクを追加。上部のランク表示は削除。
+      card.innerHTML = `
+        <div style="font-size:0.75rem; line-height:1.2; padding:0 10px;">${res.name}</div>
+        <div class="card-rank-label rank-label-${res.rank.toLowerCase()}">${res.rank}</div>
+      `;
+    }
     
-    // ピックアップの場合は星マークをつけるなどの演出
-    const pickupMark = res.isPickup ? '<span style="color:#fff; font-size:1rem;">UP!</span>' : '';
-    
-    card.innerHTML = `
-      <div style="font-weight:bold; font-size:1.6rem; margin-bottom:5px;">${res.rank}</div>
-      <div style="font-size:0.75rem; line-height:1.2; padding:0 2px;">${res.name}</div>
-      ${pickupMark}
-    `;
     row.appendChild(card);
   });
   gmPyramid.appendChild(row);
@@ -242,13 +250,13 @@ document.getElementById('mod-btn-save')?.addEventListener('click', () => {
 
 document.getElementById('mod-btn-reset')?.addEventListener('click', () => {
   if (!currentGacha) return;
-  
+
   // 現在開いているガチャグループに限定して、すべての状態と累計回数をゼロから初期化する
   gachaStateMgr.resetGroup(
-    currentGacha.groupId, 
+    currentGacha.groupId,
     currentGacha.maxS
   );
-  
+
   gmModal.classList.add('hidden');
   updateGachaUI();
 });
@@ -284,7 +292,7 @@ function calculatePolychrome() {
   }
 }
 
-if(inputPoly) {
+if (inputPoly) {
   [inputPoly, inputTape, inputPity].forEach(input => {
     input.addEventListener('input', calculatePolychrome);
   });
@@ -328,10 +336,10 @@ if (tvBoard && btnTvStart) {
 
   // Keyboard support (PC用)
   window.addEventListener('keydown', (e) => {
-    if(!viewGameTv.classList.contains('active') || !window.currentGameTV.isPlaying) return;
-    
+    if (!viewGameTv.classList.contains('active') || !window.currentGameTV.isPlaying) return;
+
     // スクロールなどのデフォルト挙動を一部防ぐかも
-    switch(e.key) {
+    switch (e.key) {
       case 'ArrowUp': case 'w': window.currentGameTV.movePlayer(0, -1); break;
       case 'ArrowDown': case 's': window.currentGameTV.movePlayer(0, 1); break;
       case 'ArrowLeft': case 'a': window.currentGameTV.movePlayer(-1, 0); break;
@@ -348,7 +356,7 @@ const btnCoinStart = document.getElementById('btn-coin-start');
 
 window.currentGameCoin = null;
 
-if(coinArea && btnCoinStart) {
+if (coinArea && btnCoinStart) {
   window.currentGameCoin = new GameCoin(coinArea, coinScore, (score, msg) => {
     alert(`GAME OVER\n${msg}\nSCORE: ${score}`);
     btnCoinStart.style.display = 'block';
@@ -361,17 +369,17 @@ if(coinArea && btnCoinStart) {
 
   // PC用キーボード操作のサポート
   window.addEventListener('keydown', (e) => {
-    if(!viewGameCoin.classList.contains('active') || !window.currentGameCoin.isPlaying) return;
-    
-    switch(e.key) {
+    if (!viewGameCoin.classList.contains('active') || !window.currentGameCoin.isPlaying) return;
+
+    switch (e.key) {
       case 'ArrowLeft': case 'a':
         window.currentGameCoin.playerX -= 3;
-        if(window.currentGameCoin.playerX < 0) window.currentGameCoin.playerX = 0;
+        if (window.currentGameCoin.playerX < 0) window.currentGameCoin.playerX = 0;
         window.currentGameCoin.playerEl.style.left = `${window.currentGameCoin.playerX}%`;
         break;
       case 'ArrowRight': case 'd':
         window.currentGameCoin.playerX += 3;
-        if(window.currentGameCoin.playerX > 90) window.currentGameCoin.playerX = 90;
+        if (window.currentGameCoin.playerX > 90) window.currentGameCoin.playerX = 90;
         window.currentGameCoin.playerEl.style.left = `${window.currentGameCoin.playerX}%`;
         break;
     }
