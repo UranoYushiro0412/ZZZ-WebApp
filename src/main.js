@@ -217,7 +217,7 @@ function showBossDetail(bossId) {
     </div>
 
     <div style="margin-top: 30px; border-top: 1px solid #333; padding-top: 15px;">
-       <p style="font-size: 0.75rem; color: #666;">※数値は第${latestPeriod}期の計測値に基づく推定です。画像は準備中です。</p>
+       <p style="font-size: 0.75rem; color: #666;">※数値は第${foundPeriod}期の計測値に基づく推定です。画像は準備中です。</p>
     </div>
   `;
 }
