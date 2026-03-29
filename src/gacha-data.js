@@ -1,6 +1,12 @@
-// S級の恒常ラインナップ（すり抜け先）
 export const stdCharactersS = ["猫又", "11号", "クレタ", "ライカン", "グレース", "リナ"];
-export const stdWeaponsS = ["鋼の肉球", "ブリムストーン", "燃獄ギア", "拘縛されし者", "複合コンパイラ", "啜り泣くゆりかご"];
+export const stdWeaponsS = [
+  "猫又餅（鋼の肉球）",
+  "「11号」餅（ブリムストーン）",
+  "クレタ餅（燃獄ギア）",
+  "ライカン餅（拘縛されし者）",
+  "グレース餅（複合コンパイラ）",
+  "リナ餅（啜り泣くゆりかご）"
+];
 
 // A級・B級のラインナップ
 export const stdCharsA = [
@@ -110,10 +116,18 @@ export const gachaImageMap = {
   "リナ": "images/StdScharas/Rina.png",
   
   // S級武器（限定）
+  "南宮羽餅": "images/Sweapons/NanguYu_weapon.png",
+  "イドリー餅": "images/Sweapons/Idori_weapon.png",
   "妄想ディスコテック": "images/Sweapons/NanguYu_weapon.png",
   "セイレーンクレードル": "images/Sweapons/Idori_weapon.png",
   
   // S級武器（恒常）
+  "猫又餅（鋼の肉球）": "images/StdSweapons/Nekomata_weapon.png",
+  "「11号」餅（ブリムストーン）": "images/StdSweapons/11gou_weapon.png",
+  "クレタ餅（燃獄ギア）": "images/StdSweapons/Kureta_weapon.png",
+  "ライカン餅（拘縛されし者）": "images/StdSweapons/Raikan_weapon.png",
+  "グレース餅（複合コンパイラ）": "images/StdSweapons/Grace_weapon.png",
+  "リナ餅（啜り泣くゆりかご）": "images/StdSweapons/Rina_weapon.png",
   "鋼の肉球": "images/StdSweapons/Nekomata_weapon.png",
   "ブリムストーン": "images/StdSweapons/11gou_weapon.png",
   "燃獄ギア": "images/StdSweapons/Kureta_weapon.png",
