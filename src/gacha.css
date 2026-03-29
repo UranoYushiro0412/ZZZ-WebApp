@@ -105,6 +105,10 @@
   cursor: pointer;
 }
 
+.gm-back-btn::before {
+  content: '⮌';
+}
+
 .gm-back-btn:hover {
   border-color: var(--chara-main);
   color: var(--chara-main);
@@ -346,6 +350,10 @@
   .gacha-main-container {
     /* スマホのブラウザUIや上部ヘッダーを考慮してさらに短く設定 */
     height: calc(100vh - 150px);
+  }
+
+  .gm-back-btn::before {
+    content: '←';
   }
 
   .gm-footer {
