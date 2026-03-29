@@ -324,7 +324,7 @@
 @media (max-width: 500px) {
   .gacha-main-container {
     /* スマホのブラウザUIや上部ヘッダーを考慮してさらに短く設定 */
-    height: calc(100vh - 180px);
+    height: calc(100vh - 160px);
   }
 
   .gm-footer {
