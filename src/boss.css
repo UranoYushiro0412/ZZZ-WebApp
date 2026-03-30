@@ -556,9 +556,23 @@
 }
 
 .trend-axis-label {
-  fill: #666;
+  fill: #888; /* 横軸と同じ色 */
   font-size: 10px;
   text-anchor: middle;
+}
+
+.trend-y-label {
+  fill: #888; /* Y軸も横軸と同じ色に統一 */
+  font-size: 11px;
+  text-anchor: end;
+  font-family: monospace;
+}
+
+.trend-guide-line {
+  stroke: #888; /* ガイドラインも同じグレーに */
+  stroke-width: 1;
+  stroke-dasharray: 2 2;
+  opacity: 0.8;
 }
 
 .no-trend-data {

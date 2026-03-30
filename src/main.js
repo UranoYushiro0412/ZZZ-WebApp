@@ -41,7 +41,7 @@ function showView(viewId) {
       if (window.innerWidth <= 900) {
         if (bossDetail) bossDetail.style.display = 'none';
         if (bossStickyHeader) bossStickyHeader.classList.remove('visible');
-        document.body.style.overflow = 'hidden'; 
+        document.body.style.overflow = 'hidden';
       } else {
         // PC版は常に表示し、かつ一番上のボスを自動選択
         if (bossDetail) bossDetail.style.display = 'block';
@@ -93,7 +93,7 @@ document.querySelectorAll('.menu-card:not(.disabled)').forEach(card => {
 function renderBossList() {
   if (!bossList) return;
   bossList.innerHTML = '';
-  
+
   const bossMobileSelectList = document.getElementById('boss-mobile-select-list');
   if (bossMobileSelectList) bossMobileSelectList.innerHTML = '';
 
@@ -243,9 +243,10 @@ function createHpTrendSvg(bossName) {
     }
   }
 
-  const width = 500; // さらに広げて安定させる
+  const width = 500;
   const height = 150;
-  const paddingX = 100; // 85 -> 100 に増やして「絶対的な余白」を確保
+  const paddingLeft = 55;  // 数値ラベル用
+  const paddingRight = 15; // 右端を広げる
   const paddingY = 20;
 
   const formatHp = (v) => (v / 10000).toFixed(0) + '万';
@@ -258,29 +259,27 @@ function createHpTrendSvg(bossName) {
     `;
   }
 
-  // Y軸のスケーリング：最小HP〜最大HPに合わせる（オートスケール）
+  // Y軸のスケーリング：最小HP〜最大HPに合わせる
   const hps = data.map(d => d.hp);
   let minY = Math.min(...hps);
   let maxY = Math.max(...hps);
-  
-  // 最小値と最大値が同じ（または1点のみ）の場合の調整
+
   if (minY === maxY) {
     minY = minY * 0.9;
     maxY = maxY * 1.1;
   } else {
-    // 上下に5%程度のマージンを持たせる
     const range = maxY - minY;
     minY = Math.max(0, minY - range * 0.1);
     maxY = maxY + range * 0.1;
   }
 
-  const getX = (p) => paddingX + (p - minP) * (width - 2 * paddingX) / (maxP - minP);
+  const getX = (p) => paddingLeft + (p - minP) * (width - paddingLeft - paddingRight) / (maxP - minP);
   const getY = (hp) => (height - paddingY) - (hp - minY) * (height - 2 * paddingY) / (maxY - minY);
 
   // 折れ線のポイント作成
   const points = data.map(d => `${getX(d.x)},${getY(d.hp)}`).join(' ');
 
-  // 目盛り（グリッド線と期のラベル）
+  // 目盛り（各期）
   let gridLines = '';
   [15, 20, 25, 30, 33].forEach(p => {
     const x = getX(p);
@@ -290,28 +289,28 @@ function createHpTrendSvg(bossName) {
     `;
   });
 
-  // 基準線（最初と最後のデータから左側へ伸ばすガイドライン）
+  // ガイドライン（最初と最後のデータから左へ伸ばす）
   let guideLines = '';
   if (data.length > 0) {
     const first = data[0];
     const last = data[data.length - 1];
-    
-    // 最初（最古）のデータからのガイドライン
+
+    // 最初のデータ
     guideLines += `
-      <line x1="${paddingX}" y1="${getY(first.hp)}" x2="${getX(first.x)}" y2="${getY(first.hp)}" class="trend-guide-line" />
-      <text x="${paddingX - 15}" y="${getY(first.hp) + 4}" class="trend-y-label">${formatHp(first.hp)}</text>
+      <line x1="${paddingLeft - 10}" y1="${getY(first.hp)}" x2="${getX(first.x)}" y2="${getY(first.hp)}" class="trend-guide-line" />
+      <text x="${paddingLeft - 18}" y="${getY(first.hp) + 4}" class="trend-y-label">${formatHp(first.hp)}</text>
     `;
 
-    // 最後（最新）のデータからのガイドライン（データが1点のみでなければ追加）
+    // 最後のデータ（1点のみでなければ）
     if (data.length > 1) {
       guideLines += `
-        <line x1="${paddingX}" y1="${getY(last.hp)}" x2="${getX(last.x)}" y2="${getY(last.hp)}" class="trend-guide-line" />
-        <text x="${paddingX - 15}" y="${getY(last.hp) + 4}" class="trend-y-label">${formatHp(last.hp)}</text>
+        <line x1="${paddingLeft - 10}" y1="${getY(last.hp)}" x2="${getX(last.x)}" y2="${getY(last.hp)}" class="trend-guide-line" />
+        <text x="${paddingLeft - 18}" y="${getY(last.hp) + 4}" class="trend-y-label">${formatHp(last.hp)}</text>
       `;
     }
   }
 
-  // データポイントのドット
+  // データドット
   let dots = '';
   data.forEach(d => {
     dots += `<circle cx="${getX(d.x)}" cy="${getY(d.hp)}" r="3" class="trend-dot" />`;
