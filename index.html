@@ -43,11 +43,20 @@
           </div>
         </div>
 
+        <!-- ミニゲームC: ソウルハウンドIII (新規) -->
+        <div class="menu-card" data-target="view-soul-hounds">
+          <div class="card-icon">⛏️</div>
+          <div class="card-content">
+            <h2>ソウルハウンドIII</h2>
+            <p>目指せ地下1000m！ザクザク穴掘りアクション</p>
+          </div>
+        </div>
+
         <!-- アプリ3: ポリクローム計算機 -->
-        <div class="menu-card disabled">
+        <div class="menu-card" data-target="view-poly">
           <div class="card-icon">💎</div>
           <div class="card-content">
-            <h2>ポリクローム天井計算機（開発中）</h2>
+            <h2>ポリクローム天井計算機</h2>
             <p>手持ち石から確定回数を逆算する</p>
           </div>
         </div>
@@ -197,9 +206,9 @@
             <label style="margin:0;">次回S級はPick up確定状態</label>
           </div>
 
-          <div class="modal-actions">
+          <div class="modal-group">
             <button id="mod-btn-reset" class="btn-danger">リセット</button>
-            <div style="display:flex; gap:10px;">
+            <div style="display:flex; gap:10px; margin-top:20px;">
               <button id="mod-btn-cancel" class="btn-primary" style="background:#555; color:white;">キャンセル</button>
               <button id="mod-btn-save" class="btn-primary">保存</button>
             </div>
@@ -208,7 +217,54 @@
       </div>
     </section>
 
-    <!-- 画面4: ポリクローム天井計算機 -->
+    <!-- 画面4: ソウルハウンドIII (新規ミニゲーム) -->
+    <section id="view-soul-hounds" class="view hidden">
+      <h1 class="page-title">SOUL HOUNDS III // ソウルハウンドIII</h1>
+      <p class="subtitle">地下深くを目指して掘り進め！エネルギー切れに注意。</p>
+
+      <div class="arcade-status-bar">
+        <div class="energy-gauge-wrapper">
+          <span class="label">ENERGY</span>
+          <div id="sh-energy-bar" class="energy-bar">
+            <div id="sh-energy-fill" class="energy-fill"></div>
+          </div>
+        </div>
+        <div class="sh-stats">
+          <div id="sh-lives" class="sh-lives">
+            <!-- ハートアイコンがJSで入る -->
+          </div>
+          <div class="sh-depth">
+            <span id="sh-depth-num">0</span><span class="unit">m</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="arcade-cabinet">
+        <div class="crt-overlay"></div>
+        <canvas id="soul-hounds-canvas"></canvas>
+        <div id="sh-start-screen" class="sh-start-screen">
+          <div class="sh-logo">SOUL HOUNDS III</div>
+          <button id="btn-sh-start" class="btn-sh-start">START GAME</button>
+        </div>
+      </div>
+
+      <!-- 操作ボタン -->
+      <div class="sh-controls">
+        <div class="sh-dpad">
+          <button id="sh-up" class="dpad-btn up">▲</button>
+          <div class="dpad-middle">
+            <button id="sh-left" class="dpad-btn left">◀</button>
+            <button id="sh-right" class="dpad-btn right">▶</button>
+          </div>
+          <button id="sh-down" class="dpad-btn down">▼</button>
+        </div>
+        <div class="sh-action">
+          <button id="sh-action-btn" class="sh-action-btn">DIG</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 画面5: ポリクローム天井計算機 -->
     <section id="view-poly" class="view hidden">
       <h1 class="page-title">POLYCHROME // 計算機</h1>
 

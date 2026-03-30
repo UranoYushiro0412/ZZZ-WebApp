@@ -1,0 +1,209 @@
+/* Soul Hounds III Arcade Style */
+
+#view-soul-hounds {
+  background: #0a0a0a;
+  min-height: 100vh;
+  padding-bottom: 50px;
+}
+
+/* Status Bar */
+.arcade-status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1a1a1a;
+  padding: 10px 20px;
+  border-bottom: 2px solid #333;
+  color: #fff;
+  font-family: 'monospace';
+}
+
+.energy-gauge-wrapper {
+  flex: 1;
+  max-width: 200px;
+  margin-right: 20px;
+}
+
+.energy-gauge-wrapper .label {
+  font-size: 10px;
+  color: #aaa;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.energy-bar {
+  height: 12px;
+  background: #333;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #444;
+}
+
+.energy-fill {
+  height: 100%;
+  width: 100%; /* JSで制御 */
+  background: linear-gradient(90deg, #ff3e3e, #ff9a3e);
+  box-shadow: 0 0 10px rgba(255, 62, 62, 0.5);
+  transition: width 0.3s ease;
+}
+
+.sh-stats {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.sh-lives {
+  display: flex;
+  gap: 5px;
+  font-size: 18px;
+}
+
+.sh-depth {
+  font-size: 20px;
+  font-weight: bold;
+  color: #00ffcc;
+  text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+}
+
+.sh-depth .unit {
+  font-size: 12px;
+  margin-left: 4px;
+}
+
+/* Cabinet Area */
+.arcade-cabinet {
+  position: relative;
+  width: 90vw;
+  max-width: 400px;
+  aspect-ratio: 9 / 16;
+  margin: 20px auto;
+  background: #000;
+  border: 8px solid #222;
+  border-radius: 10px;
+  box-shadow: 0 0 30px rgba(0,0,0,0.5), inset 0 0 50px rgba(0,255,204,0.1);
+  overflow: hidden;
+}
+
+#soul-hounds-canvas {
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+
+/* CRT Scanline Effect */
+.crt-overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%),
+              linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 160, 0.03));
+  background-size: 100% 3px, 3px 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Start Screen */
+.sh-start-screen {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+}
+
+.sh-logo {
+  font-size: 32px;
+  font-weight: 900;
+  color: #ff00ff;
+  text-shadow: 2px 2px 0 #00ffff, -2px -2px 0 #ff00ff;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.btn-sh-start {
+  padding: 15px 40px;
+  font-size: 20px;
+  background: #00ffcc;
+  border: none;
+  border-radius: 4px;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.btn-sh-start:hover {
+  transform: scale(1.1);
+}
+
+/* Controls */
+.sh-controls {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.sh-dpad {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.dpad-middle {
+  display: flex;
+  gap: 5px;
+}
+
+.dpad-btn {
+  width: 60px;
+  height: 60px;
+  background: #333;
+  border: 2px solid #444;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 0 #111;
+  cursor: pointer;
+}
+
+.dpad-btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #111;
+}
+
+.sh-action-btn {
+  width: 80px;
+  height: 80px;
+  background: #ff3e3e;
+  border: 4px solid #cc0000;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: bold;
+  font-size: 20px;
+  box-shadow: 0 6px 0 #880000;
+  cursor: pointer;
+}
+
+.sh-action-btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 3px 0 #880000;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 900px) {
+  .arcade-cabinet {
+    width: 95vw;
+  }
+}

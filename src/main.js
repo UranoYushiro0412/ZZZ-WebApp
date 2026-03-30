@@ -4,10 +4,12 @@ import { gachaBanners, gachaImageMap } from './gacha-data.js';
 import { gachaStateMgr } from './gacha-state.js';
 import { GameTV } from './game-tv.js';
 import { GameCoin } from './game-coin.js';
+import { SoulHounds } from './soul-hounds.js';
 import './gacha.css';
 import './poly.css';
 import './game-tv.css';
 import './game-coin.css';
+import './soul-hounds.css';
 
 // DOM Elements
 const viewHome = document.getElementById('view-home');
@@ -55,12 +57,18 @@ function showView(viewId) {
     }
   }
 
-  // もしゲーム画面以外に飛ぶならTVゲームを強制停止
+  // もしゲーム画面以外に飛ぶなら各ゲームを強制停止
   if (viewId !== 'view-game-tv' && window.currentGameTV) {
     window.currentGameTV.stop();
-    const startBtn = document.getElementById('btn-tv-start');
-    if (startBtn) startBtn.style.display = 'block';
   }
+  if (viewId !== 'view-game-coin' && window.currentGameCoin) {
+    window.currentGameCoin.stop();
+  }
+  if (viewId !== 'view-soul-hounds' && window.soulHoundsGame) {
+    window.soulHoundsGame.isPlaying = false;
+  }
+  const startBtn = document.getElementById('btn-tv-start');
+  if (startBtn) startBtn.style.display = 'block';
 
   // もしゲーム画面以外に飛ぶならコインゲームを強制停止
   if (viewId !== 'view-game-coin' && window.currentGameCoin) {
@@ -771,6 +779,61 @@ if (coinArea && btnCoinStart) {
 }
 
 
-// Initialize
+// --- SOUL HOUNDS III Logic ---
+const viewSoulHounds = document.getElementById('view-soul-hounds');
+const shCanvas = document.getElementById('soul-hounds-canvas');
+const btnShStart = document.getElementById('btn-sh-start');
+const shStartScreen = document.getElementById('sh-start-screen');
+
+window.soulHoundsGame = null;
+
+if (shCanvas && btnShStart) {
+  window.soulHoundsGame = new SoulHounds(shCanvas);
+
+  btnShStart.addEventListener('click', () => {
+    shStartScreen.style.display = 'none';
+    window.soulHoundsGame.start();
+  });
+
+  // バーチャルパッド (スマホ用)
+  const shControls = {
+    'sh-up': [0, -1],
+    'sh-down': [0, 1],
+    'sh-left': [-1, 0],
+    'sh-right': [1, 0]
+  };
+
+  for (const [id, [dx, dy]] of Object.entries(shControls)) {
+    const btn = document.getElementById(id);
+    if (btn) {
+      btn.addEventListener('click', () => window.soulHoundsGame.move(dx, dy));
+    }
+  }
+
+  // 掘削ボタン (スマホ用)
+  const btnShDig = document.getElementById('sh-action-btn');
+  if (btnShDig) {
+    btnShDig.addEventListener('click', () => {
+      // 下方向を掘る（または向いている方向、今回は簡略化して下）
+      window.soulHoundsGame.move(0, 1);
+    });
+  }
+
+  // キーボード操作 (PC用)
+  window.addEventListener('keydown', (e) => {
+    if (!viewSoulHounds.classList.contains('active') || !window.soulHoundsGame.isPlaying) return;
+
+    switch (e.key) {
+      case 'ArrowUp': case 'w': window.soulHoundsGame.move(0, -1); break;
+      case 'ArrowDown': case 's': window.soulHoundsGame.move(0, 1); break;
+      case 'ArrowLeft': case 'a': window.soulHoundsGame.move(-1, 0); break;
+      case 'ArrowRight': case 'd': window.soulHoundsGame.move(1, 0); break;
+      case ' ': // Space for digging (down)
+        window.soulHoundsGame.move(0, 1);
+        e.preventDefault();
+        break;
+    }
+  });
+}
 renderBossList();
 calculatePolychrome();
