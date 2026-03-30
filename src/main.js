@@ -188,6 +188,8 @@ function backToBossList() {
     bossLayout.classList.remove('show-detail');
     bossLayout.classList.add('show-list');
     document.body.style.overflow = 'hidden'; // 背景スクロール不可
+    // チラつき防止のため即座に隠す
+    if (bossStickyHeader) bossStickyHeader.classList.remove('visible');
   }
 }
 
