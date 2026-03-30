@@ -37,12 +37,18 @@ function showView(viewId) {
         bossLayout.classList.remove('show-detail');
         bossLayout.classList.add('show-list');
       }
-      // 初回（まだボスを選んでいない、またはホームから来た時）は背景を消去
-      if (bossDetail) bossDetail.style.display = 'none';
-      if (bossStickyHeader) bossStickyHeader.classList.remove('visible');
-      document.body.style.overflow = 'hidden'; // 一覧表示なのでロック
+      // スマホ版かつ初回のみ、背景を消去してガタつきを防ぐ
+      if (window.innerWidth <= 900) {
+        if (bossDetail) bossDetail.style.display = 'none';
+        if (bossStickyHeader) bossStickyHeader.classList.remove('visible');
+        document.body.style.overflow = 'hidden'; 
+      } else {
+        // PC版は常に表示
+        if (bossDetail) bossDetail.style.display = 'block';
+        document.body.style.overflow = '';
+      }
     } else {
-      document.body.style.overflow = ''; // 他の画面ではロック解除
+      document.body.style.overflow = '';
     }
   }
 
@@ -69,7 +75,13 @@ btnHome.addEventListener('click', () => {
 // ホーム画面のメニューボタン
 document.querySelectorAll('.menu-card:not(.disabled)').forEach(card => {
   card.addEventListener('click', () => {
-    const targetView = card.getAttribute('data-target');
+    let targetView = card.getAttribute('data-target');
+
+    // ★スマホ版かつボス情報を押したなら、専用の「一覧選択画面」へ飛ばす
+    if (window.innerWidth <= 900 && targetView === 'view-boss') {
+      targetView = 'view-boss-mobile-select';
+    }
+
     showView(targetView);
   });
 });
@@ -78,12 +90,34 @@ document.querySelectorAll('.menu-card:not(.disabled)').forEach(card => {
 function renderBossList() {
   if (!bossList) return;
   bossList.innerHTML = '';
+  
+  const bossMobileSelectList = document.getElementById('boss-mobile-select-list');
+  if (bossMobileSelectList) bossMobileSelectList.innerHTML = '';
+
   BOSS_LIST.forEach(boss => {
+    // サイドバーリスト（PCおよびスマホのドロワー用）
     const li = document.createElement('li');
     li.textContent = boss.name;
     li.classList.add('boss-li');
     li.addEventListener('click', () => showBossDetail(boss.id));
     bossList.appendChild(li);
+
+    // スマホ専用の一覧選択画面用（画像付きカード形式）
+    if (bossMobileSelectList) {
+      const card = document.createElement('div');
+      card.className = 'boss-select-card';
+      card.innerHTML = `
+        <img src="images/kikyoku_boss/${boss.id}.png" alt="${boss.name}" class="boss-select-card-img">
+        <div class="boss-select-card-info">
+          <div class="boss-select-card-name">${boss.name}</div>
+        </div>
+      `;
+      card.addEventListener('click', () => {
+        showView('view-boss');
+        showBossDetail(boss.id);
+      });
+      bossMobileSelectList.appendChild(card);
+    }
   });
 }
 
@@ -250,7 +284,7 @@ function showBossDetail(bossId) {
     li.classList.toggle('active', li.textContent === boss.name);
   });
 
-  // 事前に計算済みの最新データを取得（ここではループ処理を行わない）
+  // 事前に計算済みの最新データを取得
   const latestInfo = BOSS_LATEST_DATA[bossId] || { period: null, data: null };
   const foundPeriod = latestInfo.period;
   const pData = latestInfo.data;
