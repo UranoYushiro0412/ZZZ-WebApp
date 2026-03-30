@@ -72,31 +72,67 @@ function renderBossList() {
   });
 }
 
+// ボスデータの解析とキャッシュ（起動時に一度だけ実行）
+const { GLOBAL_MAX_STATS, BOSS_LATEST_DATA } = (() => {
+  const max = { hp: 0, def: 0, stun_mult: 0, stun_time: 0, stun_limit: 0, anomaly_limit: 0 };
+  const latest = {};
+  const allPeriods = Object.keys(PERIOD_DATA).map(Number).sort((a, b) => b - a);
+
+  // 全期間をスキャンして最大値を算出
+  Object.values(PERIOD_DATA).forEach(period => {
+    Object.values(period).forEach(bossData => {
+      if (bossData.hp > max.hp) max.hp = bossData.hp;
+      if (bossData.def > max.def) max.def = bossData.def;
+      if (bossData.stun_mult > max.stun_mult) max.stun_mult = bossData.stun_mult;
+      if (bossData.stun_time > max.stun_time) max.stun_time = bossData.stun_time;
+      if (bossData.stun_limit > max.stun_limit) max.stun_limit = bossData.stun_limit;
+      if (bossData.anomaly_limit > max.anomaly_limit) max.anomaly_limit = bossData.anomaly_limit;
+    });
+  });
+
+  // 各ボスの「最新の出現データ」を事前に特定
+  BOSS_LIST.forEach(boss => {
+    let bestPeriod = null;
+    let bestData = null;
+    for (const period of allPeriods) {
+      if (PERIOD_DATA[period] && PERIOD_DATA[period][boss.name]) {
+        bestPeriod = period;
+        bestData = PERIOD_DATA[period][boss.name];
+        break;
+      }
+    }
+    latest[boss.id] = { period: bestPeriod, data: bestData };
+  });
+
+  return {
+    GLOBAL_MAX_STATS: {
+      hp: max.hp || 400000000,
+      def: max.def || 1000,
+      stun_mult: max.stun_mult || 1.0,
+      stun_time: max.stun_time || 10,
+      stun_limit: max.stun_limit || 10000,
+      anomaly_limit: max.anomaly_limit || 3000
+    },
+    BOSS_LATEST_DATA: latest
+  };
+})();
+
 /**
- * 6角形レーダーチャートのSVGパスを生成
+ * 6角形レーダーチャートのSVG生成
  */
 function createRadarSvg(stats) {
   const size = 300;
   const center = size / 2;
   const radius = 100;
 
-  // 各ステータスの正規化基準 (0-100にするための最大値想定)
-  const MAX_CONFIG = {
-    hp: 400000000,        // 4億
-    def: 1200,            // 防御
-    stun_mult: 2.5,       // ブレイク倍率 2.5(250%)
-    stun_time: 20,        // ブレイク時間 20s
-    stun_limit: 25000,    // ブレイク値上限 2.5万
-    anomaly_limit: 6000   // 異常蓄積上限 6000
-  };
-
   const statKeys = ['hp', 'def', 'stun_mult', 'stun_time', 'stun_limit', 'anomaly_limit'];
-  const labels = ['HP', '防御', '倍率', '時間', 'ブレイク', '異常'];
+  const labels = ['HP', '防御力', 'ブレイク弱体倍率', 'ブレイク時間', 'ブレイク耐性', '異常耐性'];
 
   const points = [];
   statKeys.forEach((key, i) => {
     const val = stats[key] || 0;
-    const ratio = Math.min(val / MAX_CONFIG[key], 1);
+    // 事前に計算した GLOBAL_MAX_STATS を使用
+    const ratio = Math.min(val / GLOBAL_MAX_STATS[key], 1);
     const angle = (Math.PI / 3) * i - (Math.PI / 2); // 60度ずつ
     const x = center + radius * ratio * Math.cos(angle);
     const y = center + radius * ratio * Math.sin(angle);
@@ -151,28 +187,28 @@ function showBossDetail(bossId) {
     li.classList.toggle('active', li.textContent === boss.name);
   });
 
-  const allPeriods = Object.keys(PERIOD_DATA).map(Number).sort((a, b) => b - a);
-  let foundPeriod = null;
-  let pData = null;
+  // 事前に計算済みの最新データを取得（ここではループ処理を行わない）
+  const latestInfo = BOSS_LATEST_DATA[bossId] || { period: null, data: null };
+  const foundPeriod = latestInfo.period;
+  const pData = latestInfo.data;
 
-  for (const period of allPeriods) {
-    if (PERIOD_DATA[period] && PERIOD_DATA[period][boss.name]) {
-      foundPeriod = period;
-      pData = PERIOD_DATA[period][boss.name];
-      break;
-    }
-  }
+  // 属性名の日本語マップ
+  const ATTR_NAME_MAP = {
+    fire: '炎',
+    ice: '氷',
+    electric: '電気',
+    physical: '物理',
+    ether: 'エーテル'
+  };
 
   // データがない場合は、空のデータオブジェクトを使用する
   const displayData = pData || { hp: null, def: null, stun_mult: null, stun_time: null, stun_limit: null, anomaly_limit: null };
-  const periodLabel = foundPeriod ? `DATA SOURCE: PERIOD ${foundPeriod}` : 'DATA SOURCE: NO DATA';
 
   const formatLargeNum = (n) => (n === null || n === undefined) ? '--' : n.toLocaleString();
 
   bossDetail.innerHTML = `
     <div class="boss-detail-header">
       <div class="boss-name-area">
-        <span class="boss-period-label">${periodLabel}</span>
         <h2>${boss.name}</h2>
       </div>
     </div>
@@ -189,13 +225,13 @@ function showBossDetail(bossId) {
           <div class="attr-group">
             <span class="attr-title">弱点属性</span>
             <div class="attr-list">
-              ${boss.weak && boss.weak.length ? boss.weak.map(w => `<span class="attr-badge ${w}">${w}</span>`).join('') : '<span class="attr-badge none">なし</span>'}
+              ${boss.weak && boss.weak.length ? boss.weak.map(w => `<span class="attr-badge ${w}">${ATTR_NAME_MAP[w] || w}</span>`).join('') : '<span class="attr-badge none">なし</span>'}
             </div>
           </div>
           <div class="attr-group">
             <span class="attr-title">耐性属性</span>
             <div class="attr-list">
-              ${boss.resist && boss.resist.length ? boss.resist.map(r => `<span class="attr-badge ${r}">${r}</span>`).join('') : '<span class="attr-badge none">なし</span>'}
+              ${boss.resist && boss.resist.length ? boss.resist.map(r => `<span class="attr-badge ${r}">${ATTR_NAME_MAP[r] || r}</span>`).join('') : '<span class="attr-badge none">なし</span>'}
             </div>
           </div>
         </div>
@@ -215,7 +251,10 @@ function showBossDetail(bossId) {
         </div>
 
         <div style="margin-top: 20px; border-top: 1px solid #333; padding-top: 15px;">
-           <p style="font-size: 0.75rem; color: #666;">※数値は最新の計測値に基づく推定です。データがない場合は「--」と表示されます。</p>
+           <p style="font-size: 0.75rem; color: #666;">
+             ${foundPeriod ? `※数値は第${foundPeriod}期の計測値に基づく推定です。` : '※全期間において計測データが見つかりませんでした。'}
+             データがない項目は「--」と表示されます。
+           </p>
         </div>
       </div>
     </div>
@@ -232,7 +271,7 @@ if (listChars && listWpns) {
   gachaBanners.forEach(banner => {
     const btn = document.createElement('button');
     btn.className = 'gacha-btn';
-    
+
     // アイコン追加
     const imgPath = gachaImageMap[banner.pickupS];
     if (imgPath) {
@@ -318,7 +357,7 @@ function appendRow(resArray, startIndex) {
       // ViteのベースURL（GitHub Pagesのリポジトリ名など）を自動取得して結合
       const baseUrl = import.meta.env.BASE_URL || "/";
       const fullPath = baseUrl.endsWith("/") ? `${baseUrl}${imgPath}` : `${baseUrl}/${imgPath}`;
-      
+
       card.style.backgroundImage = `url("${fullPath}")`;
       // 画像がある場合は名前を上部に、ランクを左下に
       card.innerHTML = `
@@ -332,7 +371,7 @@ function appendRow(resArray, startIndex) {
         <div class="card-rank-label rank-label-${res.rank.toLowerCase()}">${res.rank}</div>
       `;
     }
-    
+
     row.appendChild(card);
   });
   gmPyramid.appendChild(row);

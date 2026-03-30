@@ -111,11 +111,11 @@
 /* ボス画像エリア */
 .boss-image-container {
   width: 100%;
-  aspect-ratio: 2 / 3; /* 縦長画像に合わせた比率 */
+  aspect-ratio: 1 / 1.415; /* ご指定の比率（白銀比に近い比率） */
   overflow: hidden;
   border-radius: 8px;
   border: 1px solid #444;
-  background: #000;
+  background: rgba(0, 0, 0, 0.4); /* 画像の背景に馴染ませる */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -124,7 +124,7 @@
 .boss-hero-img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* 枠いっぱいに表示 */
+  object-fit: contain; /* 見切れないように全体を表示 */
 }
 
 /* モバイル対応：縦並びに戻す */
@@ -139,9 +139,11 @@
     max-width: none;
   }
   .boss-image-container {
-    aspect-ratio: 16 / 9; /* スマホでは横長で見やすく */
+    aspect-ratio: auto;
+    max-height: 400px;
   }
 }
+
 
 /* 属性アイコンエリア */
 .boss-attr-section {
@@ -186,8 +188,8 @@
 /* 6角形チャート・ステータスエリア */
 .boss-stats-display {
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  flex-wrap: nowrap; /* PCでは横並びを維持 */
+  gap: 30px;
   align-items: center;
   margin-top: 10px;
 }
@@ -200,8 +202,17 @@
 
 .recent-values-list {
   flex: 1;
-  min-width: 220px;
+  min-width: 200px;
 }
+
+/* モバイル用の調整 */
+@media (max-width: 600px) {
+  .boss-stats-display {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
 
 
 .stat-row {
