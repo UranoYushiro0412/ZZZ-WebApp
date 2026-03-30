@@ -39,7 +39,7 @@
 
 /* 左側：リスト */
 .boss-list-container {
-  flex: 0 0 260px; /* 300pxから260pxに調整し詳細エリアを確保 */
+  flex: 0 0 250px; /* 左側の「ボス一覧リスト」の横幅です */
   background: rgba(0, 0, 0, 0.5);
   border: 1px solid #444;
   border-radius: 8px;
