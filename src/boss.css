@@ -1,10 +1,15 @@
 /* Boss Intel 専用スタイル */
 :root {
-  --attr-ether: #D100FF;   /* エーテル (紫) */
-  --attr-fire: #FF4D00;    /* 炎 (オレンジレッド) */
-  --attr-ice: #00D5FF;     /* 氷 (シアン) */
-  --attr-phys: #FFCC00;    /* 物理 (イエロー) */
-  --attr-elec: #0080FF;    /* 雷 (ライトブルー) */
+  --attr-ether: #D100FF;
+  /* エーテル (紫) */
+  --attr-fire: #FF4D00;
+  /* 炎 (オレンジレッド) */
+  --attr-ice: #00D5FF;
+  /* 氷 (シアン) */
+  --attr-phys: #FFCC00;
+  /* 物理 (イエロー) */
+  --attr-elec: #0080FF;
+  /* 雷 (ライトブルー) */
   --boss-card-bg: rgba(20, 20, 20, 0.95);
   --boss-accent: #00ffcc;
 }
@@ -19,7 +24,8 @@
 }
 
 /* スマホ用ナビゲーション要素のデフォルト非表示（PC） */
-.boss-mobile-nav, .boss-sticky-header {
+.boss-mobile-nav,
+.boss-sticky-header {
   display: none;
 }
 
@@ -108,7 +114,8 @@
 }
 
 .boss-image-column {
-  flex: 0 0 35%; /* 画像エリアの幅 */
+  flex: 0 0 35%;
+  /* 画像エリアの幅 */
   max-width: 320px;
 }
 
@@ -119,11 +126,13 @@
 /* ボス画像エリア */
 .boss-image-container {
   width: 100%;
-  aspect-ratio: 1 / 1.415; /* ご指定の比率（白銀比に近い比率） */
+  aspect-ratio: 1 / 1.415;
+  /* ご指定の比率（白銀比に近い比率） */
   overflow: hidden;
   border-radius: 8px;
   border: 1px solid #444;
-  background: rgba(0, 0, 0, 0.4); /* 画像の背景に馴染ませる */
+  background: rgba(0, 0, 0, 0.4);
+  /* 画像の背景に馴染ませる */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -132,24 +141,28 @@
 .boss-hero-img {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* 見切れないように全体を表示 */
+  object-fit: contain;
+  /* 見切れないように全体を表示 */
 }
 
 /* モバイル対応：ドロワー＆切り替え形式に刷新 */
 @media (max-width: 900px) {
+
   /* 一覧表示（ドロワー）のスタイル */
   .boss-list-container {
     position: fixed;
     top: 0;
     left: -100%;
     width: 280px;
-    height: 100dvh; /* Safari等のツールバーを考慮した動的な高さ */
+    height: 100dvh;
+    /* Safari等のツールバーを考慮した動的な高さ */
     z-index: 1100;
     transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 10px 0 30px rgba(0,0,0,0.8);
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.8);
     background: #1a1a1a;
     overflow-y: auto;
-    padding-bottom: 120px; /* 下部バーに隠れないよう十分な余白を確保 */
+    padding-bottom: 40px;
+    /* 下部バーに隠れないよう十分な余白を確保 */
   }
 
 
@@ -166,7 +179,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.6);
+    background: rgba(0, 0, 0, 0.6);
     z-index: 1050;
     pointer-events: none;
   }
@@ -174,11 +187,7 @@
   /* 詳細表示エリア */
   .boss-detail-container {
     padding: 10px;
-    display: none; /* デフォルト非表示、一覧表示中は隠す */
-  }
-
-  .boss-layout.show-detail .boss-detail-container {
-    display: block;
+    display: block; /* デフォルト表示を維持して高さを安定させる */
   }
 
   /* スマホ版ヘッダーの表示 */
@@ -203,7 +212,8 @@
     align-items: center;
     gap: 15px;
     position: fixed;
-    top: -80px; /* 初期位置をより深く隠す */
+    top: -80px;
+    /* 初期位置をより深く隠す */
     left: 0;
     width: 100%;
     height: 50px;
@@ -213,7 +223,8 @@
     z-index: 1000;
     transition: top 0.3s ease;
     backdrop-filter: blur(10px);
-    visibility: hidden; /* 強制非表示 */
+    visibility: hidden;
+    /* 強制非表示 */
     opacity: 0;
   }
 
@@ -224,7 +235,7 @@
   }
 
   /* 一覧表示中、またはボス画面以外ではスティッキーヘッダーを絶対に出さない */
-  .boss-layout.show-list ~ .boss-sticky-header {
+  .boss-layout.show-list~.boss-sticky-header {
     display: none !important;
   }
 
@@ -244,10 +255,12 @@
     flex-direction: column;
     gap: 20px;
   }
+
   .boss-image-column {
     width: 100%;
     flex: none;
   }
+
   /* ボス名のフォントサイズ調整（スマホ） */
   .boss-name-area h2 {
     font-size: 1.2rem;
@@ -309,18 +322,47 @@
   object-fit: contain;
 }
 
-.attr-badge.fire { border-color: var(--attr-fire); color: var(--attr-fire); background: rgba(255, 77, 0, 0.1); }
-.attr-badge.ice { border-color: var(--attr-ice); color: var(--attr-ice); background: rgba(0, 213, 255, 0.1); }
-.attr-badge.ether { border-color: var(--attr-ether); color: var(--attr-ether); background: rgba(209, 0, 255, 0.1); }
-.attr-badge.electric { border-color: var(--attr-elec); color: var(--attr-elec); background: rgba(0, 128, 255, 0.1); }
-.attr-badge.physical { border-color: var(--attr-physical); color: var(--attr-phys); background: rgba(255, 204, 0, 0.1); }
-.attr-badge.none { background-color: #444; color: #fff; }
+.attr-badge.fire {
+  border-color: var(--attr-fire);
+  color: var(--attr-fire);
+  background: rgba(255, 77, 0, 0.1);
+}
+
+.attr-badge.ice {
+  border-color: var(--attr-ice);
+  color: var(--attr-ice);
+  background: rgba(0, 213, 255, 0.1);
+}
+
+.attr-badge.ether {
+  border-color: var(--attr-ether);
+  color: var(--attr-ether);
+  background: rgba(209, 0, 255, 0.1);
+}
+
+.attr-badge.electric {
+  border-color: var(--attr-elec);
+  color: var(--attr-elec);
+  background: rgba(0, 128, 255, 0.1);
+}
+
+.attr-badge.physical {
+  border-color: var(--attr-physical);
+  color: var(--attr-phys);
+  background: rgba(255, 204, 0, 0.1);
+}
+
+.attr-badge.none {
+  background-color: #444;
+  color: #fff;
+}
 
 
 /* 6角形チャート・ステータスエリア */
 .boss-stats-display {
   display: flex;
-  flex-wrap: nowrap; /* PCでは横並びを維持 */
+  flex-wrap: nowrap;
+  /* PCでは横並びを維持 */
   gap: 30px;
   align-items: center;
   margin-top: 10px;
@@ -355,8 +397,15 @@
   font-size: 0.9rem;
 }
 
-.stat-label { color: #aaa; }
-.stat-value { color: #fff; font-family: monospace; font-weight: bold; }
+.stat-label {
+  color: #aaa;
+}
+
+.stat-value {
+  color: #fff;
+  font-family: monospace;
+  font-weight: bold;
+}
 
 /* SVG Radar Chart */
 .radar-svg {
