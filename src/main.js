@@ -243,10 +243,12 @@ function createHpTrendSvg(bossName) {
     }
   }
 
-  const width = 450;
+  const width = 500; // さらに広げて安定させる
   const height = 150;
-  const paddingX = 40;
+  const paddingX = 100; // 85 -> 100 に増やして「絶対的な余白」を確保
   const paddingY = 20;
+
+  const formatHp = (v) => (v / 10000).toFixed(0) + '万';
 
   if (data.length === 0) {
     return `
@@ -288,7 +290,28 @@ function createHpTrendSvg(bossName) {
     `;
   });
 
-  // データポイントのドットと数値ラベル（最新のみ等、適宜）
+  // 基準線（最初と最後のデータから左側へ伸ばすガイドライン）
+  let guideLines = '';
+  if (data.length > 0) {
+    const first = data[0];
+    const last = data[data.length - 1];
+    
+    // 最初（最古）のデータからのガイドライン
+    guideLines += `
+      <line x1="${paddingX}" y1="${getY(first.hp)}" x2="${getX(first.x)}" y2="${getY(first.hp)}" class="trend-guide-line" />
+      <text x="${paddingX - 15}" y="${getY(first.hp) + 4}" class="trend-y-label">${formatHp(first.hp)}</text>
+    `;
+
+    // 最後（最新）のデータからのガイドライン（データが1点のみでなければ追加）
+    if (data.length > 1) {
+      guideLines += `
+        <line x1="${paddingX}" y1="${getY(last.hp)}" x2="${getX(last.x)}" y2="${getY(last.hp)}" class="trend-guide-line" />
+        <text x="${paddingX - 15}" y="${getY(last.hp) + 4}" class="trend-y-label">${formatHp(last.hp)}</text>
+      `;
+    }
+  }
+
+  // データポイントのドット
   let dots = '';
   data.forEach(d => {
     dots += `<circle cx="${getX(d.x)}" cy="${getY(d.hp)}" r="3" class="trend-dot" />`;
@@ -299,6 +322,7 @@ function createHpTrendSvg(bossName) {
       <div class="trend-chart-title">HP 推移 (第15期～第33期)</div>
       <svg viewBox="0 0 ${width} ${height}" class="hp-trend-svg">
         ${gridLines}
+        ${guideLines}
         <polyline points="${points}" class="trend-line" />
         ${dots}
       </svg>
