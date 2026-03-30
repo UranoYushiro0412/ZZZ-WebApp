@@ -342,3 +342,17 @@ h3,
     font-size: 1.6rem;
   }
 }
+
+.app-footer {
+  padding: 1.5rem;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.4);
+  border-top: 1px solid #333;
+  margin-top: 2rem;
+}
+
+.app-footer p {
+  font-size: 0.75rem;
+  color: var(--text-sub);
+  line-height: 1.4;
+}

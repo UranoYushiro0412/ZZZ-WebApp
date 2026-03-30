@@ -191,13 +191,13 @@ function showBossDetail(bossId) {
       <div class="attr-group">
         <span class="attr-title">弱点属性</span>
         <div class="attr-list">
-          ${pData.weak.length ? pData.weak.map(w => `<span class="attr-badge ${w}">${w}</span>`).join('') : '<span class="attr-badge none">なし</span>'}
+          ${boss.weak && boss.weak.length ? boss.weak.map(w => `<span class="attr-badge ${w}">${w}</span>`).join('') : '<span class="attr-badge none">なし</span>'}
         </div>
       </div>
       <div class="attr-group">
         <span class="attr-title">耐性属性</span>
         <div class="attr-list">
-          ${pData.resist.length ? pData.resist.map(r => `<span class="attr-badge ${r}">${r}</span>`).join('') : '<span class="attr-badge none">なし</span>'}
+          ${boss.resist && boss.resist.length ? boss.resist.map(r => `<span class="attr-badge ${r}">${r}</span>`).join('') : '<span class="attr-badge none">なし</span>'}
         </div>
       </div>
     </div>
