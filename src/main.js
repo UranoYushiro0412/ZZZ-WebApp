@@ -43,9 +43,12 @@ function showView(viewId) {
         if (bossStickyHeader) bossStickyHeader.classList.remove('visible');
         document.body.style.overflow = 'hidden'; 
       } else {
-        // PC版は常に表示
+        // PC版は常に表示し、かつ一番上のボスを自動選択
         if (bossDetail) bossDetail.style.display = 'block';
         document.body.style.overflow = '';
+        if (BOSS_LIST.length > 0) {
+          showBossDetail(BOSS_LIST[0].id);
+        }
       }
     } else {
       document.body.style.overflow = '';
@@ -172,7 +175,7 @@ const { GLOBAL_MAX_STATS, BOSS_LATEST_DATA } = (() => {
 function createRadarSvg(stats) {
   const size = 300;
   const center = size / 2;
-  const radius = 100;
+  const radius = 80; // 100 -> 80 に縮小し、周囲に余白を確保
 
   const statKeys = ['hp', 'def', 'stun_mult', 'stun_time', 'stun_limit', 'anomaly_limit'];
   const labels = ['HP', '防御力', 'ブレイク弱体倍率', 'ブレイク時間', 'ブレイク耐性', '異常耐性'];
@@ -180,15 +183,14 @@ function createRadarSvg(stats) {
   const points = [];
   statKeys.forEach((key, i) => {
     const val = stats[key] || 0;
-    // 事前に計算した GLOBAL_MAX_STATS を使用
     const ratio = Math.min(val / GLOBAL_MAX_STATS[key], 1);
-    const angle = (Math.PI / 3) * i - (Math.PI / 2); // 60度ずつ
+    const angle = (Math.PI / 3) * i - (Math.PI / 2);
     const x = center + radius * ratio * Math.cos(angle);
     const y = center + radius * ratio * Math.sin(angle);
     points.push(`${x},${y}`);
   });
 
-  // グリッド（背景の6角形）
+  // グリッド
   let gridXml = '';
   [0.2, 0.4, 0.6, 0.8, 1.0].forEach(r => {
     const gridPoints = [];
@@ -201,7 +203,7 @@ function createRadarSvg(stats) {
     gridXml += `<polygon points="${gridPoints.join(' ')}" class="radar-grid" />`;
   });
 
-  // 軸線
+  // 軸線とラベル
   let axisXml = '';
   for (let i = 0; i < 6; i++) {
     const angle = (Math.PI / 3) * i - (Math.PI / 2);
@@ -209,9 +211,9 @@ function createRadarSvg(stats) {
     const y = center + radius * Math.sin(angle);
     axisXml += `<line x1="${center}" y1="${center}" x2="${x}" y2="${y}" class="radar-axis" />`;
 
-    // ラベル
-    const lx = center + (radius + 25) * Math.cos(angle);
-    const ly = center + (radius + 25) * Math.sin(angle);
+    // ラベル位置（radius + 35 でバランス調整）
+    const lx = center + (radius + 35) * Math.cos(angle);
+    const ly = center + (radius + 35) * Math.sin(angle);
     axisXml += `<text x="${lx}" y="${ly}" class="radar-label">${labels[i]}</text>`;
   }
 
