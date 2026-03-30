@@ -177,7 +177,7 @@ function showBossDetail(bossId) {
     return;
   }
 
-  const formatLargeNum = (n) => n.toLocaleString();
+  const formatLargeNum = (n) => (n === null || n === undefined) ? '--' : n.toLocaleString();
 
   bossDetail.innerHTML = `
     <div class="boss-detail-header">
@@ -208,9 +208,9 @@ function showBossDetail(bossId) {
       </div>
       <div class="recent-values-list">
         <div class="stat-row"><span class="stat-label">HP</span><span class="stat-value">${formatLargeNum(pData.hp)}</span></div>
-        <div class="stat-row"><span class="stat-label">防御力</span><span class="stat-value">${pData.def}</span></div>
-        <div class="stat-row"><span class="stat-label">ブレイク弱体倍率</span><span class="stat-value">${(pData.stun_mult * 100).toFixed(0)}%</span></div>
-        <div class="stat-row"><span class="stat-label">ブレイク時間</span><span class="stat-value">${pData.stun_time}s</span></div>
+        <div class="stat-row"><span class="stat-label">防御力</span><span class="stat-value">${formatLargeNum(pData.def)}</span></div>
+        <div class="stat-row"><span class="stat-label">ブレイク弱体倍率</span><span class="stat-value">${pData.stun_mult !== null ? (pData.stun_mult * 100).toFixed(0) + '%' : '--'}</span></div>
+        <div class="stat-row"><span class="stat-label">ブレイク時間</span><span class="stat-value">${pData.stun_time !== null ? pData.stun_time + 's' : '--'}</span></div>
         <div class="stat-row"><span class="stat-label">ブレイク値上限</span><span class="stat-value">${formatLargeNum(pData.stun_limit)}</span></div>
         <div class="stat-row"><span class="stat-label">異常蓄積値上限</span><span class="stat-value">${formatLargeNum(pData.anomaly_limit)}</span></div>
       </div>
