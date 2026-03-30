@@ -138,19 +138,13 @@ h3,
 
 .menu-card:hover {
   border-color: var(--chara-main);
-  box-shadow: var(--border-glow);
+  box-shadow: 0 0 15px rgba(61, 243, 108, 0.2);
   transform: translateY(-5px);
-}
-
-.menu-card:hover::before {
-  left: 100%;
 }
 
 .menu-card.disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  border-color: #333 !important;
-  box-shadow: none !important;
   transform: none !important;
 }
 
