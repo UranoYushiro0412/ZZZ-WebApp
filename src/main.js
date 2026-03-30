@@ -226,6 +226,86 @@ function createRadarSvg(stats) {
   `;
 }
 
+/**
+ * ボスのHP（体力）推移を表示するグラフのSVGを生成
+ * 第15期から第33期までのデータを使用
+ */
+function createHpTrendSvg(bossName) {
+  const minP = 15;
+  const maxP = 33;
+  const data = [];
+
+  // 第15期から第33期までのデータを抽出
+  for (let p = minP; p <= maxP; p++) {
+    const periodObj = PERIOD_DATA[p];
+    if (periodObj && periodObj[bossName]) {
+      data.push({ x: p, hp: periodObj[bossName].hp });
+    }
+  }
+
+  const width = 450;
+  const height = 150;
+  const paddingX = 40;
+  const paddingY = 20;
+
+  if (data.length === 0) {
+    return `
+      <div class="no-trend-data">
+        <p>第${minP}期〜第${maxP}期の計測データなし</p>
+      </div>
+    `;
+  }
+
+  // Y軸のスケーリング：最小HP〜最大HPに合わせる（オートスケール）
+  const hps = data.map(d => d.hp);
+  let minY = Math.min(...hps);
+  let maxY = Math.max(...hps);
+  
+  // 最小値と最大値が同じ（または1点のみ）の場合の調整
+  if (minY === maxY) {
+    minY = minY * 0.9;
+    maxY = maxY * 1.1;
+  } else {
+    // 上下に5%程度のマージンを持たせる
+    const range = maxY - minY;
+    minY = Math.max(0, minY - range * 0.1);
+    maxY = maxY + range * 0.1;
+  }
+
+  const getX = (p) => paddingX + (p - minP) * (width - 2 * paddingX) / (maxP - minP);
+  const getY = (hp) => (height - paddingY) - (hp - minY) * (height - 2 * paddingY) / (maxY - minY);
+
+  // 折れ線のポイント作成
+  const points = data.map(d => `${getX(d.x)},${getY(d.hp)}`).join(' ');
+
+  // 目盛り（グリッド線と期のラベル）
+  let gridLines = '';
+  [15, 20, 25, 30, 33].forEach(p => {
+    const x = getX(p);
+    gridLines += `
+      <line x1="${x}" y1="${paddingY}" x2="${x}" y2="${height - paddingY}" class="trend-grid-line" />
+      <text x="${x}" y="${height - 2}" class="trend-axis-label">${p}期</text>
+    `;
+  });
+
+  // データポイントのドットと数値ラベル（最新のみ等、適宜）
+  let dots = '';
+  data.forEach(d => {
+    dots += `<circle cx="${getX(d.x)}" cy="${getY(d.hp)}" r="3" class="trend-dot" />`;
+  });
+
+  return `
+    <div class="trend-chart-wrapper">
+      <div class="trend-chart-title">HP 推移 (第15期～第33期)</div>
+      <svg viewBox="0 0 ${width} ${height}" class="hp-trend-svg">
+        ${gridLines}
+        <polyline points="${points}" class="trend-line" />
+        ${dots}
+      </svg>
+    </div>
+  `;
+}
+
 // DOM Elements (Boss)
 const bossLayout = document.getElementById('boss-layout-wrapper');
 const bossBackBtn = document.getElementById('btn-boss-back');
@@ -364,6 +444,9 @@ function showBossDetail(bossId) {
              ${foundPeriod ? `※数値は第${foundPeriod}期の計測値に基づく推定です。` : '※全期間において計測データが見つかりませんでした。'}
              データがない項目は「--」と表示されます。
            </p>
+         </div>
+        <div class="boss-hp-trend-container">
+          ${createHpTrendSvg(boss.name)}
         </div>
       </div>
     </div>

@@ -505,3 +505,68 @@
   font-size: 10px;
   text-anchor: middle;
 }
+
+/* HP推移グラフ (HP Trend Chart) */
+.boss-hp-trend-container {
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid #333;
+}
+
+.trend-chart-wrapper {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #333;
+}
+
+.trend-chart-title {
+  font-size: 0.8rem;
+  color: var(--boss-accent);
+  margin-bottom: 10px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.hp-trend-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.trend-line {
+  fill: none;
+  stroke: var(--boss-accent);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 5px var(--boss-accent));
+}
+
+.trend-dot {
+  fill: #fff;
+  stroke: var(--boss-accent);
+  stroke-width: 2;
+}
+
+.trend-grid-line {
+  stroke: #444;
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+}
+
+.trend-axis-label {
+  fill: #666;
+  font-size: 10px;
+  text-anchor: middle;
+}
+
+.no-trend-data {
+  padding: 20px;
+  text-align: center;
+  color: #666;
+  font-size: 0.85rem;
+  background: rgba(0,0,0,0.2);
+  border-radius: 8px;
+  border: 1px dashed #444;
+}
