@@ -503,5 +503,101 @@ export const PERIOD_DATA = {
       weak: ["electric"],
       resist: ["fire"]
     }
+  },
+  17: {
+    "ミアズマ・フィーンド・名は名なれど": {
+      hp: 101800000,
+      def: 952.8,
+      stun_mult: 1.25,
+      stun_time: 13,
+      stun_limit: null,
+      anomaly_limit: null,
+      weak: ["ether", "physical"],
+      resist: ["fire"]
+    },
+    "要警戒・デッドエンドブッチャ―": {
+      hp: 118700000,
+      def: 952.8,
+      stun_mult: 1.5,
+      stun_time: 13,
+      stun_limit: null,
+      anomaly_limit: null,
+      weak: ["ice", "ether"],
+      resist: []
+    },
+    "要警戒・マリオネット": {
+      hp: 98700000,
+      def: 952.8,
+      stun_mult: 2.0,
+      stun_time: 8,
+      stun_limit: null,
+      anomaly_limit: null,
+      weak: ["ice", "ether"],
+      resist: []
+    }
+  },
+  16: {
+    "ミアズマの司祭": {
+      hp: 91000000,
+      def: 952.8,
+      stun_mult: 1.5,
+      stun_time: 13,
+      stun_limit: null,
+      anomaly_limit: null,
+      weak: ["ether"],
+      resist: ["ice"]
+    },
+    "ミアズマ・フィーンド・名は名なれど": {
+      hp: 101800000,
+      def: 952.8,
+      stun_mult: 1.25,
+      stun_time: 13,
+      stun_limit: null,
+      anomaly_limit: null,
+      weak: ["ether", "physical"],
+      resist: ["fire"]
+    },
+    "要警戒・ポンペイ": {
+      hp: 90000000,
+      def: 952.8,
+      stun_mult: 1.5,
+      stun_time: 13,
+      stun_limit: null,
+      anomaly_limit: null,
+      weak: ["fire"],
+      resist: ["electric"]
+    }
+  },
+  15: {
+    "ミアズマの司祭": {
+      hp: 77000000,
+      def: 952.8,
+      stun_mult: null,
+      stun_time: null,
+      stun_limit: null,
+      anomaly_limit: null,
+      weak: ["ether"],
+      resist: ["ice"]
+    },
+    "覇者侵食体・ポンペイ": {
+      hp: 83000000,
+      def: 952.8,
+      stun_mult: null,
+      stun_time: null,
+      stun_limit: null,
+      anomaly_limit: null,
+      weak: ["fire"],
+      resist: ["electric"]
+    },
+    "要警戒・デッドエンドブッチャ―": {
+      hp: 107000000,
+      def: 952.8,
+      stun_mult: null,
+      stun_time: null,
+      stun_limit: null,
+      anomaly_limit: null,
+      weak: ["ice", "ether"],
+      resist: []
+    }
   }
 };
