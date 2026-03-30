@@ -92,13 +92,28 @@
   font-family: monospace;
 }
 
+/* 詳細画面のメインコンテンツ（PCでの横並び設定） */
+.boss-detail-main-content {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.boss-image-column {
+  flex: 0 0 35%; /* 画像エリアの幅 */
+  max-width: 320px;
+}
+
+.boss-info-column {
+  flex: 1;
+}
+
 /* ボス画像エリア */
 .boss-image-container {
   width: 100%;
-  max-height: 250px;
+  aspect-ratio: 2 / 3; /* 縦長画像に合わせた比率 */
   overflow: hidden;
   border-radius: 8px;
-  margin-bottom: 20px;
   border: 1px solid #444;
   background: #000;
   display: flex;
@@ -109,12 +124,23 @@
 .boss-hero-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  transition: transform 0.5s ease;
+  object-fit: cover; /* 枠いっぱいに表示 */
 }
 
-.boss-image-container:hover .boss-hero-img {
-  transform: scale(1.05);
+/* モバイル対応：縦並びに戻す */
+@media (max-width: 900px) {
+  .boss-detail-main-content {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .boss-image-column {
+    flex: none;
+    width: 100%;
+    max-width: none;
+  }
+  .boss-image-container {
+    aspect-ratio: 16 / 9; /* スマホでは横長で見やすく */
+  }
 }
 
 /* 属性アイコンエリア */
@@ -157,25 +183,26 @@
 .attr-badge.physical { background-color: var(--attr-phys); }
 .attr-badge.none { background-color: #555; color: #fff; }
 
-/* 6角形チャート・メインエリア */
-.boss-stats-main {
+/* 6角形チャート・ステータスエリア */
+.boss-stats-display {
   display: flex;
   flex-wrap: wrap;
-  gap: 30px;
+  gap: 20px;
   align-items: center;
+  margin-top: 10px;
 }
 
 .radar-chart-box {
-  flex: 0 0 300px;
-  height: 300px;
+  flex: 0 0 260px;
+  height: 260px;
   position: relative;
-  /* background: radial-gradient(circle, rgba(0,255,204,0.05) 0%, transparent 70%); */
 }
 
 .recent-values-list {
   flex: 1;
-  min-width: 250px;
+  min-width: 220px;
 }
+
 
 .stat-row {
   display: flex;

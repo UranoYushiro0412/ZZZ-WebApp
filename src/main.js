@@ -151,8 +151,7 @@ function showBossDetail(bossId) {
     li.classList.toggle('active', li.textContent === boss.name);
   });
 
-  // 最新期から順に、そのボスが現れたデータを探す
-  const allPeriods = Object.keys(PERIOD_DATA).map(Number).sort((a, b) => b - a); // [33, 32, 26, ...]
+  const allPeriods = Object.keys(PERIOD_DATA).map(Number).sort((a, b) => b - a);
   let foundPeriod = null;
   let pData = null;
 
@@ -164,64 +163,61 @@ function showBossDetail(bossId) {
     }
   }
 
-  if (!pData) {
-    bossDetail.innerHTML = `
-      <div class="boss-detail-header">
-        <div class="boss-name-area">
-          <span class="boss-period-label">PERIOD: --</span>
-          <h2>${boss.name}</h2>
-        </div>
-      </div>
-      <p style="text-align:center; padding: 50px; color:#888;">全期間において計測データが見つかりませんでした。</p>
-    `;
-    return;
-  }
+  // データがない場合は、空のデータオブジェクトを使用する
+  const displayData = pData || { hp: null, def: null, stun_mult: null, stun_time: null, stun_limit: null, anomaly_limit: null };
+  const periodLabel = foundPeriod ? `DATA SOURCE: PERIOD ${foundPeriod}` : 'DATA SOURCE: NO DATA';
 
   const formatLargeNum = (n) => (n === null || n === undefined) ? '--' : n.toLocaleString();
 
   bossDetail.innerHTML = `
     <div class="boss-detail-header">
       <div class="boss-name-area">
-        <span class="boss-period-label">DATA SOURCE: PERIOD ${foundPeriod}</span>
+        <span class="boss-period-label">${periodLabel}</span>
         <h2>${boss.name}</h2>
       </div>
     </div>
 
-    <div class="boss-image-container">
-      <img src="/images/kikyoku_boss/${boss.id}.png" alt="${boss.name}" class="boss-hero-img">
-    </div>
-
-    <div class="boss-attr-section">
-      <div class="attr-group">
-        <span class="attr-title">弱点属性</span>
-        <div class="attr-list">
-          ${boss.weak && boss.weak.length ? boss.weak.map(w => `<span class="attr-badge ${w}">${w}</span>`).join('') : '<span class="attr-badge none">なし</span>'}
+    <div class="boss-detail-main-content">
+      <div class="boss-image-column">
+        <div class="boss-image-container">
+          <img src="/images/kikyoku_boss/${boss.id}.png" alt="${boss.name}" class="boss-hero-img">
         </div>
       </div>
-      <div class="attr-group">
-        <span class="attr-title">耐性属性</span>
-        <div class="attr-list">
-          ${boss.resist && boss.resist.length ? boss.resist.map(r => `<span class="attr-badge ${r}">${r}</span>`).join('') : '<span class="attr-badge none">なし</span>'}
+
+      <div class="boss-info-column">
+        <div class="boss-attr-section">
+          <div class="attr-group">
+            <span class="attr-title">弱点属性</span>
+            <div class="attr-list">
+              ${boss.weak && boss.weak.length ? boss.weak.map(w => `<span class="attr-badge ${w}">${w}</span>`).join('') : '<span class="attr-badge none">なし</span>'}
+            </div>
+          </div>
+          <div class="attr-group">
+            <span class="attr-title">耐性属性</span>
+            <div class="attr-list">
+              ${boss.resist && boss.resist.length ? boss.resist.map(r => `<span class="attr-badge ${r}">${r}</span>`).join('') : '<span class="attr-badge none">なし</span>'}
+            </div>
+          </div>
+        </div>
+
+        <div class="boss-stats-display">
+          <div class="radar-chart-box">
+            ${createRadarSvg(displayData)}
+          </div>
+          <div class="recent-values-list">
+            <div class="stat-row"><span class="stat-label">HP</span><span class="stat-value">${formatLargeNum(displayData.hp)}</span></div>
+            <div class="stat-row"><span class="stat-label">防御力</span><span class="stat-value">${formatLargeNum(displayData.def)}</span></div>
+            <div class="stat-row"><span class="stat-label">ブレイク弱体倍率</span><span class="stat-value">${displayData.stun_mult !== null ? (displayData.stun_mult * 100).toFixed(0) + '%' : '--'}</span></div>
+            <div class="stat-row"><span class="stat-label">ブレイク時間</span><span class="stat-value">${displayData.stun_time !== null ? displayData.stun_time + 's' : '--'}</span></div>
+            <div class="stat-row"><span class="stat-label">ブレイク値上限</span><span class="stat-value">${formatLargeNum(displayData.stun_limit)}</span></div>
+            <div class="stat-row"><span class="stat-label">異常蓄積値上限</span><span class="stat-value">${formatLargeNum(displayData.anomaly_limit)}</span></div>
+          </div>
+        </div>
+
+        <div style="margin-top: 20px; border-top: 1px solid #333; padding-top: 15px;">
+           <p style="font-size: 0.75rem; color: #666;">※数値は最新の計測値に基づく推定です。データがない場合は「--」と表示されます。</p>
         </div>
       </div>
-    </div>
-
-    <div class="boss-stats-main">
-      <div class="radar-chart-box">
-        ${createRadarSvg(pData)}
-      </div>
-      <div class="recent-values-list">
-        <div class="stat-row"><span class="stat-label">HP</span><span class="stat-value">${formatLargeNum(pData.hp)}</span></div>
-        <div class="stat-row"><span class="stat-label">防御力</span><span class="stat-value">${formatLargeNum(pData.def)}</span></div>
-        <div class="stat-row"><span class="stat-label">ブレイク弱体倍率</span><span class="stat-value">${pData.stun_mult !== null ? (pData.stun_mult * 100).toFixed(0) + '%' : '--'}</span></div>
-        <div class="stat-row"><span class="stat-label">ブレイク時間</span><span class="stat-value">${pData.stun_time !== null ? pData.stun_time + 's' : '--'}</span></div>
-        <div class="stat-row"><span class="stat-label">ブレイク値上限</span><span class="stat-value">${formatLargeNum(pData.stun_limit)}</span></div>
-        <div class="stat-row"><span class="stat-label">異常蓄積値上限</span><span class="stat-value">${formatLargeNum(pData.anomaly_limit)}</span></div>
-      </div>
-    </div>
-
-    <div style="margin-top: 30px; border-top: 1px solid #333; padding-top: 15px;">
-       <p style="font-size: 0.75rem; color: #666;">※数値は第${foundPeriod}期の計測値に基づく推定です。</p>
     </div>
   `;
 }
