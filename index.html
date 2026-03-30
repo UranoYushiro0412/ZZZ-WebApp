@@ -218,50 +218,85 @@
       </div>
     </section>
 
-    <!-- 画面4: ソウルハウンドIII (新規ミニゲーム) -->
+    <!-- 画面4: ソウルハウンドIII (究極集大成版) -->
     <section id="view-soul-hounds" class="view hidden">
-      <h1 class="page-title">SOUL HOUNDS III // ソウルハウンドIII</h1>
-      <p class="subtitle">地下深くを目指して掘り進め！エネルギー切れに注意。</p>
+      <div class="soul-hounds-wrapper">
+        <!-- 左サイドパネル (Left Side) -->
+        <aside class="sh-side-panel left">
+          <button class="sh-btn-back" onclick="app.showPage('view-home')">
+            <span class="icon">◀</span>
+          </button>
+          <div class="sh-control-guide">
+            <div class="guide-item">
+              <span class="key">WASD</span>
+              <span class="desc">移動</span>
+            </div>
+            <div class="guide-item">
+              <span class="key">J</span>
+              <span class="desc">掘る</span>
+            </div>
+            <div class="guide-item">
+              <span class="key">K</span>
+              <span class="desc">跳ぶ</span>
+            </div>
+          </div>
+          <div class="sh-bottom-label">
+            <span class="menu-icon">☰</span> 閉じる
+          </div>
+        </aside>
 
-      <div class="arcade-status-bar">
-        <div class="energy-gauge-wrapper">
-          <span class="label">ENERGY</span>
-          <div id="sh-energy-bar" class="energy-bar">
-            <div id="sh-energy-fill" class="energy-fill"></div>
-          </div>
-        </div>
-        <div class="sh-stats">
-          <div id="sh-lives" class="sh-lives">
-            <!-- ハートアイコンがJSで入る -->
-          </div>
-          <div class="sh-depth">
-            <span id="sh-depth-num">0</span><span class="unit">m</span>
-          </div>
-        </div>
-      </div>
+        <!-- 中央: ゲーム筐体 (Center Cabinet) -->
+        <main class="sh-main-cabinet">
+          <div class="sh-canvas-border top-left"></div>
+          <div class="sh-canvas-border top-right"></div>
+          <div class="sh-canvas-border bottom-left"></div>
+          <div class="sh-canvas-border bottom-right"></div>
+          <div class="crt-overlay"></div>
+          
+          <canvas id="soul-hounds-canvas"></canvas>
 
-      <div class="arcade-cabinet">
-        <div class="crt-overlay"></div>
-        <canvas id="soul-hounds-canvas"></canvas>
-        <div id="sh-start-screen" class="sh-start-screen">
-          <div class="sh-logo">SOUL HOUNDS III</div>
-          <button id="btn-sh-start" class="btn-sh-start">START GAME</button>
-        </div>
-      </div>
-
-      <!-- 操作ボタン -->
-      <div class="sh-controls">
-        <div class="sh-dpad">
-          <button id="sh-up" class="dpad-btn up">▲</button>
-          <div class="dpad-middle">
-            <button id="sh-left" class="dpad-btn left">◀</button>
-            <button id="sh-right" class="dpad-btn right">▶</button>
+          <div id="sh-start-screen" class="sh-start-screen">
+            <h1 class="sh-logo">SOUL HOUNDS III</h1>
+            <button id="btn-sh-start" class="btn-sh-start">START GAME</button>
           </div>
-          <button id="sh-down" class="dpad-btn down">▼</button>
-        </div>
-        <div class="sh-action">
-          <button id="sh-action-btn" class="sh-action-btn">DIG</button>
-        </div>
+        </main>
+
+        <!-- 右サイドパネル (Right HUD) -->
+        <aside class="sh-side-panel right">
+          <!-- 円形エネルギーゲージ -->
+          <div class="sh-hud-section energy">
+            <div class="circular-energy-wrapper">
+              <svg viewBox="0 0 100 100">
+                <circle class="bg" cx="50" cy="50" r="45"></circle>
+                <circle id="sh-energy-ring" class="progress" cx="50" cy="50" r="45"></circle>
+              </svg>
+              <div id="sh-energy-text" class="energy-value">100</div>
+            </div>
+          </div>
+
+          <!-- ライフ -->
+          <div class="sh-hud-section lives">
+            <div class="sh-lives-icon">🐰</div>
+            <div class="sh-lives-count">× <span id="sh-lives">3</span></div>
+          </div>
+
+          <!-- 深度・スコア -->
+          <div class="sh-hud-section stats">
+            <div class="stat-group">
+              <label>Depth</label>
+              <div id="sh-depth" class="digital-value">00000</div>
+            </div>
+            <div class="stat-group">
+              <label>Score</label>
+              <div id="sh-score" class="digital-value">0000000</div>
+            </div>
+          </div>
+
+          <div class="sh-button-hints">
+            <div class="hint"><span class="btn-icon circle-k">K</span> ジャンプ</div>
+            <div class="hint"><span class="btn-icon circle-j">J</span> アクション</div>
+          </div>
+        </aside>
       </div>
     </section>
 
@@ -356,6 +391,7 @@
     <p>当アプリで使用されている画像、文章などの著作権は、株式会社COGNOSPHERE（HoYoverse）およびその関連会社に帰属します。</p>
   </footer>
 
+  <script src="/src/soul-hounds.js"></script>
   <script type="module" src="/src/main.js"></script>
 </body>
 

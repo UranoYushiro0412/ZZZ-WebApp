@@ -1,109 +1,124 @@
-/**
- * Soul Hounds III - Ultimate Edition
- * Features: Screen Shake, Hit Stop, Particles, Squash & Stretch
- */
-
-export class SoulHounds {
-  constructor(canvas) {
-    this.canvas = canvas;
-    this.ctx = canvas.getContext('2d');
+class SoulHounds {
+  constructor() {
+    this.canvas = document.getElementById('soul-hounds-canvas');
+    this.ctx = this.canvas.getContext('2d');
     
-    // UI Elements
-    this.energyFill = document.getElementById('sh-energy-fill');
-    this.depthText = document.getElementById('sh-depth-num');
-    this.livesContainer = document.getElementById('sh-lives');
-    
-    // Grid Setup
+    // Grid Setup (Match original 9-column style)
     this.cols = 9;
-    this.rows = 16;
-    this.blockSize = 0;
+    this.rows = 15; // Visible rows
+    this.blockSize = 40;
+    this.grid = [];
     
-    // Game State
-    this.isPlaying = false;
-    this.depth = 0;
+    this.player = {
+      x: 4, 
+      y: 2, 
+      px: 160, 
+      py: 80, // Pixel coordinates for smooth movement
+      vx: 0, 
+      vy: 0,
+      scaleX: 1, 
+      scaleY: 1,
+      dir: 'down',
+      lastMoveDir: 'down',
+      isGrounded: false
+    };
+    
     this.energy = 100;
     this.lives = 3;
-    this.grid = [];
-    this.player = { x: 4, y: 4, scaleX: 1, scaleY: 1, isDigging: false };
-    this.cameraY = 0;
+    this.depth = 0;
+    this.score = 0;
+    this.isPlaying = false;
+    this.frameCounter = 0;
     
-    // FX Systems
+    // FX
     this.particles = [];
     this.shakeTime = 0;
     this.hitStop = 0;
-    this.frameCounter = 0;
-    this.floatingTexts = [];
+    this.blockCache = {};
     
-    // Sprite Cache
-    this.blockCache = {}; // Cache for block images
-    
-    // Color Palette
+    // Color Palette (Vibrant jelly colors)
     this.colors = [
-      { id: 'pink', main: '#ff77aa', dark: '#cc5588', light: '#ffb0cc' },
-      { id: 'yellow', main: '#ffdd44', dark: '#ccaa33', light: '#ffee88' },
-      { id: 'green', main: '#44ee77', dark: '#33aa55', light: '#ccffdd' },
-      { id: 'blue', main: '#44aaff', dark: '#3388cc', light: '#b0d9ff' }
+      { main: '#ff3e88', light: '#ff6fb5', dark: '#cc1a5a', aura: 'rgba(255,62,136,0.3)', pattern: 'eye' },    // Pink
+      { main: '#3e9aff', light: '#6fcbff', dark: '#1a5acc', aura: 'rgba(62,154,255,0.3)', pattern: 'wave' },  // Blue
+      { main: '#ffcc3e', light: '#ffec6f', dark: '#cc9a1a', aura: 'rgba(255,204,62,0.3)', pattern: 'spiral' }, // Yellow
+      { main: '#9eff3e', light: '#cbff6f', dark: '#7acc1a', aura: 'rgba(158,255,62,0.3)', pattern: 'dot' }    // Green
     ];
-    
-    this.init();
-  }
 
-  init() {
+    this.init();
     this.resize();
     window.addEventListener('resize', () => this.resize());
   }
 
   resize() {
-    const parent = this.canvas.parentElement;
-    if (!parent) return;
-    this.canvas.width = parent.clientWidth;
-    this.canvas.height = parent.clientHeight;
+    const cabinet = this.canvas.parentElement;
+    this.canvas.width = cabinet.clientWidth;
+    this.canvas.height = cabinet.clientHeight;
     this.blockSize = this.canvas.width / this.cols;
   }
 
-  start() {
-    this.resize();
-    this.isPlaying = true;
-    this.depth = 0;
-    this.energy = 100;
-    this.lives = 3;
-    this.cameraY = 0;
+  init() {
     this.grid = [];
-    this.particles = [];
-    this.floatingTexts = [];
-    this.player = { x: 4, y: 4, scaleX: 1, scaleY: 1 };
-    
-    for (let r = 0; r < 40; r++) this.generateRow(r);
-    // 初期地点をクリア
-    for (let r = 0; r < 6; r++) {
-      for (let c = 0; c < this.cols; c++) this.grid[r][c] = null;
+    for (let r = 0; r < 25; r++) {
+      this.generateRow(r, r < 5); // 5 rows of empty space initially
     }
-    
-    this.updateUI();
-    this.animate();
+    this.player.px = this.player.x * this.blockSize;
+    this.player.py = this.player.y * this.blockSize;
   }
 
-  generateRow(rowIndex) {
+  // Neighbor-Weighting Clustered Generation
+  generateRow(r, empty = false) {
     const row = [];
     for (let c = 0; c < this.cols; c++) {
-      const rand = Math.random();
-      let type = 'normal';
+      if (empty) {
+        row.push(null);
+        continue;
+      }
+
+      // 確率的なクラスター生成
       let colorIndex = Math.floor(Math.random() * this.colors.length);
       
-      if (rand < 0.05) type = 'x-block';
-      else if (rand < 0.08) type = 'hard';
-      else if (rand < 0.12) type = 'item'; // Pomegranate
-      else if (rand < 0.15) type = 'spike';
+      // 左または上のブロックと比較して重み付け
+      const left = c > 0 ? row[c - 1] : null;
+      const up = r > 0 && this.grid[r - 1] ? this.grid[r - 1][c] : null;
       
-      row.push({ type, colorIndex, hits: type === 'hard' ? 2 : 1 });
+      if ((left && Math.random() < 0.6) || (up && Math.random() < 0.4)) {
+        const source = (left && Math.random() < 0.6) ? left : up;
+        if (source && source.type === 'normal') {
+          colorIndex = source.colorIndex;
+        }
+      }
+
+      const rand = Math.random();
+      if (rand < 0.1) {
+        row.push({ type: 'spike', isPopping: false });
+      } else if (rand < 0.15) {
+        row.push({ type: 'item', colorIndex: 0, isPopping: false }); // Pomegranate for energy
+      } else {
+        row.push({ type: 'normal', colorIndex, isPopping: false, popTimer: 0 });
+      }
     }
-    this.grid[rowIndex] = row;
+    this.grid[r] = row;
+  }
+
+  start() {
+    this.isPlaying = true;
+    document.getElementById('sh-start-screen').classList.add('hidden');
+    this.energy = 100;
+    this.lives = 3;
+    this.depth = 0;
+    this.score = 0;
+    this.init();
+    this.loop();
+  }
+
+  loop() {
+    if (!this.isPlaying) return;
+    this.update();
+    this.draw();
+    requestAnimationFrame(() => this.loop());
   }
 
   update() {
-    if (!this.isPlaying) return;
-
-    // Hit Stop (一瞬停止)
     if (this.hitStop > 0) {
       this.hitStop--;
       return;
@@ -113,119 +128,180 @@ export class SoulHounds {
     this.energy -= 0.015;
     if (this.energy <= 0) this.loseLife("エネルギー切れ！");
 
-    // Camera
-    const targetCameraY = (this.player.y - 4) * this.blockSize;
-    this.cameraY += (targetCameraY - this.cameraY) * 0.12;
+    // Smooth Pixel Player Position -> Grid Position
+    this.player.x = Math.floor((this.player.px + this.blockSize / 2) / this.blockSize);
+    this.player.y = Math.floor((this.player.py + this.blockSize / 2) / this.blockSize);
 
-    // Depth & Infinite Gen
-    const currentDepth = Math.floor(this.player.y * 1.5);
+    // Gravity & Jump Physics
+    this.player.vy += 0.25; // Constant Gravity (Slow/Smooth fall)
+    this.player.py += this.player.vy;
+
+    // Collision Detection (Bottom)
+    const nextYGrid = Math.floor((this.player.py + this.blockSize - 2) / this.blockSize);
+    const belowLeft = this.getBlockAt(this.player.px + 5, this.player.py + this.blockSize);
+    const belowRight = this.getBlockAt(this.player.px + this.blockSize - 5, this.player.py + this.blockSize);
+
+    if (belowLeft || belowRight) {
+      if (this.player.vy > 0) {
+        // Landing
+        if (this.player.vy > 2) {
+          this.player.scaleY = 0.7; // Squash on landing
+          this.player.scaleX = 1.3;
+        }
+        this.player.py = Math.floor(this.player.py / this.blockSize) * this.blockSize;
+        this.player.vy = 0;
+        this.player.isGrounded = true;
+        
+        // Spike Damage
+        if ((belowLeft && belowLeft.type === 'spike') || (belowRight && belowRight.type === 'spike')) {
+          this.loseLife("トゲ接触！");
+        }
+      }
+    } else {
+      this.player.isGrounded = false;
+    }
+
+    // Lateral Movement (Smoother)
+    this.player.px += this.player.vx;
+    this.player.vx *= 0.8; // Friction
+
+    if (this.getBlockAt(this.player.px - 2, this.player.py + 5) || this.getBlockAt(this.player.px + this.blockSize + 2, this.player.py + 5)) {
+      this.player.px -= this.player.vx;
+      this.player.vx = 0;
+    }
+
+    // Camera Support (Follow Smoothly)
+    const targetCameraY = (this.player.py - this.canvas.height / 3);
+    if (!this.cameraY) this.cameraY = targetCameraY;
+    this.cameraY += (targetCameraY - this.cameraY) * 0.1;
+
+    // Depth Calculation
+    const currentDepth = Math.floor(this.player.py / (this.blockSize * 1.5));
     if (currentDepth > this.depth) {
       this.depth = currentDepth;
-      if (this.depthText) this.depthText.textContent = this.depth;
       if (this.player.y + 20 > this.grid.length) {
         for (let i = 0; i < 10; i++) this.generateRow(this.grid.length);
       }
     }
 
-    // Physics (2フレームに1回にま引いてCPU負荷を半分に)
+    // Physics Area Limiting (Performance)
     if (this.frameCounter % 2 === 0) {
-      this.applyGravity();
-      this.applyPlayerGravity(); // プレイヤーの重力
+      this.applyBlockGravity();
     }
-
-    // 消去タイマー（タメ）の実行（プレイヤー周辺のみ）
     this.processPopTimers();
 
-    // FX Updates (パーティクル上限を 64個に制限)
-    if (this.particles.length > 64) this.particles.splice(0, this.particles.length - 64);
-    
+    // FX
     this.particles = this.particles.filter(p => {
       p.x += p.vx; p.y += p.vy; p.vy += 0.2; p.life -= 0.02;
       return p.life > 0;
     });
-
-    this.floatingTexts = this.floatingTexts.filter(t => {
-      t.y -= 0.5; t.life -= 0.02;
-      return t.life > 0;
-    });
-
     if (this.shakeTime > 0) this.shakeTime--;
-    this.frameCounter++;
-
-    // Player Animation Smoothing
+    
     this.player.scaleX += (1 - this.player.scaleX) * 0.15;
     this.player.scaleY += (1 - this.player.scaleY) * 0.15;
+    this.frameCounter++;
 
     this.updateUI();
   }
 
-  applyGravity() {
-    let changed = false;
-    // 画面内とその少し上下（計25行程度）に限定して計算
-    const startR = Math.max(0, Math.floor(this.player.y - 12));
-    const endR = Math.min(this.grid.length - 2, Math.floor(this.player.y + 12));
+  getBlockAt(px, py) {
+    const gx = Math.floor(px / this.blockSize);
+    const gy = Math.floor(py / this.blockSize);
+    if (gy < 0 || gy >= this.grid.length || gx < 0 || gx >= this.cols) return null;
+    return this.grid[gy][gx];
+  }
 
+  jump() {
+    if (this.player.isGrounded) {
+      this.player.vy = -6.5; // Jump Force
+      this.player.isGrounded = false;
+      this.player.scaleY = 1.4;
+      this.player.scaleX = 0.7;
+    }
+  }
+
+  dig(hDir, vDir) {
+    // Current direction or specified direction
+    const targetX = this.player.x + hDir;
+    const targetY = this.player.y + (vDir || 0);
+    
+    // In Soul Hounds, you usually dig the one you are facing or below.
+    // If no direction, dig DOWN.
+    let finalTargetX = targetX;
+    let finalTargetY = targetY;
+    if (hDir === 0 && vDir === 0) finalTargetY = this.player.y + 1;
+
+    const block = this.grid[finalTargetY] ? this.grid[finalTargetY][finalTargetX] : null;
+    if (block && block.type !== 'spike') {
+      this.interact(finalTargetX, finalTargetY, block);
+    }
+  }
+
+  interact(tx, ty, block) {
+    if (block.type === 'item') {
+      this.energy = Math.min(100, this.energy + 20);
+      this.createFloatText(tx * this.blockSize, ty * this.blockSize, "+ENERGY", "#00ffcc");
+      this.grid[ty][tx] = null;
+      return;
+    }
+
+    if (block.type === 'normal') {
+      this.triggerShake(6);
+      this.hitStop = 5;
+      this.checkChains(tx, ty, block.colorIndex);
+      this.player.scaleX = 1.2; // Dig stretch
+    }
+  }
+
+  applyBlockGravity() {
+    const startR = Math.max(0, Math.floor(this.cameraY / this.blockSize) - 5);
+    const endR = Math.min(this.grid.length - 2, startR + 25);
     for (let r = endR; r >= startR; r--) {
       for (let c = 0; c < this.cols; c++) {
-        const block = this.grid[r][c];
-        if (block && !block.isPopping && block.type !== 'spike' && block.type !== 'unbreakable') {
-          if (!this.grid[r + 1][c] && !(this.player.x === c && this.player.y === r + 1)) {
-            this.grid[r + 1][c] = block;
+        const b = this.grid[r][c];
+        if (b && !b.isPopping && b.type !== 'spike') {
+          if (!this.grid[r+1][c] && !(this.player.x === c && this.player.y === r+1)) {
+            this.grid[r+1][c] = b;
             this.grid[r][c] = null;
-            changed = true;
-            if (this.player.x === c && this.player.y === r + 2) this.loseLife("圧死！");
           }
-        }
-      }
-    }
-    if (!changed) this.checkChains();
-  }
-
-  checkChains() {
-    const checked = new Set();
-    const startR = Math.max(0, Math.floor(this.player.y - 10));
-    const endR = Math.min(this.grid.length - 1, Math.floor(this.player.y + 12));
-    
-    for (let r = startR; r <= endR; r++) {
-      for (let c = 0; c < this.cols; c++) {
-        const block = this.grid[r][c];
-        if (block && block.type === 'normal' && !block.isPopping && !checked.has(`${r},${c}`)) {
-          const group = this.findGroup(c, r, block.colorIndex);
-          if (group.length >= 4) {
-            this.hitStop = 8;
-            this.triggerShake(12);
-            group.forEach(pos => {
-              const b = this.grid[pos.r][pos.c];
-              if (b) {
-                b.isPopping = true;
-                b.popTimer = 15;
-              }
-            });
-          }
-          group.forEach(pos => checked.add(`${pos.r},${pos.c}`));
         }
       }
     }
   }
 
-  findGroup(c, r, colorIdx, group = []) {
-    const key = `${r},${c}`;
-    if (group.some(pos => pos.r === r && pos.c === c)) return group;
-    
-    const block = this.grid[r] ? this.grid[r][c] : null;
-    // 消去予約中(isPopping)のブロックもグループに含める
-    if (block && block.type === 'normal' && block.colorIndex === colorIdx) {
-      group.push({ r, c });
-      const neighbors = [[0, 1], [0, -1], [1, 0], [-1, 0]];
-      neighbors.forEach(([dc, dr]) => this.findGroup(c + dc, r + dr, colorIdx, group));
+  checkChains(sx, sy, colorIdx) {
+    const group = this.findGroup(sx, sy, colorIdx);
+    if (group.length >= 4) {
+      this.hitStop = 10;
+      this.triggerShake(15);
+      this.score += group.length * 100;
+      group.forEach(pos => {
+        const b = this.grid[pos.r][pos.c];
+        if (b) { b.isPopping = true; b.popTimer = 12; }
+      });
+    } else {
+      // Just single block break
+      this.grid[sy][sx] = null;
+      this.createExplosion(sx * this.blockSize, sy * this.blockSize, this.colors[colorIdx].main);
+      this.score += 10;
     }
+  }
+
+  findGroup(c, r, targetColor, group = []) {
+    if (group.some(p => p.c === c && p.r === r)) return group;
+    const b = this.grid[r] ? this.grid[r][c] : null;
+    if (!b || b.type !== 'normal' || b.colorIndex !== targetColor || b.isPopping) return group;
+    
+    group.push({c, r});
+    [[0,1],[0,-1],[1,0],[-1,0]].forEach(([dc, dr]) => {
+      this.findGroup(c + dc, r + dr, targetColor, group);
+    });
     return group;
   }
 
-  // updateメソッド内での消去タイマー処理の追加が必要
   processPopTimers() {
-    const startR = Math.max(0, Math.floor(this.player.y - 12));
-    const endR = Math.min(this.grid.length - 1, Math.floor(this.player.y + 12));
+    const startR = Math.max(0, Math.floor(this.cameraY / this.blockSize) - 5);
+    const endR = Math.min(this.grid.length - 1, startR + 25);
     for (let r = startR; r <= endR; r++) {
       for (let c = 0; c < this.cols; c++) {
         const b = this.grid[r][c];
@@ -240,225 +316,166 @@ export class SoulHounds {
     }
   }
 
-  triggerShake(power) { this.shakeTime = power; }
-
-  createExplosion(x, y, color) {
-    for (let i = 0; i < 6; i++) {
-      this.particles.push({
-        x: x + this.blockSize/2, y: y + this.blockSize/2,
-        vx: (Math.random() - 0.5) * 8, vy: (Math.random() - 0.5) * 8 - 2,
-        size: Math.random() * 6 + 2, color: color, life: 1.0
-      });
-    }
-  }
-
-  applyPlayerGravity() {
-    if (!this.isPlaying || this.hitStop > 0) return;
-    
-    const below = this.grid[this.player.y + 1] ? this.grid[this.player.y + 1][this.player.x] : null;
-    
-    // 足元が空、かつ掘削中（isDigging）でない場合に落下
-    if (!below) {
-      this.player.y++;
-      this.player.scaleY = 1.3; // 落下中に伸びる
-      this.player.scaleX = 0.8;
-      
-      // 画面更新が必要な深度に達したかチェック
-      if (this.player.y + 20 > this.grid.length) {
-        for (let i = 0; i < 10; i++) this.generateRow(this.grid.length);
-      }
-    }
-  }
-
-  move(dx, dy) {
-    if (!this.isPlaying || this.hitStop > 0) return;
-    
-    // 上方向の移動を完全に禁止
-    if (dy < 0) return;
-
-    const nx = this.player.x + dx;
-    const ny = this.player.y + dy;
-    if (nx < 0 || nx >= this.cols || ny < 0) return;
-
-    const block = this.grid[ny] ? this.grid[ny][nx] : null;
-    if (!block) {
-      this.player.x = nx; this.player.y = ny;
-      this.player.scaleX = 1.2; this.player.scaleY = 0.8; // Hop
-    } else {
-      this.interact(nx, ny, block);
-    }
-  }
-
-  interact(x, y, block) {
-    if (block.type === 'spike') { this.loseLife("トゲ接触！"); return; }
-    if (block.type === 'item') {
-      this.energy = Math.min(100, this.energy + 20);
-      this.grid[y][x] = null;
-      this.player.x = x; this.player.y = y;
-      this.floatingTexts.push({ x: x * this.blockSize, y: y * this.blockSize, text: "+ENERGY", color: "#00ffcc", life: 1 });
-      this.triggerShake(4);
-      return;
-    }
-
-    // Digging Animation
-    this.player.scaleY = 1.4; this.player.scaleX = 0.7;
-    this.triggerShake(3);
-    this.hitStop = 2;
-
-    if (block.type === 'x-block') this.energy -= 1;
-    block.hits--;
-    if (block.hits <= 0) {
-      this.createExplosion(x * this.blockSize, y * this.blockSize, this.colors[block.colorIndex].main);
-      this.grid[y][x] = null;
-      this.player.x = x; this.player.y = y;
-    }
-  }
-
   loseLife(reason) {
     this.lives--;
-    this.energy = 100;
-    this.triggerShake(15);
-    if (this.lives <= 0) this.gameOver(reason);
-    else this.updateUI();
-  }
-
-  gameOver(res) {
-    this.isPlaying = false;
-    alert(`GAME OVER: ${res}\nDEPTH: ${this.depth}m`);
-    document.getElementById('sh-start-screen').style.display = 'flex';
+    this.triggerShake(30);
+    this.createFloatText(this.player.px, this.player.py, reason, "#ff3e3e");
+    if (this.lives <= 0) {
+      this.isPlaying = false;
+      alert(`GAME OVER\nScore: ${this.score}\nDepth: ${this.depth}m`);
+      location.reload();
+    } else {
+      // Small invincibility / respawn up a bit
+      this.player.py -= this.blockSize * 2;
+      this.energy = Math.max(this.energy, 30);
+    }
   }
 
   updateUI() {
-    if (this.energyFill) {
-      this.energyFill.style.width = `${this.energy}%`;
-      this.energyFill.parentElement.classList.toggle('low-energy', this.energy < 25);
-    }
-    if (this.livesContainer) {
-      this.livesContainer.innerHTML = '';
-      for (let i = 0; i < 3; i++) {
-        const h = document.createElement('span');
-        h.textContent = i < this.lives ? '❤️' : '🖤';
-        this.livesContainer.appendChild(h);
-      }
-    }
+    // Energy Ring (SVG)
+    const ring = document.getElementById('sh-energy-ring');
+    const offset = 283 - (283 * this.energy) / 100;
+    ring.style.strokeDashoffset = offset;
+    ring.style.stroke = this.energy < 25 ? '#ff3e3e' : '#a389ff';
+    document.getElementById('sh-energy-text').textContent = Math.ceil(this.energy);
+    
+    // Lives
+    document.getElementById('sh-lives').textContent = this.lives;
+    
+    // Zero Padded Stats
+    document.getElementById('sh-depth').textContent = String(this.depth).padStart(5, '0');
+    document.getElementById('sh-score').textContent = String(this.score).padStart(7, '0');
   }
 
   draw() {
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.ctx.save();
     
     if (this.shakeTime > 0) {
       this.ctx.translate((Math.random()-0.5)*this.shakeTime, (Math.random()-0.5)*this.shakeTime);
     }
     this.ctx.translate(0, -this.cameraY);
 
-    // Grid
-    const startR = Math.max(0, Math.floor(this.cameraY/this.blockSize)-1);
-    const endR = startR + this.rows + 2;
+    const startR = Math.max(0, Math.floor(this.cameraY / this.blockSize) - 1);
+    const endR = Math.min(this.grid.length, startR + this.rows + 2);
+
     for (let r = startR; r < endR; r++) {
-      if (!this.grid[r]) continue;
       for (let c = 0; c < this.cols; c++) {
-        if (this.grid[r][c]) this.drawBlock(c, r, this.grid[r][c]);
+        const b = this.grid[r][c];
+        if (b) this.drawBlock(c, r, b);
       }
     }
 
-    // FX
-    this.particles.forEach(p => {
-      this.ctx.globalAlpha = p.life;
-      this.ctx.fillStyle = p.color;
-      this.ctx.fillRect(p.x, p.y, p.size, p.size);
-    });
-    this.ctx.globalAlpha = 1;
-    this.floatingTexts.forEach(t => {
-      this.ctx.fillStyle = t.color;
-      this.ctx.font = 'bold 14px monospace';
-      this.ctx.fillText(t.text, t.x + 5, t.y);
-    });
-
+    this.drawParticles();
     this.drawPlayer();
-    this.ctx.restore();
   }
 
   drawBlock(c, r, block) {
     const x = c * this.blockSize, y = r * this.blockSize;
-    const p = 2, s = this.blockSize - p*2;
+    const p = 3, s = this.blockSize - p*2;
     
-    // Cache Key
-    const cacheKey = `${block.type}_${block.colorIndex}`;
-    
-    if (!this.blockCache[cacheKey]) {
-      this.createBlockSprite(cacheKey, block);
-    }
-
-    this.ctx.drawImage(this.blockCache[cacheKey], x + p, y + p, s, s);
-    
-    // 消去中の点滅パルス演出（これだけは動的なので上から描く）
-    if (block.isPopping) {
-      const alpha = (Math.sin(Date.now() / 30) + 1) / 2;
-      this.ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.8})`;
-      this.ctx.fillRect(x+p, y+p, s, s);
-      this.ctx.strokeStyle = '#fff';
-      this.ctx.lineWidth = 3;
-      this.ctx.strokeRect(x+p, y+p, s, s);
-    }
-  }
-
-  createBlockSprite(key, block) {
-    const size = 100; // Original resolution for cache
-    const canvas = document.createElement('canvas');
-    canvas.width = size;
-    canvas.height = size;
-    const ctx = canvas.getContext('2d');
-    const p = 2, s = size - p * 2;
-    const clr = this.colors[block.colorIndex];
-
-    ctx.fillStyle = clr.main; ctx.fillRect(p, p, s, s);
-    ctx.strokeStyle = clr.dark; ctx.lineWidth = 4; ctx.strokeRect(p + 2, p + 2, s - 4, s - 4);
-    
-    if (block.type === 'x-block') {
-      ctx.fillStyle = 'rgba(0,0,0,0.3)'; ctx.font = 'bold 60px sans-serif'; 
-      ctx.textAlign='center'; ctx.fillText('×', size/2, size*0.8);
-    } else if (block.type === 'item') {
-      ctx.fillStyle = '#ff3e3e'; ctx.beginPath();
-      ctx.arc(size/2, size/2, s*0.35, 0, Math.PI*2); ctx.fill();
-    } else if (block.type === 'spike') {
-      ctx.fillStyle = '#ff0055'; ctx.font='50px serif'; ctx.fillText('🔺', 15, size - 15);
-    }
-    
-    this.blockCache[key] = canvas;
-  }
-
-  drawPlayer() {
-    const px = this.player.x * this.blockSize + this.blockSize/2;
-    const py = this.player.y * this.blockSize + this.blockSize/2;
-    const size = this.blockSize * 0.4;
-
     this.ctx.save();
-    this.ctx.translate(px, py);
-    this.ctx.scale(this.player.scaleX, this.player.scaleY);
+    this.ctx.translate(x + p, y + p);
     
-    // Body
-    this.ctx.fillStyle = '#fff';
-    this.ctx.beginPath(); this.ctx.arc(0, 0, size, 0, Math.PI*2); this.ctx.fill();
-    
-    // Drill
-    if (this.player.scaleY > 1.1) {
-      this.ctx.fillStyle = '#fca5f1';
+    if (block.type === 'normal') {
+      const clr = this.colors[block.colorIndex];
+      // Jelly Body
+      this.ctx.fillStyle = clr.main;
+      this.roundRect(0, 0, s, s, 8);
+      this.ctx.fill();
+      
+      // Inner Pattern (Premium Detail)
+      this.ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+      this.ctx.lineWidth = 2;
       this.ctx.beginPath();
-      this.ctx.moveTo(-size*0.8, size/2); this.ctx.lineTo(size*0.8, size/2);
-      this.ctx.lineTo(0, size*1.8); this.ctx.fill();
+      if (clr.pattern === 'eye') {
+        this.ctx.arc(s/2, s/2, s*0.2, 0, Math.PI*2);
+        this.ctx.stroke();
+        this.ctx.fillStyle = '#fff'; this.ctx.beginPath(); this.ctx.arc(s/2-2, s/2-2, 2, 0, Math.PI*2); this.ctx.fill();
+      } else if (clr.pattern === 'spiral') {
+        this.ctx.moveTo(s/2, s/2); this.ctx.arc(s/2, s/2, s*0.2, 0, Math.PI);
+        this.ctx.stroke();
+      } else {
+        this.ctx.rect(s/4, s/4, s/2, s/2);
+        this.ctx.stroke();
+      }
+      
+      if (block.isPopping) {
+        this.ctx.fillStyle = `rgba(255,255,255, ${0.5 + Math.sin(Date.now()/50)*0.5})`;
+        this.ctx.fillRect(0,0,s,s);
+      }
+    } else if (block.type === 'spike') {
+      // Glowing Metallic Spike
+      this.ctx.fillStyle = '#1a1a1a';
+      this.ctx.fillRect(0, s*0.7, s, s*0.3);
+      this.ctx.fillStyle = '#ff2a6d';
+      this.ctx.beginPath();
+      this.ctx.moveTo(0, s*0.7); this.ctx.lineTo(s/2, 0); this.ctx.lineTo(s, s*0.7);
+      this.ctx.fill();
+      this.ctx.strokeStyle = '#fff'; this.ctx.lineWidth=1; this.ctx.stroke();
+    } else if (block.type === 'item') {
+      this.ctx.fillStyle = '#ff3e3e';
+      this.ctx.beginPath(); this.ctx.arc(s/2, s/2, s*0.3, 0, Math.PI*2); this.ctx.fill();
+      this.ctx.fillStyle = '#fff'; this.ctx.fillRect(s/2-1, s/2-5, 2, 4);
     }
-    
-    // Eyes
-    this.ctx.fillStyle = '#000';
-    this.ctx.fillRect(-size*0.4, -size*0.2, size*0.2, size*0.2);
-    this.ctx.fillRect(size*0.2, -size*0.2, size*0.2, size*0.2);
     
     this.ctx.restore();
   }
 
-  animate() {
-    this.update(); this.draw();
-    if (this.isPlaying) requestAnimationFrame(() => this.animate());
+  drawPlayer() {
+    this.ctx.save();
+    this.ctx.translate(this.player.px + this.blockSize/2, this.player.py + this.blockSize/2);
+    this.ctx.scale(this.player.scaleX, this.player.scaleY);
+    
+    // Drill Bunny (Simplified Art)
+    this.ctx.fillStyle = '#eee';
+    this.ctx.fillRect(-12, -15, 24, 25); // Body
+    this.ctx.fillStyle = '#333';
+    this.ctx.fillRect(-8, -10, 4, 4); this.ctx.fillRect(4, -10, 4, 4); // Eyes
+    
+    // Drill
+    this.ctx.fillStyle = '#777';
+    this.ctx.beginPath();
+    this.ctx.moveTo(-10, 10); this.ctx.lineTo(10, 10); this.ctx.lineTo(0, 25);
+    this.ctx.fill();
+    
+    this.ctx.restore();
+  }
+  
+  roundRect(x, y, w, h, r) {
+    this.ctx.beginPath();
+    this.ctx.moveTo(x+r, y); this.ctx.lineTo(x+w-r, y); this.ctx.quadraticCurveTo(x+w, y, x+w, y+r);
+    this.ctx.lineTo(x+w, y+h-r); this.ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+    this.ctx.lineTo(x+r, y+h); this.ctx.quadraticCurveTo(x, y+h, x, y+h-r);
+    this.ctx.lineTo(x, y+r); this.ctx.quadraticCurveTo(x, y, x+r, y);
+    this.ctx.closePath();
+  }
+
+  triggerShake(t) { this.shakeTime = t; }
+
+  createExplosion(x, y, color) {
+    for (let i = 0; i < 8; i++) {
+      this.particles.push({
+        x: x + this.blockSize / 2, y: y + this.blockSize / 2,
+        vx: (Math.random() - 0.5) * 6, vy: (Math.random() - 0.5) * 6,
+        color: color, life: 1, size: 4 + Math.random() * 4
+      });
+    }
+  }
+
+  createFloatText(x, y, text, color) {
+    // Implement floating text if needed
+  }
+
+  drawParticles() {
+    this.particles.forEach(p => {
+      this.ctx.fillStyle = p.color;
+      this.ctx.globalAlpha = p.life;
+      this.ctx.fillRect(p.x, p.y, p.size, p.size);
+    });
+    this.ctx.globalAlpha = 1;
   }
 }
+
+// Global Initialization
+window.soulHoundsGame = new SoulHounds();

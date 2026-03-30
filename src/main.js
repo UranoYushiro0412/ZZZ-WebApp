@@ -779,61 +779,49 @@ if (coinArea && btnCoinStart) {
 }
 
 
-// --- SOUL HOUNDS III Logic ---
+// --- SOUL HOUNDS III Logic (WASD + J/K) ---
 const viewSoulHounds = document.getElementById('view-soul-hounds');
 const shCanvas = document.getElementById('soul-hounds-canvas');
 const btnShStart = document.getElementById('btn-sh-start');
-const shStartScreen = document.getElementById('sh-start-screen');
 
 window.soulHoundsGame = null;
 
 if (shCanvas && btnShStart) {
-  window.soulHoundsGame = new SoulHounds(shCanvas);
+  window.soulHoundsGame = new SoulHounds(); // 内部で canvas を取得
 
-  btnShStart.addEventListener('click', () => {
-    shStartScreen.style.display = 'none';
-    window.soulHoundsGame.start();
-  });
-
-  // バーチャルパッド (スマホ用)
-  const shControls = {
-    'sh-up': [0, -1],
-    'sh-down': [0, 1],
-    'sh-left': [-1, 0],
-    'sh-right': [1, 0]
-  };
-
-  for (const [id, [dx, dy]] of Object.entries(shControls)) {
-    const btn = document.getElementById(id);
-    if (btn) {
-      btn.addEventListener('click', () => window.soulHoundsGame.move(dx, dy));
-    }
-  }
-
-  // 掘削ボタン (スマホ用)
-  const btnShDig = document.getElementById('sh-action-btn');
-  if (btnShDig) {
-    btnShDig.addEventListener('click', () => {
-      // 下方向を掘る（または向いている方向、今回は簡略化して下）
-      window.soulHoundsGame.move(0, 1);
-    });
-  }
-
-  // キーボード操作 (PC用)
+  // PC キー入力バッファ
+  const activeKeys = new Set();
   window.addEventListener('keydown', (e) => {
-    if (!viewSoulHounds.classList.contains('active') || !window.soulHoundsGame.isPlaying) return;
+    if (!window.soulHoundsGame || !window.soulHoundsGame.isPlaying) return;
+    const k = e.key.toLowerCase();
+    activeKeys.add(k);
 
-    switch (e.key) {
-      case 'ArrowUp': case 'w': window.soulHoundsGame.move(0, -1); break;
-      case 'ArrowDown': case 's': window.soulHoundsGame.move(0, 1); break;
-      case 'ArrowLeft': case 'a': window.soulHoundsGame.move(-1, 0); break;
-      case 'ArrowRight': case 'd': window.soulHoundsGame.move(1, 0); break;
-      case ' ': // Space for digging (down)
-        window.soulHoundsGame.move(0, 1);
-        e.preventDefault();
-        break;
+    if (k === 'k') window.soulHoundsGame.jump();
+    if (k === 'j' || e.code === 'Space') {
+      let h = 0, v = 0;
+      if (activeKeys.has('a') || activeKeys.has('arrowleft')) h = -1;
+      if (activeKeys.has('d') || activeKeys.has('arrowright')) h = 1;
+      if (activeKeys.has('w') || activeKeys.has('arrowup')) v = -1;
+      if (activeKeys.has('s') || activeKeys.has('arrowdown')) v = 1;
+      window.soulHoundsGame.dig(h, v);
     }
   });
+
+  window.addEventListener('keyup', (e) => {
+    activeKeys.delete(e.key.toLowerCase());
+  });
+
+  // Smooth Horizontal Move Loop
+  function updateSHControls() {
+    if (window.soulHoundsGame && window.soulHoundsGame.isPlaying) {
+      let vx = 0;
+      if (activeKeys.has('a') || activeKeys.has('arrowleft')) vx = -4;
+      if (activeKeys.has('d') || activeKeys.has('arrowright')) vx = 4;
+      window.soulHoundsGame.player.vx = vx;
+    }
+    requestAnimationFrame(updateSHControls);
+  }
+  updateSHControls();
 }
 renderBossList();
 calculatePolychrome();
