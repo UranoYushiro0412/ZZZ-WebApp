@@ -39,7 +39,7 @@
 
 /* 左側：リスト */
 .boss-list-container {
-  flex: 0 0 250px;
+  flex: 0 0 300px; /* 250pxから300pxに拡張して文字切れを防止 */
   background: rgba(0, 0, 0, 0.5);
   border: 1px solid #444;
   border-radius: 8px;
@@ -61,7 +61,9 @@
   cursor: pointer;
   transition: 0.2s;
   border-radius: 0 4px 4px 0;
-  font-size: 0.9rem;
+  font-size: 0.95rem; /* わずかに大きく */
+  line-height: 1.4;
+  word-break: break-all; /* 長い名前を折り返し可能に */
 }
 
 .boss-li:hover {
@@ -269,6 +271,7 @@
     font-size: 1.2rem;
     word-break: break-all;
   }
+} /* ここでメディアクエリを閉じる */
 
 /* ==========================================
    スマホ専用ボス一覧選択画面 (view-boss-mobile-select)
@@ -489,5 +492,4 @@
   fill: #888;
   font-size: 10px;
   text-anchor: middle;
-}
 }
