@@ -41,10 +41,25 @@
 
 .energy-fill {
   height: 100%;
-  width: 100%; /* JSで制御 */
-  background: linear-gradient(90deg, #ff3e3e, #ff9a3e);
-  box-shadow: 0 0 10px rgba(255, 62, 62, 0.5);
+  width: 100%;
+  background: linear-gradient(90deg, #3effee, #3e9aff);
+  box-shadow: 0 0 10px rgba(62, 255, 238, 0.5);
   transition: width 0.3s ease;
+}
+
+/* Low Energy Alert */
+.energy-bar.low-energy {
+  animation: bar-flash 0.5s infinite alternate;
+  box-shadow: 0 0 15px #ff3e3e;
+}
+
+.energy-bar.low-energy .energy-fill {
+  background: #ff3e3e;
+}
+
+@keyframes bar-flash {
+  from { opacity: 1; border-color: #ff3e3e; }
+  to { opacity: 0.4; border-color: #fff; }
 }
 
 .sh-stats {
