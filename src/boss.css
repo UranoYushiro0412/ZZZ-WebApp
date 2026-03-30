@@ -161,8 +161,7 @@
     box-shadow: 10px 0 30px rgba(0, 0, 0, 0.8);
     background: #1a1a1a;
     overflow-y: auto;
-    padding-bottom: 40px;
-    /* 下部バーに隠れないよう十分な余白を確保 */
+    padding-bottom: 40px; /* ご指定の値に戻しました */
   }
 
 
@@ -234,9 +233,13 @@
     opacity: 1;
   }
 
-  /* 一覧表示中、またはボス画面以外ではスティッキーヘッダーを絶対に出さない */
-  .boss-layout.show-list~.boss-sticky-header {
-    display: none !important;
+  /* 一覧表示中、またはボス画面以外ではスティッキーヘッダーを透明にしてクリック不可にする */
+  .boss-layout.show-list ~ .boss-sticky-header,
+  #view-boss:not(.active) .boss-sticky-header {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+    top: -80px !important; /* 位置も隠す */
   }
 
 
