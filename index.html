@@ -83,12 +83,6 @@
         </button>
       </div>
 
-      <!-- スマホ用：スクロール時に出現するスティッキーヘッダー -->
-      <div id="boss-sticky-header" class="boss-sticky-header">
-        <button id="btn-boss-back-sticky" class="btn-boss-back-mini">◀</button>
-        <span id="sticky-boss-name" class="sticky-boss-name">ボス詳細</span>
-      </div>
-
       <div id="boss-layout-wrapper" class="boss-layout show-list">
         <!-- サイドバー：ボス選択 (スマホでは上部配置) -->
         <aside class="boss-list-container">
@@ -104,6 +98,12 @@
             <p style="text-align:center; color:#888;">左のリストからボスを選択してください。</p>
           </div>
         </article>
+      </div>
+
+      <!-- スマホ用：スクロール時に出現するスティッキーヘッダー (弟要素に配置してCSSで制御可能に) -->
+      <div id="boss-sticky-header" class="boss-sticky-header">
+        <button id="btn-boss-back-sticky" class="btn-boss-back-mini">◀</button>
+        <span id="sticky-boss-name" class="sticky-boss-name">ボス詳細</span>
       </div>
     </section>
 
