@@ -175,12 +175,51 @@ function createRadarSvg(stats) {
   `;
 }
 
+// DOM Elements (Boss)
+const bossLayout = document.getElementById('boss-layout-wrapper');
+const bossBackBtn = document.getElementById('btn-boss-back');
+const bossBackBtnSticky = document.getElementById('btn-boss-back-sticky');
+const bossStickyHeader = document.getElementById('boss-sticky-header');
+const stickyBossName = document.getElementById('sticky-boss-name');
+
+// ボス画面：一覧に戻る
+function backToBossList() {
+  if (bossLayout) {
+    bossLayout.classList.remove('show-detail');
+    bossLayout.classList.add('show-list');
+  }
+}
+
+if (bossBackBtn) bossBackBtn.addEventListener('click', backToBossList);
+if (bossBackBtnSticky) bossBackBtnSticky.addEventListener('click', backToBossList);
+
+// ボス詳細画面でのスクロール検知（スティッキーヘッダー表示用）
+window.addEventListener('scroll', () => {
+  if (viewBoss && viewBoss.classList.contains('active') && window.innerWidth <= 900) {
+    if (window.scrollY > 300) {
+      bossStickyHeader.classList.add('visible');
+    } else {
+      bossStickyHeader.classList.remove('visible');
+    }
+  }
+});
+
 /**
  * ボス詳細の表示
  */
 function showBossDetail(bossId) {
   const boss = BOSS_LIST.find(b => b.id === bossId);
   if (!boss) return;
+
+  // スマホ版：詳細モードへ切り替え、トップへスクロール
+  if (window.innerWidth <= 900) {
+    if (bossLayout) {
+      bossLayout.classList.remove('show-list');
+      bossLayout.classList.add('show-detail');
+    }
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    if (stickyBossName) stickyBossName.textContent = boss.name;
+  }
 
   // アクティブハイライトの更新
   document.querySelectorAll('.boss-li').forEach(li => {
@@ -225,13 +264,23 @@ function showBossDetail(bossId) {
           <div class="attr-group">
             <span class="attr-title">弱点属性</span>
             <div class="attr-list">
-              ${boss.weak && boss.weak.length ? boss.weak.map(w => `<span class="attr-badge ${w}">${ATTR_NAME_MAP[w] || w}</span>`).join('') : '<span class="attr-badge none">なし</span>'}
+              ${boss.weak && boss.weak.length ? boss.weak.map(w => `
+                <span class="attr-badge ${w}">
+                  <img src="/images/attibute_icon/${w}.png" alt="${w}" class="attr-icon">
+                  ${ATTR_NAME_MAP[w] || w}
+                </span>
+              `).join('') : '<span class="attr-badge none">なし</span>'}
             </div>
           </div>
           <div class="attr-group">
             <span class="attr-title">耐性属性</span>
             <div class="attr-list">
-              ${boss.resist && boss.resist.length ? boss.resist.map(r => `<span class="attr-badge ${r}">${ATTR_NAME_MAP[r] || r}</span>`).join('') : '<span class="attr-badge none">なし</span>'}
+              ${boss.resist && boss.resist.length ? boss.resist.map(r => `
+                <span class="attr-badge ${r}">
+                  <img src="/images/attibute_icon/${r}.png" alt="${r}" class="attr-icon">
+                  ${ATTR_NAME_MAP[r] || r}
+                </span>
+              `).join('') : '<span class="attr-badge none">なし</span>'}
             </div>
           </div>
         </div>

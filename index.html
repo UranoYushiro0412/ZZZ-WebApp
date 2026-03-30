@@ -76,7 +76,20 @@
     <section id="view-boss" class="view hidden">
       <h1 class="page-title">危局強襲戦　ボス情報</h1>
 
-      <div class="boss-layout">
+      <!-- スマホ用：戻るナビゲーション -->
+      <div id="boss-mobile-nav" class="boss-mobile-nav">
+        <button id="btn-boss-back" class="btn-boss-back">
+          <span class="back-icon">◀</span> ボス選択
+        </button>
+      </div>
+
+      <!-- スマホ用：スクロール時に出現するスティッキーヘッダー -->
+      <div id="boss-sticky-header" class="boss-sticky-header">
+        <button id="btn-boss-back-sticky" class="btn-boss-back-mini">◀</button>
+        <span id="sticky-boss-name" class="sticky-boss-name">ボス詳細</span>
+      </div>
+
+      <div id="boss-layout-wrapper" class="boss-layout show-list">
         <!-- サイドバー：ボス選択 (スマホでは上部配置) -->
         <aside class="boss-list-container">
           <h3 class="section-heading">ボス選択</h3>
