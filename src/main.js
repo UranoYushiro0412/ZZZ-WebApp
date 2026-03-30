@@ -29,6 +29,21 @@ function showView(viewId) {
   if (target) {
     target.classList.remove('hidden');
     target.classList.add('active');
+
+    // ★追加：ボス画面にホームから入った時の特別化
+    if (viewId === 'view-boss') {
+      window.scrollTo(0, 0);
+      if (bossLayout) {
+        bossLayout.classList.remove('show-detail');
+        bossLayout.classList.add('show-list');
+      }
+      // 初回（まだボスを選んでいない、またはホームから来た時）は背景を消去
+      if (bossDetail) bossDetail.style.display = 'none';
+      if (bossStickyHeader) bossStickyHeader.classList.remove('visible');
+      document.body.style.overflow = 'hidden'; // 一覧表示なのでロック
+    } else {
+      document.body.style.overflow = ''; // 他の画面ではロック解除
+    }
   }
 
   // もしゲーム画面以外に飛ぶならTVゲームを強制停止
@@ -223,6 +238,7 @@ function showBossDetail(bossId) {
       bossLayout.classList.remove('show-list');
       bossLayout.classList.add('show-detail');
     }
+    if (bossDetail) bossDetail.style.display = 'block'; // 再表示
     document.body.style.overflow = ''; // スクロール可能に戻す
     window.scrollTo({ top: 0, behavior: 'instant' });
     if (stickyBossName) stickyBossName.textContent = boss.name;
