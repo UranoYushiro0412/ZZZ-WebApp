@@ -187,6 +187,10 @@ function showBossDetail(bossId) {
       </div>
     </div>
 
+    <div class="boss-image-container">
+      <img src="/images/kikyoku_boss/${boss.id}.png" alt="${boss.name}" class="boss-hero-img">
+    </div>
+
     <div class="boss-attr-section">
       <div class="attr-group">
         <span class="attr-title">弱点属性</span>
@@ -217,7 +221,7 @@ function showBossDetail(bossId) {
     </div>
 
     <div style="margin-top: 30px; border-top: 1px solid #333; padding-top: 15px;">
-       <p style="font-size: 0.75rem; color: #666;">※数値は第${foundPeriod}期の計測値に基づく推定です。画像は準備中です。</p>
+       <p style="font-size: 0.75rem; color: #666;">※数値は第${foundPeriod}期の計測値に基づく推定です。</p>
     </div>
   `;
 }
