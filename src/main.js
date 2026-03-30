@@ -187,6 +187,7 @@ function backToBossList() {
   if (bossLayout) {
     bossLayout.classList.remove('show-detail');
     bossLayout.classList.add('show-list');
+    document.body.style.overflow = 'hidden'; // 背景スクロール不可
   }
 }
 
@@ -196,10 +197,13 @@ if (bossBackBtnSticky) bossBackBtnSticky.addEventListener('click', backToBossLis
 // ボス詳細画面でのスクロール検知（スティッキーヘッダー表示用）
 window.addEventListener('scroll', () => {
   if (viewBoss && viewBoss.classList.contains('active') && window.innerWidth <= 900) {
-    if (window.scrollY > 300) {
-      bossStickyHeader.classList.add('visible');
-    } else {
-      bossStickyHeader.classList.remove('visible');
+    // 詳細表示中かつ一覧が閉じてる場合のみ検知
+    if (bossLayout && bossLayout.classList.contains('show-detail')) {
+      if (window.scrollY > 300) {
+        bossStickyHeader.classList.add('visible');
+      } else {
+        bossStickyHeader.classList.remove('visible');
+      }
     }
   }
 });
@@ -211,14 +215,16 @@ function showBossDetail(bossId) {
   const boss = BOSS_LIST.find(b => b.id === bossId);
   if (!boss) return;
 
-  // スマホ版：詳細モードへ切り替え、トップへスクロール
+  // スマホ版：詳細モードへ切り替え、トップへスクロール、ボディスクロール解除
   if (window.innerWidth <= 900) {
     if (bossLayout) {
       bossLayout.classList.remove('show-list');
       bossLayout.classList.add('show-detail');
     }
+    document.body.style.overflow = ''; // スクロール可能に戻す
     window.scrollTo({ top: 0, behavior: 'instant' });
     if (stickyBossName) stickyBossName.textContent = boss.name;
+    if (bossStickyHeader) bossStickyHeader.classList.remove('visible');
   }
 
   // アクティブハイライトの更新
@@ -255,7 +261,7 @@ function showBossDetail(bossId) {
     <div class="boss-detail-main-content">
       <div class="boss-image-column">
         <div class="boss-image-container">
-          <img src="/images/kikyoku_boss/${boss.id}.png" alt="${boss.name}" class="boss-hero-img">
+          <img src="images/kikyoku_boss/${boss.id}.png" alt="${boss.name}" class="boss-hero-img">
         </div>
       </div>
 
@@ -266,7 +272,7 @@ function showBossDetail(bossId) {
             <div class="attr-list">
               ${boss.weak && boss.weak.length ? boss.weak.map(w => `
                 <span class="attr-badge ${w}">
-                  <img src="/images/attibute_icon/${w}.png" alt="${w}" class="attr-icon">
+                  <img src="images/attibute_icon/${w}.png" alt="${w}" class="attr-icon">
                   ${ATTR_NAME_MAP[w] || w}
                 </span>
               `).join('') : '<span class="attr-badge none">なし</span>'}
@@ -277,7 +283,7 @@ function showBossDetail(bossId) {
             <div class="attr-list">
               ${boss.resist && boss.resist.length ? boss.resist.map(r => `
                 <span class="attr-badge ${r}">
-                  <img src="/images/attibute_icon/${r}.png" alt="${r}" class="attr-icon">
+                  <img src="images/attibute_icon/${r}.png" alt="${r}" class="attr-icon">
                   ${ATTR_NAME_MAP[r] || r}
                 </span>
               `).join('') : '<span class="attr-badge none">なし</span>'}
@@ -309,6 +315,7 @@ function showBossDetail(bossId) {
     </div>
   `;
 }
+
 
 // ====== Gacha Simulator (Select & Main) ======
 const listChars = document.getElementById('gacha-list-chars');
