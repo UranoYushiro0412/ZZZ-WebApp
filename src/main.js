@@ -485,6 +485,7 @@ function showBossDetail(bossId) {
           <div class="boss-video-label">■ ${BOSS_VIDEOS[bossId].title || 'PREVIEW'}</div>
           <div class="boss-video-container">
             <div class="video-overlay"></div>
+            <button class="btn-video-mute" title="Toggle Mute">🔇</button>
             <video autoplay loop muted playsinline>
               <source src="${(import.meta.env.BASE_URL || '/').endsWith('/') ? (import.meta.env.BASE_URL || '/') + BOSS_VIDEOS[bossId].url : (import.meta.env.BASE_URL || '/') + '/' + BOSS_VIDEOS[bossId].url}" type="video/mp4">
             </video>
@@ -494,6 +495,16 @@ function showBossDetail(bossId) {
       </div>
     </div>
   `;
+
+  // ミュート切り替えボタンのイベント登録
+  const muteBtn = bossDetail.querySelector('.btn-video-mute');
+  const videoEl = bossDetail.querySelector('.boss-video-container video');
+  if (muteBtn && videoEl) {
+    muteBtn.onclick = () => {
+      videoEl.muted = !videoEl.muted;
+      muteBtn.textContent = videoEl.muted ? '🔇' : '🔊';
+    };
+  }
 }
 
 
