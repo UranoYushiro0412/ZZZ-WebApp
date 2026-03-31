@@ -3,12 +3,16 @@
 #view-soul-hounds {
   background: #0d0b1a; /* 深い紫の背景 */
   min-height: 100vh;
-  display: flex;
+  display: none; /* デフォルトは非表示 */
   justify-content: center;
   align-items: center;
   color: #fff;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   overflow: hidden;
+}
+
+#view-soul-hounds:not(.hidden) {
+  display: flex; /* 表示時のみ flex を適用 */
 }
 
 .soul-hounds-wrapper {

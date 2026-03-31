@@ -4,7 +4,7 @@ import { gachaBanners, gachaImageMap } from './gacha-data.js';
 import { gachaStateMgr } from './gacha-state.js';
 import { GameTV } from './game-tv.js';
 import { GameCoin } from './game-coin.js';
-import { SoulHounds } from './soul-hounds.js';
+import SoulHounds from './soul-hounds.js';
 import './gacha.css';
 import './poly.css';
 import './game-tv.css';
@@ -787,7 +787,13 @@ const btnShStart = document.getElementById('btn-sh-start');
 window.soulHoundsGame = null;
 
 if (shCanvas && btnShStart) {
-  window.soulHoundsGame = new SoulHounds(); // 内部で canvas を取得
+  window.soulHoundsGame = new SoulHounds();
+
+  btnShStart.addEventListener('click', () => {
+    const shStartScreen = document.getElementById('sh-start-screen');
+    if (shStartScreen) shStartScreen.style.display = 'none';
+    window.soulHoundsGame.start();
+  });
 
   // PC キー入力バッファ
   const activeKeys = new Set();
@@ -823,5 +829,13 @@ if (shCanvas && btnShStart) {
   }
   updateSHControls();
 }
-renderBossList();
-calculatePolychrome();
+
+/**
+ * 起動時の初期化
+ */
+try {
+  renderBossList();
+  calculatePolychrome();
+} catch (e) {
+  console.error("Initialization error:", e);
+}
