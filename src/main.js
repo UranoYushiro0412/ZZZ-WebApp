@@ -486,7 +486,7 @@ function showBossDetail(bossId) {
           <div class="boss-video-container">
             <div class="video-overlay"></div>
             <video autoplay loop muted playsinline>
-              <source src="${BOSS_VIDEOS[bossId].url}" type="video/mp4">
+              <source src="${(import.meta.env.BASE_URL || '/').endsWith('/') ? (import.meta.env.BASE_URL || '/') + BOSS_VIDEOS[bossId].url : (import.meta.env.BASE_URL || '/') + '/' + BOSS_VIDEOS[bossId].url}" type="video/mp4">
             </video>
           </div>
         </div>

@@ -25,7 +25,7 @@ export const BOSS_LIST = [
  */
 export const BOSS_VIDEOS = {
   "scavenger": {
-    url: "video/scavenger.mp4",
+    url: "videos/boss/husatu_skill/scavenger.mp4",
     title: "封殺スキル"
   }
 };
