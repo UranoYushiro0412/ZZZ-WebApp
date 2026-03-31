@@ -1,4 +1,4 @@
-import { BOSS_LIST, PERIOD_DATA } from './boss-data.js';
+import { BOSS_LIST, PERIOD_DATA, BOSS_VIDEOS } from './boss-data.js';
 import { GachaSystem } from './gacha.js';
 import { gachaBanners, gachaImageMap } from './gacha-data.js';
 import { gachaStateMgr } from './gacha-state.js';
@@ -479,6 +479,18 @@ function showBossDetail(bossId) {
         <div class="boss-hp-trend-container">
           ${createHpTrendSvg(boss.name)}
         </div>
+
+        ${BOSS_VIDEOS[bossId] ? `
+        <div class="boss-video-section">
+          <div class="boss-video-label">■ ${BOSS_VIDEOS[bossId].title || 'PREVIEW'}</div>
+          <div class="boss-video-container">
+            <div class="video-overlay"></div>
+            <video autoplay loop muted playsinline>
+              <source src="${BOSS_VIDEOS[bossId].url}" type="video/mp4">
+            </video>
+          </div>
+        </div>
+        ` : ''}
       </div>
     </div>
   `;

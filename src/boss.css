@@ -584,3 +584,65 @@
   border-radius: 8px;
   border: 1px dashed #444;
 }
+
+/* Boss Video Preview Section */
+.boss-video-section {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px dashed #444;
+}
+
+.boss-video-label {
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: var(--boss-accent);
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.boss-video-container {
+  position: relative;
+  width: 80%; /* PCでは少し小さめに */
+  margin: 0 auto;
+  aspect-ratio: 43 / 18; /* 3440 x 1440 の比率 */
+  border: 2px solid #333;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.boss-video-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 走査線エフェクトオーバーレイ */
+.video-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.3;
+}
+
+/* スマホ用レスポンシブ対応 */
+@media (max-width: 900px) {
+  .boss-video-container {
+    width: 100%; /* スマホでは横いっぱいに */
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+  
+  .boss-video-section {
+    margin-left: -20px; /* 親のパディングを相殺 */
+    margin-right: -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}

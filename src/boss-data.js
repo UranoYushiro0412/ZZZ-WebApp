@@ -21,6 +21,16 @@ export const BOSS_LIST = [
 ];
 
 /**
+ * ボス詳細用 動画プレビューデータ（動画があるボスのみ定義）
+ */
+export const BOSS_VIDEOS = {
+  "scavenger": {
+    url: "video/scavenger.mp4",
+    title: "封殺スキル"
+  }
+};
+
+/**
  * 期ごとのボス出現・ステータスデータ
  */
 export const PERIOD_DATA = {
