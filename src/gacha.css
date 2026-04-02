@@ -122,11 +122,13 @@
 
 .gm-stats {
   display: flex;
-  justify-content: center; /* バッジを中央寄せ */
+  justify-content: center;
+  /* バッジを中央寄せ */
   align-items: center;
   width: 100%;
   gap: 0.8rem;
-  position: relative; /* 履歴ボタンの基準点 */
+  position: relative;
+  /* 履歴ボタンの基準点 */
 }
 
 .gm-stat-badge {
@@ -377,6 +379,26 @@
     justify-content: space-between;
   }
 
+  .gm-stats {
+    flex-wrap: wrap; /* スマホでは折り返しを許可 */
+    justify-content: center;
+    gap: 0.5rem;
+    position: static; /* 履歴ボタンの絶対配置基準を解除 */
+    padding-bottom: 0.5rem;
+  }
+
+  .gm-stat-badge {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.6rem;
+  }
+
+  .gm-history-btn {
+    position: static; /* 絶対配置を解除して下に並ぶようにする */
+    transform: none;
+    width: 60%; /* 横幅を持たせる */
+    margin-top: 0.2rem;
+  }
+
   .gm-pull-btn {
     flex: 1;
     /* ボタンを横幅いっぱいに広げる */
@@ -461,9 +483,11 @@
   cursor: pointer;
   font-weight: bold;
 }
+
 /* 履歴ボタン (統計エリア内) */
 .gm-history-btn {
-  position: absolute; /* 統計バッジの中央寄せを邪魔しないように絶対配置 */
+  position: absolute;
+  /* 統計バッジの中央寄せを邪魔しないように絶対配置 */
   right: 0;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid #444;
@@ -475,6 +499,7 @@
   white-space: nowrap;
   transition: all 0.2s;
 }
+
 .gm-history-btn:hover {
   background: var(--chara-main);
   border-color: #fff;
@@ -509,6 +534,7 @@
   padding: 8px;
   border-bottom: 1px solid #222;
 }
+
 .history-item:last-child {
   border-bottom: none;
 }
@@ -519,7 +545,8 @@
   background-size: cover;
   background-position: center;
   border-radius: 4px;
-  border: 1px solid #ffd700; /* S級色 */
+  border: 1px solid #ffd700;
+  /* S級色 */
   box-shadow: 0 0 5px rgba(255, 215, 0, 0.4);
   flex-shrink: 0;
 }
