@@ -122,10 +122,11 @@
 
 .gm-stats {
   display: flex;
-  justify-content: center; /* 3つを中央寄せ */
+  justify-content: center; /* バッジを中央寄せ */
   align-items: center;
   width: 100%;
-  gap: 0.8rem; /* 適切な余白 */
+  gap: 0.8rem;
+  position: relative; /* 履歴ボタンの基準点 */
 }
 
 .gm-stat-badge {
@@ -462,10 +463,12 @@
 }
 /* 履歴ボタン (統計エリア内) */
 .gm-history-btn {
+  position: absolute; /* 統計バッジの中央寄せを邪魔しないように絶対配置 */
+  right: 0;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid #444;
   color: #fff;
-  padding: 4px 20px; /* 横幅をもたせる */
+  padding: 4px 20px;
   border-radius: 4px;
   font-size: 0.8rem;
   cursor: pointer;
@@ -473,10 +476,10 @@
   transition: all 0.2s;
 }
 .gm-history-btn:hover {
-  background: var(--chara-main); /* 10連ボタンと同じ */
+  background: var(--chara-main);
   border-color: #fff;
   color: #000;
-  box-shadow: 0 0 15px var(--chara-main);
+  /* 発光(box-shadow)を削除 */
 }
 
 /* 履歴モーダル特有のスタイル */
