@@ -91,12 +91,6 @@
   margin-bottom: 0.8rem;
 }
 
-.gm-header-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-}
-
 .gm-back-btn {
   background: transparent;
   border: 1px solid #555;
@@ -133,6 +127,7 @@
   align-items: center;
   width: 100%;
   gap: 0.8rem;
+  position: relative; /* 履歴ボタンの基準点 */
 }
 
 .gm-stat-badge {
@@ -370,8 +365,8 @@
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: flex-start; /* 左寄せに変更 */
-    gap: 0.8rem; /* バッジ間の余白 */
+    justify-content: center; /* 中央寄せに変更 */
+    gap: 0.8rem;
     box-sizing: border-box;
     margin: 0;
   }
@@ -382,19 +377,22 @@
   }
 
   .gm-stats {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.5rem;
+    flex-wrap: nowrap; /* 1行に収める */
+    justify-content: flex-start; /* 左寄せに変更 */
+    gap: 0.4rem;
+    position: relative; /* 履歴ボタンの基準点 */
     padding-bottom: 0.3rem;
   }
 
   .gm-stat-badge {
-    font-size: 0.75rem;
-    padding: 0.3rem 0.6rem;
+    font-size: 0.7rem; /* 少し小さめに */
+    padding: 0.3rem 0.5rem;
   }
 
   .gm-history-btn {
-    padding: 4px 12px; /* スマホでは少しコンパクトに */
+    position: absolute !important;
+    right: 0 !important;
+    padding: 4px 12px;
     font-size: 0.75rem;
   }
 
@@ -482,8 +480,11 @@
   font-weight: bold;
 }
 
-/* 履歴ボタン (ヘッダー内のアクション) */
+/* 履歴ボタン (統計エリア内) */
 .gm-history-btn {
+  position: absolute;
+  /* 統計バッジの中央寄せを邪魔しないように絶対配置 */
+  right: 0;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid #444;
   color: #fff;
