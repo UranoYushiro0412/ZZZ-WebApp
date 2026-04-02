@@ -122,20 +122,20 @@
 
 .gm-stats {
   display: flex;
-  justify-content: space-between;
+  justify-content: center; /* 3つを中央寄せ */
+  align-items: center;
   width: 100%;
-  gap: 0.5rem;
+  gap: 0.8rem; /* 適切な余白 */
 }
 
 .gm-stat-badge {
   background: #222;
-  padding: 0.4rem;
+  padding: 0.4rem 0.8rem;
   border-radius: 4px;
   font-size: 0.85rem;
   white-space: nowrap;
-  /* 不自然な改行を防ぐ */
   text-align: center;
-  flex: 1;
+  /* flex: 1 を解除してコンテンツの幅に合わせる */
 }
 
 .stat-num {
@@ -465,7 +465,7 @@
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid #444;
   color: #fff;
-  padding: 4px 10px;
+  padding: 4px 20px; /* 横幅をもたせる */
   border-radius: 4px;
   font-size: 0.8rem;
   cursor: pointer;
@@ -473,9 +473,10 @@
   transition: all 0.2s;
 }
 .gm-history-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: #aaa;
-  box-shadow: 0 0 10px rgba(255,255,255,0.3);
+  background: var(--chara-main); /* 10連ボタンと同じ */
+  border-color: #fff;
+  color: #000;
+  box-shadow: 0 0 15px var(--chara-main);
 }
 
 /* 履歴モーダル特有のスタイル */
