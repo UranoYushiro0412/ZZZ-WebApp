@@ -94,6 +94,17 @@ export class GachaSystem {
         state.surinukeCount += 1;
       }
 
+      // 履歴に追加（最新を先頭に）
+      if (!state.history) state.history = [];
+      state.history.unshift({
+        name: resultName,
+        pulls: currentPullS,
+        isPickup: isPickup,
+        timestamp: Date.now()
+      });
+      // 履歴が多すぎる場合は古いものを削除（100件上限）
+      if (state.history.length > 100) state.history.pop();
+
     } else if (rank === 'A') {
       // ---- A級の処理 ----
       state.pityACount = 10; // A天井リセット

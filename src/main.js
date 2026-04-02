@@ -675,6 +675,67 @@ document.getElementById('mod-btn-reset')?.addEventListener('click', () => {
   gmModal.classList.add('hidden');
   updateGachaUI();
 });
+
+// --- 履歴モーダル処理 ---
+const gmHistoryModal = document.getElementById('gm-history-modal');
+const gmHistoryList = document.getElementById('gm-history-list');
+const gmBtnHistory = document.getElementById('gm-btn-history');
+const gmBtnHistoryClose = document.getElementById('gm-btn-history-close');
+
+function renderGachaHistory() {
+  if (!currentGacha || !gmHistoryList) return;
+  const state = currentGacha.getState();
+  const history = state.history || [];
+
+  if (history.length === 0) {
+    gmHistoryList.innerHTML = '<p style="text-align:center; color:#888; padding:20px;">履歴がありません。</p>';
+    return;
+  }
+
+  gmHistoryList.innerHTML = '';
+  history.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'history-item';
+
+    const imgPath = gachaImageMap[item.name];
+    let imgStyle = '';
+    if (imgPath) {
+      const baseUrl = import.meta.env.BASE_URL || "/";
+      const fullPath = baseUrl.endsWith("/") ? `${baseUrl}${imgPath}` : `${baseUrl}/${imgPath}`;
+      imgStyle = `style="background-image: url('${fullPath}')"`;
+    }
+
+    const dateStr = new Date(item.timestamp).toLocaleString('ja-JP', {
+      month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'
+    });
+
+    div.innerHTML = `
+      <div class="history-item-img" ${imgStyle}></div>
+      <div class="history-item-info">
+        <div class="history-item-name">${item.name}</div>
+        <div class="history-item-meta">
+          <span class="history-pull-tag">${item.pulls}連目</span>
+          <span class="history-date">${dateStr}</span>
+        </div>
+      </div>
+    `;
+    gmHistoryList.appendChild(div);
+  });
+}
+
+if (gmBtnHistory) {
+  gmBtnHistory.onclick = () => {
+    renderGachaHistory();
+    gmHistoryModal.classList.remove('hidden');
+  };
+}
+
+if (gmBtnHistoryClose) {
+  gmBtnHistoryClose.onclick = () => {
+    gmHistoryModal.classList.add('hidden');
+  };
+}
+
 // ====== Gacha Simulator End ======
 
 // Polychrome Calculator Logic

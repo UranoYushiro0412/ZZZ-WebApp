@@ -36,7 +36,8 @@ export class GachaStateManager {
         isGuaranteedPickup: false, // 次回のS級がピックアップ100%確定状態か？（すり抜けた後にTrueになる）
         totalPulls: 0,         // 累計引いた回数（UI表示用）
         pickupCount: 0,        // ピックアップを引いた回数
-        surinukeCount: 0       // すり抜けた回数
+        surinukeCount: 0,      // すり抜けた回数
+        history: []            // 履歴（S級当選データ）
       };
       this.saveState();
     }
@@ -60,7 +61,8 @@ export class GachaStateManager {
       isGuaranteedPickup: false,
       totalPulls: 0,
       pickupCount: 0,
-      surinukeCount: 0
+      surinukeCount: 0,
+      history: []
     };
     this.saveState();
   }

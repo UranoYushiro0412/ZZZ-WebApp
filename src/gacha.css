@@ -460,3 +460,97 @@
   cursor: pointer;
   font-weight: bold;
 }
+/* 履歴ボタン (統計エリア内) */
+.gm-history-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid #444;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.gm-history-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: #aaa;
+  box-shadow: 0 0 10px rgba(255,255,255,0.3);
+}
+
+/* 履歴モーダル特有のスタイル */
+.history-modal-content {
+  max-width: 450px !important;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.history-list {
+  flex: 1;
+  overflow-y: auto;
+  margin-top: 15px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  padding: 5px;
+  border: 1px solid #333;
+  min-height: 200px;
+}
+
+/* 各履歴アイテム */
+.history-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+  border-bottom: 1px solid #222;
+}
+.history-item:last-child {
+  border-bottom: none;
+}
+
+.history-item-img {
+  width: 48px;
+  height: 48px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 4px;
+  border: 1px solid #ffd700; /* S級色 */
+  box-shadow: 0 0 5px rgba(255, 215, 0, 0.4);
+  flex-shrink: 0;
+}
+
+.history-item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.history-item-name {
+  font-weight: bold;
+  color: #ffd700;
+  font-size: 0.9rem;
+  margin-bottom: 2px;
+}
+
+.history-item-meta {
+  font-size: 0.75rem;
+  color: #888;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.history-pull-tag {
+  color: #fff;
+  background: #333;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 0.7rem;
+}
+
+.history-date {
+  font-size: 0.65rem;
+  color: #666;
+}

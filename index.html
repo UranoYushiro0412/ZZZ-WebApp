@@ -160,8 +160,9 @@
           </div>
           <div class="gm-stats">
             <span class="gm-stat-badge">引いた回数: <span id="gm-stat-total" class="stat-num">0</span></span>
-            <span class="gm-stat-badge">Pick up: <span id="gm-stat-pickup" class="stat-num">0</span></span>
+            <span class="gm-stat-badge">PU: <span id="gm-stat-pickup" class="stat-num">0</span></span>
             <span class="gm-stat-badge">すり抜け: <span id="gm-stat-suri" class="stat-num">0</span></span>
+            <button id="gm-btn-history" class="gm-history-btn">履歴</button>
           </div>
         </div>
 
@@ -216,6 +217,20 @@
           </div>
         </div>
       </div>
+
+      <!-- 履歴モーダル枠 -->
+      <div id="gm-history-modal" class="modal-overlay hidden">
+        <div class="modal-content history-modal-content">
+          <h3 class="modal-title">SIGNAL SEARCH HISTORY // 履歴</h3>
+          <div id="gm-history-list" class="history-list">
+            <!-- JSで動的に追加 -->
+            <p style="text-align:center; color:#888; padding:20px;">履歴がありません。</p>
+          </div>
+          <div class="modal-group" style="margin-top:20px; text-align:center;">
+            <button id="gm-btn-history-close" class="btn-primary" style="width:100%;">閉じる</button>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- 画面4: ソウルハウンドIII (究極集大成版) -->
@@ -252,7 +267,7 @@
           <div class="sh-canvas-border bottom-left"></div>
           <div class="sh-canvas-border bottom-right"></div>
           <div class="crt-overlay"></div>
-          
+
           <canvas id="soul-hounds-canvas"></canvas>
 
           <div id="sh-start-screen" class="sh-start-screen">
