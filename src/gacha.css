@@ -88,7 +88,13 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.gm-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
 }
 
 .gm-back-btn {
@@ -127,8 +133,6 @@
   align-items: center;
   width: 100%;
   gap: 0.8rem;
-  position: relative;
-  /* 履歴ボタンの基準点 */
 }
 
 .gm-stat-badge {
@@ -362,29 +366,36 @@
     flex-direction: column;
   }
 
+  .gm-pity-info {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start; /* 左寄せに変更 */
+    gap: 0.8rem; /* バッジ間の余白 */
+    box-sizing: border-box;
+    margin: 0;
+  }
+
+  .gm-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
   .gm-stats {
-    flex-direction: column; /* 縦に並べることで重なりを確実に回避 */
-    gap: 0.4rem;
-    position: static;
-    padding: 0.5rem 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    padding-bottom: 0.3rem;
   }
 
   .gm-stat-badge {
-    font-size: 0.8rem;
-    padding: 0.35rem 1rem;
-    width: 100%;
-    max-width: 250px;
-    box-sizing: border-box;
+    font-size: 0.75rem;
+    padding: 0.3rem 0.6rem;
   }
 
   .gm-history-btn {
-    position: static !important; /* 絶対配置を強制解除 */
-    width: 100% !important;
-    max-width: 250px;
-    margin-top: 0.2rem;
-    right: auto !important;
-    top: auto !important;
-    transform: none !important;
+    padding: 4px 12px; /* スマホでは少しコンパクトに */
+    font-size: 0.75rem;
   }
 
   .gm-pull-btn {
@@ -471,11 +482,8 @@
   font-weight: bold;
 }
 
-/* 履歴ボタン (統計エリア内) */
+/* 履歴ボタン (ヘッダー内のアクション) */
 .gm-history-btn {
-  position: absolute;
-  /* 統計バッジの中央寄せを邪魔しないように絶対配置 */
-  right: 0;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid #444;
   color: #fff;
