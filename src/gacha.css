@@ -349,9 +349,8 @@
 }
 
 /* スマホ用レイアウト調整 */
-@media (max-width: 500px) {
+@media (max-width: 600px) {
   .gacha-main-container {
-    /* スマホのブラウザUIや上部ヘッダーを考慮してさらに短く設定 */
     height: calc(100vh - 150px);
   }
 
@@ -363,45 +362,33 @@
     flex-direction: column;
   }
 
-  .gm-pity-info {
-    width: 100%;
-    display: flex;
-    /* 明示的にflex指定 */
-    flex-direction: row;
-    justify-content: space-between;
-    box-sizing: border-box;
-    margin: 0;
-    /* 余計なマージンを排除 */
-  }
-
-  .gm-actions {
-    width: 100%;
-    justify-content: space-between;
-  }
-
   .gm-stats {
-    flex-wrap: wrap; /* スマホでは折り返しを許可 */
-    justify-content: center;
-    gap: 0.5rem;
-    position: static; /* 履歴ボタンの絶対配置基準を解除 */
-    padding-bottom: 0.5rem;
+    flex-direction: column; /* 縦に並べることで重なりを確実に回避 */
+    gap: 0.4rem;
+    position: static;
+    padding: 0.5rem 0;
   }
 
   .gm-stat-badge {
-    font-size: 0.75rem;
-    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+    padding: 0.35rem 1rem;
+    width: 100%;
+    max-width: 250px;
+    box-sizing: border-box;
   }
 
   .gm-history-btn {
-    position: static; /* 絶対配置を解除して下に並ぶようにする */
-    transform: none;
-    width: 60%; /* 横幅を持たせる */
+    position: static !important; /* 絶対配置を強制解除 */
+    width: 100% !important;
+    max-width: 250px;
     margin-top: 0.2rem;
+    right: auto !important;
+    top: auto !important;
+    transform: none !important;
   }
 
   .gm-pull-btn {
     flex: 1;
-    /* ボタンを横幅いっぱいに広げる */
   }
 }
 
