@@ -535,7 +535,7 @@
 
 .trend-chart-title {
   font-size: 0.8rem;
-  color: var(--boss-accent);
+  color: #ffffff;
   margin-bottom: 10px;
   font-weight: bold;
   letter-spacing: 1px;
@@ -608,7 +608,7 @@
 .boss-video-label {
   font-size: 0.85rem;
   font-weight: bold;
-  color: var(--boss-accent);
+  color: #ffffff;
   margin-bottom: 12px;
   letter-spacing: 1px;
 }
