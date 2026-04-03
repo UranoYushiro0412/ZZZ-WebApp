@@ -486,14 +486,18 @@
 
 .stat-label {
   color: #aaa;
-  line-height: 1 !important;
+  display: inline-flex;
+  align-items: center;
+  /* フォントの特性上、わずかに上に寄って見えるため1px下に微調整 */
+  transform: translateY(2.7px);
 }
 
 .stat-value {
   color: #fff;
   font-family: monospace;
   font-size: 0.85rem;
-  line-height: 1 !important;
+  display: inline-flex;
+  align-items: center;
 }
 
 /* SVG Radar Chart */
