@@ -101,7 +101,7 @@ h3,
 .subtitle {
   text-align: center;
   color: var(--text-sub);
-  margin-bottom: 3rem;
+  margin: 2rem 0;
 }
 
 /* Home Menu Grid */
