@@ -20,6 +20,8 @@ export const BOSS_LIST = [
   { id: "scavenger", name: "血狩りの掃除屋", weak: ["ether", "electric"], resist: ["fire"] }
 ];
 
+export const CURRENT_BOSS_IDS = ["scavenger", "priest", "marionette"];
+
 /**
  * ボス詳細用 動画プレビューデータ（動画があるボスのみ定義）
  */
