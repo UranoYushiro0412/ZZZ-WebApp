@@ -109,7 +109,7 @@ function renderBossList() {
   // 現在開催中のボス
   appendSidebarSection(bossSidebar, '現在開催中の危局強襲戦', currentBosses);
   // 全ボス選択（区切りとして20pxの余白を追加）
-  const allBossTitle = appendSidebarSection(bossSidebar, '全ボス一覧', BOSS_LIST);
+  const allBossTitle = appendSidebarSection(bossSidebar, 'ボス一覧', BOSS_LIST);
   if (allBossTitle) allBossTitle.style.marginTop = '30px';
 
   // 2. スマホ専用の一覧選択画面用 (画像付きカード形式)
@@ -120,7 +120,7 @@ function renderBossList() {
     // 現在開催中のボス (スマホ画面)
     appendMobileSection(bossMobileSelectList, '現在開催中の危局強襲戦', currentBosses);
     // ボス一覧 (スマホ画面)
-    const allMobHeading = appendMobileSection(bossMobileSelectList, '全ボス一覧', BOSS_LIST);
+    const allMobHeading = appendMobileSection(bossMobileSelectList, 'ボス一覧', BOSS_LIST);
     if (allMobHeading) allMobHeading.style.marginTop = '30px';
   }
 }
