@@ -26,10 +26,13 @@ export const CURRENT_BOSS_IDS = ["scavenger", "priest", "marionette"];
  * ボス詳細用 動画プレビューデータ（動画があるボスのみ定義）
  */
 export const BOSS_VIDEOS = {
-  "scavenger": {
-    url: "videos/boss/husatu_skill/scavenger.mp4",
-    title: "封殺スキル"
-  }
+  "scavenger": [
+    { url: "videos/boss/husatu_skill/scavenger.mp4", title: "封殺スキル" }
+  ],
+  "vespo": [
+    { url: "videos/boss/husatu_skill/vespo_1.mp4", title: "封殺スキル1" },
+    { url: "videos/boss/husatu_skill/vespo_2.mp4", title: "封殺スキル2" }
+  ]
 };
 
 /**

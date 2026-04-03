@@ -526,31 +526,65 @@ function showBossDetail(bossId, targetEl = null) {
           ${createHpTrendSvg(boss.name)}
         </div>
 
-        ${BOSS_VIDEOS[bossId] ? `
+        ${Array.isArray(BOSS_VIDEOS[bossId]) ? BOSS_VIDEOS[bossId].map((video, idx) => `
         <div class="boss-video-section">
-          <div class="boss-video-label">■ ${BOSS_VIDEOS[bossId].title || 'PREVIEW'}</div>
-          <div class="boss-video-container">
+          <div class="boss-video-label">■ ${video.title || 'PREVIEW'}</div>
+          <div class="boss-video-container" data-index="${idx}">
             <div class="video-overlay"></div>
-            <button class="btn-video-mute" title="Toggle Mute">🔇</button>
+            <div class="video-controls">
+              <button class="btn-video-mute" title="Toggle Mute">🔇</button>
+              <button class="btn-video-play" title="Play/Pause">⏸</button>
+              <button class="btn-video-expand" title="Fullscreen">⛶</button>
+            </div>
             <video autoplay loop muted playsinline>
-              <source src="${(import.meta.env.BASE_URL || '/').endsWith('/') ? (import.meta.env.BASE_URL || '/') + BOSS_VIDEOS[bossId].url : (import.meta.env.BASE_URL || '/') + '/' + BOSS_VIDEOS[bossId].url}" type="video/mp4">
+              <source src="${(import.meta.env.BASE_URL || '/').endsWith('/') ? (import.meta.env.BASE_URL || '/') + video.url : (import.meta.env.BASE_URL || '/') + '/' + video.url}" type="video/mp4">
             </video>
           </div>
         </div>
-        ` : ''}
+        `).join('') : ''}
       </div>
     </div>
   `;
 
-  // ミュート切り替えボタンのイベント登録
-  const muteBtn = bossDetail.querySelector('.btn-video-mute');
-  const videoEl = bossDetail.querySelector('.boss-video-container video');
-  if (muteBtn && videoEl) {
-    muteBtn.onclick = () => {
-      videoEl.muted = !videoEl.muted;
-      muteBtn.textContent = videoEl.muted ? '🔇' : '🔊';
-    };
-  }
+  // 各動画プレイヤーのイベント登録
+  const containers = bossDetail.querySelectorAll('.boss-video-container');
+  containers.forEach(container => {
+    const video = container.querySelector('video');
+    const muteBtn = container.querySelector('.btn-video-mute');
+    const playBtn = container.querySelector('.btn-video-play');
+    const expandBtn = container.querySelector('.btn-video-expand');
+
+    if (muteBtn && video) {
+      muteBtn.onclick = () => {
+        video.muted = !video.muted;
+        muteBtn.textContent = video.muted ? '🔇' : '🔊';
+      };
+    }
+
+    if (playBtn && video) {
+      playBtn.onclick = () => {
+        if (video.paused) {
+          video.play();
+          playBtn.textContent = '⏸';
+        } else {
+          video.pause();
+          playBtn.textContent = '▶';
+        }
+      };
+    }
+
+    if (expandBtn && video) {
+      expandBtn.onclick = () => {
+        if (video.requestFullscreen) {
+          video.requestFullscreen();
+        } else if (video.webkitRequestFullscreen) {
+          video.webkitRequestFullscreen();
+        } else if (video.msRequestFullscreen) {
+          video.msRequestFullscreen();
+        }
+      };
+    }
+  });
 }
 
 

@@ -680,12 +680,17 @@
   }
 }
 
-/* ミュートボタンのスタイル */
-.btn-video-mute {
+/* ビデオコントロール（右下） */
+.video-controls {
   position: absolute;
   bottom: 15px;
   right: 15px;
+  display: flex;
+  gap: 10px;
   z-index: 10;
+}
+
+.video-controls button {
   background: rgba(0, 0, 0, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.3);
   color: #fff;
@@ -701,13 +706,18 @@
   backdrop-filter: blur(4px);
 }
 
-.btn-video-mute:hover {
+.video-controls button:hover {
   background: rgba(0, 255, 204, 0.2);
   border-color: var(--boss-accent);
   box-shadow: 0 0 10px rgba(0, 255, 204, 0.4);
   transform: scale(1.1);
 }
 
-.btn-video-mute:active {
+.video-controls button:active {
   transform: scale(0.9);
+}
+
+/* 拡大表示時の調整 */
+video::backdrop {
+  background-color: #000;
 }
