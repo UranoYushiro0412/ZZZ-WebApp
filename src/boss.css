@@ -459,7 +459,8 @@
 .recent-values-list {
   flex: 1;
   min-width: 200px;
-  border-top: 1px solid #333; /* 最上部にも線を追加 */
+  border-top: 1px solid #333;
+  /* 最上部にも線を追加 */
 }
 
 /* モバイル用の調整 */
@@ -475,10 +476,11 @@
 .stat-row {
   display: flex;
   justify-content: space-between;
-  align-items: center; /* 垂直方向の中央揃え */
-  padding: 12px 0;     /* 上下パディングを均等に広げる */
+  align-items: center;
+  padding: 6px 0;
   border-bottom: 1px solid #333;
   font-size: 0.9rem;
+  line-height: 1; /* 垂直中央揃えを正確にするため */
 }
 
 .stat-label {
@@ -523,9 +525,8 @@
 
 /* HP推移グラフ (HP Trend Chart) */
 .boss-hp-trend-container {
-  margin-top: 25px;
   padding-top: 20px;
-  border-top: 1px solid #333;
+  /* border-top を削除（注釈エリアの枠線と統合するため） */
 }
 
 .trend-chart-wrapper {
