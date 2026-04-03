@@ -150,6 +150,16 @@ h3,
 
 .card-icon {
   font-size: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 4rem;
+}
+
+.card-icon img {
+  width: 4rem;
+  height: 4rem;
+  object-fit: contain;
 }
 
 .card-content h2 {
