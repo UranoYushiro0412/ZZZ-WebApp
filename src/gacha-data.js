@@ -1,3 +1,6 @@
+import { characterDb } from './character-db.js';
+import { weaponDb } from './weapon-db.js';
+
 export const stdCharactersS = ["猫又", "11号", "クレタ", "ライカン", "グレース", "リナ"];
 export const stdWeaponsS = [
   "鋼の肉球",
@@ -99,54 +102,32 @@ export const gachaBanners = [
   }
 ];
 
-// 画像マッピングデータ
-export const gachaImageMap = {
-  // S級キャラ（限定）
-  "南宮羽": "images/Scharas/NanguYu.png",
-  "イドリー": "images/Scharas/Idori.png",
-  "プロメイア": "images/Scharas/Promeia.png",
-  "スターライト・ビリー": "images/Scharas/NewBilly.png",
+// --- 画像マッピングの動的生成 ---
+const buildImageMap = () => {
+  const map = {};
 
-  // S級キャラ（恒常）
-  "猫又": "images/StdScharas/Nekomata.png",
-  "11号": "images/StdScharas/11gou.png",
-  "クレタ": "images/StdScharas/Kureta.png",
-  "ライカン": "images/StdScharas/Raikan.png",
-  "グレース": "images/StdScharas/Grace.png",
-  "リナ": "images/StdScharas/Rina.png",
+  // キャラクターの追加
+  for (const [name, data] of Object.entries(characterDb)) {
+    map[name] = data.image;
+  }
 
-  // S級武器（限定）
-  "南宮羽餅": "images/Sweapons/NanguYu_weapon.png",
-  "イドリー餅": "images/Sweapons/Idori_weapon.png",
-  "妄想ディスコテック": "images/Sweapons/NanguYu_weapon.png",
-  "セイレーンクレードル": "images/Sweapons/Idori_weapon.png",
+  // 武器の追加
+  for (const [name, data] of Object.entries(weaponDb)) {
+    if (name !== 'エイリアス') {
+      map[name] = data.image;
+    }
+  }
 
-  // S級武器（恒常）
-  "猫又餅（鋼の肉球）": "images/StdSweapons/Nekomata_weapon.png",
-  "「11号」餅（ブリムストーン）": "images/StdSweapons/11gou_weapon.png",
-  "クレタ餅（燃獄ギア）": "images/StdSweapons/Kureta_weapon.png",
-  "ライカン餅（拘縛されし者）": "images/StdSweapons/Raikan_weapon.png",
-  "グレース餅（複合コンパイラ）": "images/StdSweapons/Grace_weapon.png",
-  "リナ餅（啜り泣くゆりかご）": "images/StdSweapons/Rina_weapon.png",
-  "鋼の肉球": "images/StdSweapons/Nekomata_weapon.png",
-  "ブリムストーン": "images/StdSweapons/11gou_weapon.png",
-  "燃獄ギア": "images/StdSweapons/Kureta_weapon.png",
-  "拘縛されし者": "images/StdSweapons/Raikan_weapon.png",
-  "複合コンパイラ": "images/StdSweapons/Grace_weapon.png",
-  "啜り泣くゆりかご": "images/StdSweapons/Rina_weapon.png",
+  // 武器エイリアスの反映
+  if (weaponDb.エイリアス) {
+    for (const [alias, realName] of Object.entries(weaponDb.エイリアス)) {
+      if (weaponDb[realName]) {
+        map[alias] = weaponDb[realName].image;
+      }
+    }
+  }
 
-  // A級キャラ
-  "アンビー": "images/Acharas/Anby.png",
-  "ニコ": "images/Acharas/Nico.png",
-  "カリン": "images/Acharas/Karin.png",
-  "ビリー": "images/Acharas/Billy.png",
-  "アンドー": "images/Acharas/Ando.png",
-  "ベン": "images/Acharas/Ben.png",
-  "蒼角": "images/Acharas/Soukaku.png",
-  "ルーシー": "images/Acharas/Lucy.png",
-  "セス": "images/Acharas/Seth.png",
-  "パイパー": "images/Acharas/Piper.png",
-  "プルクラ": "images/Acharas/Pulchra.png",
-  "潘引壺": "images/Acharas/Pan.png",
-  "狛野真斗": "images/Acharas/Komano.png"
+  return map;
 };
+
+export const gachaImageMap = buildImageMap();
