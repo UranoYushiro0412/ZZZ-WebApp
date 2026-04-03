@@ -485,12 +485,14 @@
 
 .stat-label {
   color: #aaa;
+  line-height: 1;
 }
 
 .stat-value {
   color: #fff;
   font-family: monospace;
   font-size: 0.85rem;
+  line-height: 1;
 }
 
 /* SVG Radar Chart */
