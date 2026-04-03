@@ -516,8 +516,8 @@ function showBossDetail(bossId, targetEl = null) {
           </div>
         </div>
 
-        <div style="margin-top: 20px; border-top: 1px solid #333; padding-top: 15px;">
-           <p style="font-size: 0.75rem; color: #666;">
+        <div style="margin-top: 20px; border-top: 1px solid #333; border-bottom: 1px solid #333; padding: 15px 0;">
+           <p style="font-size: 0.75rem; color: #666; margin: 0; line-height: 1.5;">
              ${foundPeriod ? `※数値は第${foundPeriod}期の計測値に基づく推定です。` : '※全期間において計測データが見つかりませんでした。'}
              データがない項目は「--」と表示されます。
            </p>

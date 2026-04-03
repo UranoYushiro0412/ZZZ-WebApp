@@ -459,6 +459,7 @@
 .recent-values-list {
   flex: 1;
   min-width: 200px;
+  border-top: 1px solid #333; /* 最上部にも線を追加 */
 }
 
 /* モバイル用の調整 */
@@ -474,7 +475,8 @@
 .stat-row {
   display: flex;
   justify-content: space-between;
-  padding: 8px 0;
+  align-items: center; /* 垂直方向の中央揃え */
+  padding: 12px 0;     /* 上下パディングを均等に広げる */
   border-bottom: 1px solid #333;
   font-size: 0.9rem;
 }
