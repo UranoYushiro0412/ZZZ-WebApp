@@ -486,7 +486,7 @@
 .stat-value {
   color: #fff;
   font-family: monospace;
-  font-weight: bold;
+  font-size: 0.85rem;
 }
 
 /* SVG Radar Chart */
@@ -569,20 +569,23 @@
 }
 
 .trend-axis-label {
-  fill: #888; /* 横軸と同じ色 */
+  fill: #888;
+  /* 横軸と同じ色 */
   font-size: 10px;
   text-anchor: middle;
 }
 
 .trend-y-label {
-  fill: #888; /* Y軸も横軸と同じ色に統一 */
+  fill: #888;
+  /* Y軸も横軸と同じ色に統一 */
   font-size: 11px;
   text-anchor: end;
   font-family: monospace;
 }
 
 .trend-guide-line {
-  stroke: #888; /* ガイドラインも同じグレーに */
+  stroke: #888;
+  /* ガイドラインも同じグレーに */
   stroke-width: 1;
   stroke-dasharray: 2 2;
   opacity: 0.8;
@@ -593,7 +596,7 @@
   text-align: center;
   color: #666;
   font-size: 0.85rem;
-  background: rgba(0,0,0,0.2);
+  background: rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   border: 1px dashed #444;
 }
@@ -615,9 +618,11 @@
 
 .boss-video-container {
   position: relative;
-  width: 80%; /* PCでは少し小さめに */
+  width: 80%;
+  /* PCでは少し小さめに */
   margin: 0 auto;
-  aspect-ratio: 43 / 18; /* 3440 x 1440 の比率 */
+  aspect-ratio: 43 / 18;
+  /* 3440 x 1440 の比率 */
   border: 2px solid #333;
   border-radius: 8px;
   overflow: hidden;
@@ -635,7 +640,10 @@
 /* 走査線エフェクトオーバーレイ */
 .video-overlay {
   position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
   background-size: 100% 4px;
   pointer-events: none;
@@ -646,14 +654,16 @@
 /* スマホ用レスポンシブ対応 */
 @media (max-width: 900px) {
   .boss-video-container {
-    width: 100%; /* スマホでは横いっぱいに */
+    width: 100%;
+    /* スマホでは横いっぱいに */
     border-radius: 0;
     border-left: none;
     border-right: none;
   }
-  
+
   .boss-video-section {
-    margin-left: -20px; /* 親のパディングを相殺 */
+    margin-left: -20px;
+    /* 親のパディングを相殺 */
     margin-right: -20px;
     padding-left: 20px;
     padding-right: 20px;
