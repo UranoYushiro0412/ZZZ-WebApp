@@ -49,7 +49,7 @@ function showView(viewId) {
         if (bossDetail) bossDetail.style.display = 'block';
         document.body.style.overflow = '';
         if (BOSS_LIST.length > 0) {
-          showBossDetail(BOSS_LIST[0].id);
+          showBossDetail(CURRENT_BOSS_IDS[0]);
         }
       }
     } else {
@@ -138,7 +138,7 @@ function appendSidebarSection(container, titleText, bosses) {
     const li = document.createElement('li');
     li.textContent = boss.name;
     li.classList.add('boss-li');
-    li.addEventListener('click', () => showBossDetail(boss.id));
+    li.addEventListener('click', () => showBossDetail(boss.id, li));
     ul.appendChild(li);
   });
   container.appendChild(ul);
@@ -413,7 +413,7 @@ window.addEventListener('scroll', () => {
 /**
  * ボス詳細の表示
  */
-function showBossDetail(bossId) {
+function showBossDetail(bossId, targetEl = null) {
   const boss = BOSS_LIST.find(b => b.id === bossId);
   if (!boss) return;
 
@@ -431,9 +431,17 @@ function showBossDetail(bossId) {
   }
 
   // アクティブハイライトの更新
-  document.querySelectorAll('.boss-li').forEach(li => {
-    li.classList.toggle('active', li.textContent === boss.name);
-  });
+  const allLis = document.querySelectorAll('.boss-li');
+  allLis.forEach(li => li.classList.remove('active'));
+
+  if (targetEl) {
+    // クリックされた要素がある場合はそれを光らせる
+    targetEl.classList.add('active');
+  } else {
+    // 初期ロード時など、要素が指定されていない場合は最初に見つかったものを光らせる
+    const firstMatched = Array.from(allLis).find(li => li.textContent === boss.name);
+    if (firstMatched) firstMatched.classList.add('active');
+  }
 
   // 事前に計算済みの最新データを取得
   const latestInfo = BOSS_LATEST_DATA[bossId] || { period: null, data: null };
