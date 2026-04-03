@@ -575,12 +575,14 @@ function showBossDetail(bossId, targetEl = null) {
 
     if (expandBtn && video) {
       expandBtn.onclick = () => {
-        if (video.requestFullscreen) {
-          video.requestFullscreen();
-        } else if (video.webkitRequestFullscreen) {
-          video.webkitRequestFullscreen();
-        } else if (video.msRequestFullscreen) {
-          video.msRequestFullscreen();
+        // ビデオ本体ではなく、コンテナを全画面化することで
+        // アスペクト比を維持し、かつ自作UIコントロールを全画面でも表示可能にする
+        if (container.requestFullscreen) {
+          container.requestFullscreen();
+        } else if (container.webkitRequestFullscreen) {
+          container.webkitRequestFullscreen();
+        } else if (container.msRequestFullscreen) {
+          container.msRequestFullscreen();
         }
       };
     }

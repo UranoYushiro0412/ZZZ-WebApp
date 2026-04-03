@@ -134,7 +134,7 @@
 .boss-image-container {
   width: 100%;
   aspect-ratio: 1 / 1.415;
-  /* ご指定の比率（白銀比に近い比率） */
+  /* ご指定ের比率（白銀比に近い比率） */
   overflow: hidden;
   border-radius: 8px;
   border: 1px solid #444;
@@ -702,6 +702,8 @@
   justify-content: center;
   align-items: center;
   font-size: 1.2rem;
+  line-height: 1;
+  /* アイコンの垂直中央揃えを改善 */
   transition: all 0.2s ease;
   backdrop-filter: blur(4px);
 }
@@ -715,6 +717,21 @@
 
 .video-controls button:active {
   transform: scale(0.9);
+}
+
+/* 全画面表示時の調整 */
+.boss-video-container:fullscreen {
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.boss-video-container:fullscreen video {
+  width: 100vw;
+  height: 100vh;
+  object-fit: contain;
+  /* 全画面時は見切れず全体を表示 */
 }
 
 /* 拡大表示時の調整 */
