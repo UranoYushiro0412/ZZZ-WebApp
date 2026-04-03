@@ -303,6 +303,11 @@
   font-size: 1rem;
 }
 
+/* サブタイトル直後の余白を調整 */
+#view-boss-mobile-select .subtitle {
+  margin-bottom: 1rem;
+}
+
 .boss-select-card {
   display: flex;
   align-items: center;
