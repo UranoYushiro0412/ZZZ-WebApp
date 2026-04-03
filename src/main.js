@@ -15,7 +15,7 @@ import './soul-hounds.css';
 const viewHome = document.getElementById('view-home');
 const viewBoss = document.getElementById('view-boss');
 const btnHome = document.getElementById('btn-home');
-const bossList = document.getElementById('boss-list');
+const bossSidebar = document.getElementById('boss-sidebar'); // 変更
 const bossDetail = document.getElementById('boss-detail');
 
 // Navigation Logic
@@ -99,37 +99,76 @@ document.querySelectorAll('.menu-card:not(.disabled)').forEach(card => {
 
 // Boss List Rendering
 function renderBossList() {
-  if (!bossList) return;
-  bossList.innerHTML = '';
+  if (!bossSidebar) return;
 
+  const currentBossIds = ['scavenger', 'priest', 'marionette'];
+  const currentBosses = currentBossIds.map(id => BOSS_LIST.find(b => b.id === id)).filter(Boolean);
+
+  // 1. Sidebar (PCおよびスマホのドロワー用)
+  bossSidebar.innerHTML = '';
+
+  // 現在開催中のボス
+  appendSidebarSection(bossSidebar, '現在開催中のボス', currentBosses);
+  // 全ボス選択（区切りとして20pxの余白を追加）
+  const allBossTitle = appendSidebarSection(bossSidebar, 'ボス選択', BOSS_LIST);
+  if (allBossTitle) allBossTitle.style.marginTop = '30px';
+
+  // 2. スマホ専用の一覧選択画面用 (画像付きカード形式)
   const bossMobileSelectList = document.getElementById('boss-mobile-select-list');
-  if (bossMobileSelectList) bossMobileSelectList.innerHTML = '';
+  if (bossMobileSelectList) {
+    bossMobileSelectList.innerHTML = '';
 
-  BOSS_LIST.forEach(boss => {
-    // サイドバーリスト（PCおよびスマホのドロワー用）
+    // 現在開催中のボス (スマホ画面)
+    appendMobileSection(bossMobileSelectList, '現在開催中のボス', currentBosses);
+    // ボス一覧 (スマホ画面)
+    const allMobHeading = appendMobileSection(bossMobileSelectList, 'ボス一覧', BOSS_LIST);
+    if (allMobHeading) allMobHeading.style.marginTop = '30px';
+  }
+}
+
+// Sidebar用のセクション追加ヘルパー
+function appendSidebarSection(container, titleText, bosses) {
+  const h3 = document.createElement('h3');
+  h3.className = 'section-heading';
+  h3.textContent = titleText;
+  container.appendChild(h3);
+
+  const ul = document.createElement('ul');
+  ul.className = 'boss-ul';
+  bosses.forEach(boss => {
     const li = document.createElement('li');
     li.textContent = boss.name;
     li.classList.add('boss-li');
     li.addEventListener('click', () => showBossDetail(boss.id));
-    bossList.appendChild(li);
-
-    // スマホ専用の一覧選択画面用（画像付きカード形式）
-    if (bossMobileSelectList) {
-      const card = document.createElement('div');
-      card.className = 'boss-select-card';
-      card.innerHTML = `
-        <img src="images/kikyoku_boss/${boss.id}.png" alt="${boss.name}" class="boss-select-card-img">
-        <div class="boss-select-card-info">
-          <div class="boss-select-card-name">${boss.name}</div>
-        </div>
-      `;
-      card.addEventListener('click', () => {
-        showView('view-boss');
-        showBossDetail(boss.id);
-      });
-      bossMobileSelectList.appendChild(card);
-    }
+    ul.appendChild(li);
   });
+  container.appendChild(ul);
+  return h3;
+}
+
+// スマホ選択画面用のセクション追加ヘルパー
+function appendMobileSection(container, titleText, bosses) {
+  const h3 = document.createElement('h3');
+  h3.className = 'section-heading'; // PCと同じスタイルを適用
+  h3.textContent = titleText;
+  container.appendChild(h3);
+
+  bosses.forEach(boss => {
+    const card = document.createElement('div');
+    card.className = 'boss-select-card';
+    card.innerHTML = `
+      <img src="images/kikyoku_boss/${boss.id}.png" alt="${boss.name}" class="boss-select-card-img">
+      <div class="boss-select-card-info">
+        <div class="boss-select-card-name">${boss.name}</div>
+      </div>
+    `;
+    card.addEventListener('click', () => {
+      showView('view-boss');
+      showBossDetail(boss.id);
+    });
+    container.appendChild(card);
+  });
+  return h3;
 }
 
 // ボスデータの解析とキャッシュ（起動時に一度だけ実行）

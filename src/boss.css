@@ -295,6 +295,14 @@
   padding: 0 15px 40px;
 }
 
+.boss-mobile-select-list .section-heading {
+  margin: 20px 0 10px;
+  padding-left: 5px;
+  border-left: 3px solid var(--boss-accent);
+  color: #fff;
+  font-size: 1rem;
+}
+
 .boss-select-card {
   display: flex;
   align-items: center;
