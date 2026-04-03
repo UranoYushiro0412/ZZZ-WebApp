@@ -532,7 +532,7 @@ function showBossDetail(bossId, targetEl = null) {
           <div class="boss-video-container" data-index="${idx}">
             <div class="video-overlay"></div>
             <div class="video-controls">
-              <button class="btn-video-mute" title="Toggle Mute">🔇</button>
+              <button class="btn-video-mute" title="Mute">🔇</button>
               <button class="btn-video-play" title="Play/Pause">⏸</button>
               <button class="btn-video-expand" title="Fullscreen">⛶</button>
             </div>
@@ -575,14 +575,25 @@ function showBossDetail(bossId, targetEl = null) {
 
     if (expandBtn && video) {
       expandBtn.onclick = () => {
-        // ビデオ本体ではなく、コンテナを全画面化することで
-        // アスペクト比を維持し、かつ自作UIコントロールを全画面でも表示可能にする
-        if (container.requestFullscreen) {
-          container.requestFullscreen();
-        } else if (container.webkitRequestFullscreen) {
-          container.webkitRequestFullscreen();
-        } else if (container.msRequestFullscreen) {
-          container.msRequestFullscreen();
+        // 全画面表示のトグル（開始/解除）
+        if (!document.fullscreenElement && 
+            !document.webkitFullscreenElement && 
+            !document.msFullscreenElement) {
+          if (container.requestFullscreen) {
+            container.requestFullscreen();
+          } else if (container.webkitRequestFullscreen) {
+            container.webkitRequestFullscreen();
+          } else if (container.msRequestFullscreen) {
+            container.msRequestFullscreen();
+          }
+        } else {
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+          } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+          } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+          }
         }
       };
     }
