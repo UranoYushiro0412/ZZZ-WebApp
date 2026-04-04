@@ -4,9 +4,9 @@ export class GameTV {
     this.scoreEl = scoreEl;
     this.onGameOver = onGameOver; // Callback
     
-    this.gridSize = 6;
-    this.player = { x: 2, y: 2 };
-    this.coin = { x: 4, y: 4 };
+    this.gridSize = 7;
+    this.player = { x: 3, y: 3 };
+    this.coin = { x: 5, y: 5 };
     this.enemies = []; // {x, y}
     this.score = 0;
     this.isPlaying = false;
@@ -130,7 +130,7 @@ export class GameTV {
   start() {
     this.score = 0;
     this.scoreEl.textContent = this.score;
-    this.player = { x: 2, y: 2 };
+    this.player = { x: 3, y: 3 };
     this.enemies = [];
     this.spawnCoin();
     this.isPlaying = true;
@@ -154,8 +154,8 @@ export class GameTV {
     this.stop();
     this.score = 0;
     this.scoreEl.textContent = this.score;
-    this.player = { x: 2, y: 2 };
-    this.coin = { x: 4, y: 4 };
+    this.player = { x: 3, y: 3 };
+    this.coin = { x: 5, y: 5 };
     this.enemies = [];
     this.render();
   }

@@ -1,55 +1,113 @@
 /* ホロウ探索風（TVゲーム）専用のCSS */
+
+.tv-header-nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  width: 100%;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.tv-back-btn {
+  width: 45px;
+  height: 45px;
+  background: #2a2245;
+  border: 2px solid #3d2b5e;
+  border-radius: 10px;
+  color: #a389ff;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tv-back-btn:hover {
+  background: #3d2b5e;
+  color: #fff;
+  transform: scale(1.05);
+}
+
 .game-container {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
-  gap: 3rem;
-  max-width: 900px;
+  gap: 4rem;
+  max-width: 1000px;
   margin: 0 auto;
 }
 
-.tv-main-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+.tv-left-column {
+  flex: 0 0 auto;
 }
 
-@media (max-width: 800px) {
+.tv-right-column {
+  flex: 0 1 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem; /* スコアと操作キーの間の距離を広げる */
+}
+
+@media (max-width: 850px) {
+  .tv-header-nav {
+    justify-content: center;
+  }
   .game-container {
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
+    gap: 2rem;
   }
 }
 
 .game-header {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 1rem;
   width: 100%;
-  padding: 1rem;
-  background: rgba(0,0,0,0.6);
-  border: 1px solid #333;
-  border-radius: 8px;
+  padding: 1.2rem;
+  background: rgba(0,0,0,0.7);
+  border: 1px solid #3d2b5e;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+.tv-score-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.3rem;
+}
+
+.score-label {
+  font-size: 0.8rem;
+  color: #a389ff;
+  font-family: 'Jura', sans-serif;
+  letter-spacing: 2px;
 }
 
 .score-board {
-  font-size: 1.5rem;
+  font-size: 2.2rem;
   font-family: 'Jura', sans-serif;
   color: var(--chara-accent);
+  text-shadow: 0 0 10px var(--chara-accent);
 }
 
-/* TV Grid Board */
+/* TV Grid Board - Changed to 7x7 */
 .tv-board {
   display: grid;
-  grid-template-columns: repeat(6, 45px); /* 6x6 grid */
-  grid-template-rows: repeat(6, 45px);
+  grid-template-columns: repeat(7, 50px);
+  grid-template-rows: repeat(7, 50px);
   gap: 4px;
   background: #111;
-  padding: 8px;
-  border-radius: 12px;
-  border: 4px solid #222;
-  box-shadow: 0 0 20px rgba(0,0,0,0.8), inset 0 0 10px rgba(0,255,100,0.05);
+  padding: 10px;
+  border-radius: 14px;
+  border: 6px solid #2a2245;
+  box-shadow: 0 0 30px rgba(0,0,0,0.8), inset 0 0 15px rgba(163,137,255,0.1);
   position: relative;
   overflow: hidden;
 }
@@ -77,7 +135,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   transition: transform 0.1s, background-color 0.2s;
   box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
 }
@@ -85,27 +143,27 @@
 /* プレイヤー：青いテレビ（ボンプ） */
 .tv-cell.player {
   background: #3498db;
-  box-shadow: 0 0 10px #3498db;
+  box-shadow: 0 0 15px #3498db;
   transform: scale(1.05);
   z-index: 10;
 }
-.tv-cell.player::after { content: '📺'; } /* シンプルに絵文字で表現 */
+.tv-cell.player::after { content: '📺'; }
 
 /* コイン：黄色のギアコイン */
 .tv-cell.coin {
   background: var(--chara-accent);
-  box-shadow: 0 0 10px var(--chara-accent);
+  box-shadow: 0 0 15px var(--chara-accent);
   animation: pulseCoin 1s infinite alternate;
 }
-.tv-cell.coin::after { content: '🪙'; font-size: 1.2rem; }
+.tv-cell.coin::after { content: '🪙'; font-size: 1.4rem; }
 
-/* 敵（侵蝕エリア）：赤いテレビ */
+/* 敵（侵食エリア）：赤いテレビ */
 .tv-cell.enemy {
   background: #e74c3c;
-  box-shadow: 0 0 10px #e74c3c;
+  box-shadow: 0 0 15px #e74c3c;
   animation: jitter 0.2s infinite;
 }
-.tv-cell.enemy::after { content: '❌'; font-size: 1.2rem; }
+.tv-cell.enemy::after { content: '❌'; font-size: 1.4rem; }
 
 @keyframes pulseCoin {
   from { transform: scale(0.9); opacity: 0.8; }
@@ -121,40 +179,49 @@
 /* コントローラー（十字キー） */
 .dpad {
   display: grid;
-  grid-template-columns: repeat(3, 60px);
-  grid-template-rows: repeat(3, 60px);
-  gap: 10px;
+  grid-template-columns: repeat(3, 70px);
+  grid-template-rows: repeat(3, 70px);
+  gap: 12px;
   margin-top: 1rem;
 }
 
 .btn-dir {
-  background: #2c3e50;
-  border: 2px solid #555;
+  background: #2a2245;
+  border: 2px solid #3d2b5e;
   color: white;
-  font-size: 1.8rem;
-  border-radius: 8px;
+  font-size: 2rem;
+  border-radius: 12px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   user-select: none;
-  touch-action: manipulation; /* スマホでのズーム防止 */
+  touch-action: manipulation;
+  transition: 0.2s;
+  box-shadow: 0 4px 0 #111;
+}
+
+.btn-dir:hover {
+  background: #3d2b5e;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #111;
 }
 
 .btn-dir:active {
   background: var(--chara-main);
-  border-color: #fff;
-  transform: scale(0.95);
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #111;
 }
 
-.btn-up { grid-column: 2; grid-row: 1; border-top-left-radius: 12px; border-top-right-radius: 12px; }
-.btn-left { grid-column: 1; grid-row: 2; border-top-left-radius: 12px; border-bottom-left-radius: 12px; }
-.btn-right { grid-column: 3; grid-row: 2; border-top-right-radius: 12px; border-bottom-right-radius: 12px; }
-.btn-down { grid-column: 2; grid-row: 3; border-bottom-left-radius: 12px; border-bottom-right-radius: 12px; }
+.btn-up { grid-column: 2; grid-row: 1; }
+.btn-left { grid-column: 1; grid-row: 2; }
+.btn-right { grid-column: 3; grid-row: 2; }
+.btn-down { grid-column: 2; grid-row: 3; }
 
-@media (max-width: 400px) {
+@media (max-width: 500px) {
   .tv-board {
-    grid-template-columns: repeat(6, 40px);
-    grid-template-rows: repeat(6, 40px);
+    grid-template-columns: repeat(7, 40px);
+    grid-template-rows: repeat(7, 40px);
   }
 }
+

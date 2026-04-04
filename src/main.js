@@ -198,6 +198,11 @@ if (btnTVStart) {
     window.currentGameTV.start();
     btnTVStart.style.display = 'none';
   };
+
+  const btnTVBack = document.getElementById('btn-tv-back');
+  if (btnTVBack) {
+    btnTVBack.onclick = () => showView('view-home');
+  }
 }
 
 const btnCoinStart = document.getElementById('btn-coin-start');
