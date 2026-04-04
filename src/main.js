@@ -175,14 +175,14 @@ initGachaModals({
 
 // --- 各種ミニゲームの初期化 ---
 const btnTVStart = document.getElementById('btn-tv-start');
-if (btnTVStart) {
-  const tvBoard = document.getElementById('tv-board');
-  const tvScore = document.getElementById('tv-score');
-  
+const tvBoard = document.getElementById('tv-board');
+const tvScore = document.getElementById('tv-score');
+
+if (btnTVStart && tvBoard && tvScore) {
   // インスタンスは最初の一度だけ生成する
   window.currentGameTV = new GameTV(tvBoard, tvScore, (score, msg) => {
     alert(`${msg}\n最終スコア: ${score}`);
-    btnTVStart.classList.remove('v-hidden');
+    if (btnTVStart) btnTVStart.classList.remove('v-hidden');
     window.currentGameTV.stopAndReset();
   });
   
@@ -196,8 +196,10 @@ if (btnTVStart) {
 
   btnTVStart.onclick = () => {
     const countdownEl = document.getElementById('tv-countdown');
-    window.currentGameTV.startCountdown(countdownEl);
-    btnTVStart.classList.add('v-hidden');
+    if (window.currentGameTV) {
+      window.currentGameTV.startCountdown(countdownEl);
+      btnTVStart.classList.add('v-hidden');
+    }
   };
 
   const btnTVBack = document.getElementById('btn-tv-back');

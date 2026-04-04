@@ -129,6 +129,10 @@ export class GameTV {
   // カウントダウン演出を伴う開始
   startCountdown(countdownEl) {
     if (this.isPlaying) return;
+    if (!countdownEl) {
+      this.start(); // フォールバック
+      return;
+    }
 
     // 初期盤面を描画（カウントダウン中に背景が見えるように）
     this.score = 0;
@@ -139,29 +143,35 @@ export class GameTV {
     this.render();
 
     let count = 3;
-    countdownEl.classList.remove('hidden');
+    // 初期状態セット
     countdownEl.textContent = count;
+    countdownEl.classList.remove('hidden');
     countdownEl.classList.add('pop');
 
-    const timer = setInterval(() => {
+    // 以前のタイマーがあれば掃除
+    if (this.countdownTimer) clearInterval(this.countdownTimer);
+
+    this.countdownTimer = setInterval(() => {
       count--;
       if (count > 0) {
         countdownEl.textContent = count;
         countdownEl.classList.remove('pop');
-        countdownEl.offsetHeight; // reflow
+        void countdownEl.offsetWidth; // reflow
         countdownEl.classList.add('pop');
       } else if (count === 0) {
         countdownEl.textContent = "START!";
         countdownEl.classList.remove('pop');
-        countdownEl.offsetHeight;
+        void countdownEl.offsetWidth;
         countdownEl.classList.add('pop');
       } else {
-        clearInterval(timer);
+        clearInterval(this.countdownTimer);
+        this.countdownTimer = null;
         countdownEl.classList.add('hidden');
         countdownEl.classList.remove('pop');
+        countdownEl.textContent = "";
         this.start(true); // すでに初期化済みなので引数でスキップ
       }
-    }, 1000);
+    }, 800); // 1秒だと少し長いので0.8秒に短縮
   }
 
   // ゲームスタート
@@ -186,7 +196,17 @@ export class GameTV {
   // 完全停止
   stop() {
     this.isPlaying = false;
-    if(this.spawnTimer) clearInterval(this.spawnTimer);
+    if (this.spawnTimer) clearInterval(this.spawnTimer);
+    if (this.countdownTimer) clearInterval(this.countdownTimer);
+    this.spawnTimer = null;
+    this.countdownTimer = null;
+
+    // カウントダウン表示が出ていれば隠す
+    const countdownEl = document.getElementById('tv-countdown');
+    if (countdownEl) {
+      countdownEl.classList.add('hidden');
+      countdownEl.classList.remove('pop');
+    }
   }
 
   // 停止して初期盤面にリセット（ホームに戻った時やゲームオーバー時に呼ぶ）
