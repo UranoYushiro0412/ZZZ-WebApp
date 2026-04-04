@@ -64,7 +64,7 @@
   display: flex;
   flex-direction: column;
   /* サイトヘッダー等を除いた、画面内に収まる高さに調整 */
-  height: calc(100vh - 140px);
+  height: calc(100vh - 95px);
   max-width: 900px;
   margin: 0 auto;
   background: #000;
@@ -108,7 +108,8 @@
 .gm-back-btn::before {
   content: '⮌';
   display: block;
-  transform: translateY(-2px); /* 視覚的な中央揃えのための微調整 */
+  transform: translateY(-2.5px);
+  /* 視覚的な中央揃えのための微調整 */
 }
 
 .gm-back-btn:hover {
@@ -129,7 +130,8 @@
   align-items: center;
   width: 100%;
   gap: 0.8rem;
-  position: relative; /* 履歴ボタンの基準点 */
+  position: relative;
+  /* 履歴ボタンの基準点 */
 }
 
 .gm-stat-badge {
@@ -367,7 +369,8 @@
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: center; /* 中央寄せに変更 */
+    justify-content: center;
+    /* 中央寄せに変更 */
     gap: 0.8rem;
     box-sizing: border-box;
     margin: 0;
@@ -379,15 +382,19 @@
   }
 
   .gm-stats {
-    flex-wrap: nowrap; /* 1行に収める */
-    justify-content: flex-start; /* 左寄せに変更 */
+    flex-wrap: nowrap;
+    /* 1行に収める */
+    justify-content: flex-start;
+    /* 左寄せに変更 */
     gap: 0.4rem;
-    position: relative; /* 履歴ボタンの基準点 */
+    position: relative;
+    /* 履歴ボタンの基準点 */
     padding-bottom: 0.3rem;
   }
 
   .gm-stat-badge {
-    font-size: 0.7rem; /* 少し小さめに */
+    font-size: 0.7rem;
+    /* 少し小さめに */
     padding: 0.3rem 0.5rem;
   }
 
