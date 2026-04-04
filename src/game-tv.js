@@ -237,6 +237,17 @@ export class GameTV {
         } else if (this.enemies.some(e => e.x === x && e.y === y)) {
           cell.classList.add('enemy');
         }
+
+        // タップ移動（スマホ向け・PCでも動作）
+        cell.onclick = () => {
+          if (!this.isPlaying) return;
+          const dx = x - this.player.x;
+          const dy = y - this.player.y;
+          // 隣接（距離1）なら移動
+          if ((Math.abs(dx) === 1 && dy === 0) || (Math.abs(dy) === 1 && dx === 0)) {
+            this.movePlayer(dx, dy);
+          }
+        };
         
         this.boardEl.appendChild(cell);
       }

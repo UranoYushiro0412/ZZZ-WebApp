@@ -70,7 +70,38 @@
   .game-container {
     flex-direction: column;
     align-items: center;
-    gap: 2rem;
+    gap: 1.5rem;
+  }
+
+  .tv-right-column {
+    order: 1; /* スコア・ボタン領域を盤面より上に配置 */
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .game-header {
+    width: 100% !important; /* スコア領域を横幅いっぱいに */
+    justify-content: space-around;
+  }
+
+  .tv-left-column {
+    order: 2; /* 盤面をスコアの下に配置 */
+  }
+
+  .dpad {
+    display: none !important; /* スマホ（横幅850px以下）では移動キーを非表示 */
+  }
+}
+
+@media (max-width: 500px) {
+  .tv-grid {
+    grid-template-columns: repeat(7, 36px); /* 36pxに縮小 */
+    grid-template-rows: repeat(7, 36px);
+    gap: 3px;
+  }
+  .tv-board {
+    padding: 6px;
+    border-width: 4px;
   }
 }
 
@@ -246,7 +277,8 @@
   background: #2a2245;
   border: 2px solid #3d2b5e;
   color: white;
-  font-size: 2rem; /* 基本サイズ */
+  font-size: 2rem;
+  /* 基本サイズ */
   border-radius: 12px;
   cursor: pointer;
   display: flex;
@@ -261,7 +293,8 @@
 }
 
 .btn-dir:hover {
-  background: #3d2b5e; /* v329. */
+  background: #3d2b5e;
+  /* v329. */
   transform: translateY(-2px);
   box-shadow: 0 6px 0 #111;
 }
@@ -276,7 +309,8 @@
 .btn-up {
   grid-column: 2;
   grid-row: 1;
-  font-size: 2rem; /* ユーザー様にてここを調整可能 */
+  font-size: 2.5rem;
+  /* ユーザー様にてここを調整可能 */
 }
 
 .btn-left {
@@ -294,7 +328,7 @@
 .btn-down {
   grid-column: 2;
   grid-row: 3;
-  font-size: 2rem;
+  font-size: 2.5rem;
 }
 
 @media (max-width: 500px) {
