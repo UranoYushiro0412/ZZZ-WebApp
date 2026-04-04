@@ -113,11 +113,24 @@ export function renderGachaHistory({ currentGacha, gmHistoryList }) {
   history.forEach(item => {
     const div = document.createElement('div');
     div.className = 'history-item';
-    const rankClass = item.rank ? item.rank.toLowerCase() : 's';
+
+    // 画像パスの特定
+    const imgUrl = gachaImageMap[item.name] || '';
+    const baseUrl = import.meta.env.BASE_URL || '/';
+    const fullImgUrl = imgUrl 
+      ? (baseUrl.endsWith('/') ? baseUrl + imgUrl : baseUrl + '/' + imgUrl)
+      : '';
+
     div.innerHTML = `
-      <span class="hist-rank-${rankClass}">[${item.rank || 'S'}]</span>
-      <span class="hist-name">${item.name}</span>
-      <span class="hist-count">${item.pityCount || item.pulls || '--'}回目</span>
+      <div class="history-item-img" style="background-image: url('${fullImgUrl}')"></div>
+      <div class="history-item-info">
+        <div class="history-item-name">${item.name}</div>
+        <div class="history-item-meta">
+          <span class="history-pull-tag">${item.rank || 'S'}級</span>
+          <span class="history-date">${new Date(item.timestamp).toLocaleDateString()} ${new Date(item.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+          <span class="history-pull-tag">${item.pityCount || item.pulls || '--'}回目</span>
+        </div>
+      </div>
     `;
     gmHistoryList.appendChild(div);
   });
