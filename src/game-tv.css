@@ -398,7 +398,6 @@
   .tv-grid {
     width: 80vw !important;
     height: 80vw !important;
-    max-width: 400px !important;
     grid-template-columns: repeat(7, 1fr) !important;
     grid-template-rows: repeat(7, 1fr) !important;
   }
@@ -407,5 +406,7 @@
     padding: 5px;
     border-width: 3px;
     margin: 0 auto !important;
+    display: flex !important;
+    justify-content: center !important;
   }
 }
