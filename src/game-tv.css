@@ -396,15 +396,16 @@
   }
 
   .tv-grid {
-    /* 基底スタイルの 50px を確実に上書き */
-    grid-template-columns: repeat(7, 26px) !important;
-    grid-template-rows: repeat(7, 26px) !important;
-    gap: 3px;
+    width: 80vw !important;
+    height: 80vw !important;
+    max-width: 400px !important;
+    grid-template-columns: repeat(7, 1fr) !important;
+    grid-template-rows: repeat(7, 1fr) !important;
   }
 
   .tv-board {
     padding: 5px;
     border-width: 3px;
-    margin-top: 0 !important;
+    margin: 0 auto !important;
   }
 }
