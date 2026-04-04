@@ -241,12 +241,12 @@
 }
 
 .btn-dir {
-  width: 70px; /* 固定サイズを徹底 */
+  width: 70px;
   height: 70px;
   background: #2a2245;
   border: 2px solid #3d2b5e;
   color: white;
-  font-size: 2.2rem; /* 視認性向上のため少し大きく */
+  font-size: 2rem; /* 基本サイズ */
   border-radius: 12px;
   cursor: pointer;
   display: flex;
@@ -258,11 +258,6 @@
   box-shadow: 0 4px 0 #111;
   padding: 0;
   line-height: 1;
-}
-
-/* 記号が記号によって縦横比が微妙に違うのを補正 */
-.btn-left, .btn-right {
-  font-size: 2.4rem; /* 横向きの方が小さく見えやすいため微調整 */
 }
 
 .btn-dir:hover {
@@ -277,24 +272,29 @@
   box-shadow: 0 2px 0 #111;
 }
 
+/* 個別に微調整できるようセレクタを分離 */
 .btn-up {
   grid-column: 2;
   grid-row: 1;
+  font-size: 2rem; /* ユーザー様にてここを調整可能 */
 }
 
 .btn-left {
   grid-column: 1;
   grid-row: 2;
+  font-size: 2rem;
 }
 
 .btn-right {
   grid-column: 3;
   grid-row: 2;
+  font-size: 2rem;
 }
 
 .btn-down {
   grid-column: 2;
   grid-row: 3;
+  font-size: 2rem;
 }
 
 @media (max-width: 500px) {
