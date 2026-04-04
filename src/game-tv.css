@@ -116,17 +116,20 @@
 
 /* TV Grid Board - Changed to 7x7 */
 .tv-board {
-  display: grid;
-  grid-template-columns: repeat(7, 50px);
-  grid-template-rows: repeat(7, 50px);
-  gap: 4px;
+  position: relative;
   background: #111;
   padding: 10px;
   border-radius: 14px;
   border: 6px solid #2a2245;
   box-shadow: 0 0 30px rgba(0,0,0,0.8), inset 0 0 15px rgba(163,137,255,0.1);
-  position: relative;
   overflow: hidden;
+}
+
+.tv-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 50px);
+  grid-template-rows: repeat(7, 50px);
+  gap: 4px;
 }
 
 /* ブラウン管の走査線風エフェクト */

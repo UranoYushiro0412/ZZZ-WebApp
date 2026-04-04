@@ -222,6 +222,7 @@ export class GameTV {
 
   // 画面の再描画
   render() {
+    if (!this.boardEl) return;
     this.boardEl.innerHTML = '';
     
     for (let y = 0; y < this.gridSize; y++) {
