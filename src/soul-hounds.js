@@ -47,6 +47,53 @@ export default class SoulHounds {
     this.init();
     this.resize();
     window.addEventListener('resize', () => this.resize());
+    this.setupInput();
+  }
+
+  setupInput() {
+    window.addEventListener('keydown', (e) => {
+      if (!this.isPlaying) return;
+      const key = e.key.toLowerCase();
+      
+      if (key === 'a' || key === 'arrowleft') {
+        this.player.vx = -5;
+        this.player.dir = 'left';
+        this.player.lastMoveDir = 'left';
+      }
+      if (key === 'd' || key === 'arrowright') {
+        this.player.vx = 5;
+        this.player.dir = 'right';
+        this.player.lastMoveDir = 'right';
+      }
+      if (key === 'w' || key === 'arrowup') {
+        this.player.lastMoveDir = 'up';
+      }
+      if (key === 's' || key === 'arrowdown') {
+        this.player.lastMoveDir = 'down';
+      }
+      
+      if (key === 'k') {
+        this.jump();
+      }
+      
+      if (key === 'j') {
+        // 向いている方向へ掘る（基本は下、あるいは横）
+        if (this.player.lastMoveDir === 'left') this.dig(-1, 0);
+        else if (this.player.lastMoveDir === 'right') this.dig(1, 0);
+        else if (this.player.lastMoveDir === 'up') this.dig(0, -1);
+        else this.dig(0, 1);
+        
+        // 掘った後はデフォルトで下向きに戻す（連続で横を掘らさない）
+        this.player.lastMoveDir = 'down';
+      }
+    });
+
+    window.addEventListener('keyup', (e) => {
+      if (!this.isPlaying) return;
+      const key = e.key.toLowerCase();
+      if ((key === 'a' || key === 'arrowleft') && this.player.vx < 0) this.player.vx = 0;
+      if ((key === 'd' || key === 'arrowright') && this.player.vx > 0) this.player.vx = 0;
+    });
   }
 
   resize() {
