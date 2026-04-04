@@ -61,80 +61,6 @@
   gap: 3rem;
 }
 
-@media (max-width: 850px) {
-  .tv-header-nav {
-    /* スマホでも横並び維持 */
-    flex-direction: row;
-  }
-
-  .game-container {
-    flex-direction: column;
-    align-items: center;
-    /* 隙間を極限まで詰める */
-    gap: 0.2rem;
-    margin-top: 0.5rem;
-  }
-
-  .tv-right-column {
-    /* スコア・ボタン領域を盤面より上に配置 */
-    order: 1;
-    width: 100%;
-    max-width: 500px;
-    /* PC版の flex-basis (300px) が高さとして残るのを防ぐ */
-    flex: none;
-    /* 内部の要素間隔をさらに詰める */
-    gap: 0.5rem;
-  }
-
-  .game-header {
-    /* スコア領域を横幅いっぱいに */
-    width: 100% !important;
-    justify-content: space-around;
-    /* 下の余白を削除して盤面との距離を詰める */
-    margin-bottom: 0 !important;
-    padding: 0.8rem 1.2rem;
-  }
-
-  .tv-left-column {
-    /* 盤面をスコアの下に配置 */
-    order: 2;
-  }
-
-  .dpad {
-    /* スマホ（横幅850px以下）では移動キーを非表示 */
-    display: none !important;
-  }
-}
-
-@media (max-width: 500px) {
-  .tv-header-nav {
-    margin-bottom: 0.5rem;
-  }
-
-  .page-title {
-    font-size: 1.5rem !important;
-    margin-bottom: 0.2rem !important;
-  }
-
-  .subtitle {
-    margin: 0.5rem 0 !important;
-    font-size: 0.8rem;
-  }
-
-  .tv-grid {
-    /* 26px に縮小して全体が収まるように */
-    grid-template-columns: repeat(7, 26px);
-    grid-template-rows: repeat(7, 26px);
-    gap: 3px;
-  }
-
-  .tv-board {
-    padding: 5px;
-    border-width: 3px;
-    /* 上の余白を削除してスコアエリアとの距離を詰める */
-    margin-top: 0 !important;
-  }
-}
 
 .game-header {
   display: flex;
@@ -405,5 +331,78 @@
   100% {
     transform: translate(-50%, -50%) scale(1);
     opacity: 1;
+  }
+}
+
+/* --- レスポンシブ調整（基底スタイルを確実に上書きするために最後に記述） --- */
+
+@media (max-width: 850px) {
+  .tv-header-nav {
+    flex-direction: row;
+  }
+
+  .game-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    margin-top: 0.5rem;
+  }
+
+  .tv-right-column {
+    order: 1;
+    width: 100%;
+    max-width: 500px;
+    flex: none;
+    gap: 0.5rem;
+  }
+
+  .game-header {
+    width: 100% !important;
+    justify-content: space-around;
+    margin-bottom: 0 !important;
+    padding: 0.8rem 1.2rem;
+  }
+
+  .tv-left-column {
+    order: 2;
+  }
+
+  .dpad {
+    display: none !important;
+  }
+
+  /* 盤面の余白もここで詰める */
+  .tv-board {
+    margin-top: 0 !important;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 500px) {
+  .tv-header-nav {
+    margin-bottom: 0.5rem;
+  }
+
+  .page-title {
+    font-size: 1.4rem !important;
+    margin-bottom: 0.1rem !important;
+  }
+
+  .subtitle {
+    margin: 0.3rem 0 !important;
+    font-size: 0.75rem;
+  }
+
+  .tv-grid {
+    /* 基底スタイルの 50px を確実に上書き */
+    grid-template-columns: repeat(7, 26px) !important;
+    grid-template-rows: repeat(7, 26px) !important;
+    gap: 3px;
+  }
+
+  .tv-board {
+    padding: 5px;
+    border-width: 3px;
+    margin-top: 0 !important;
   }
 }
