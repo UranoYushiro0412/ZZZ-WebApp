@@ -70,7 +70,9 @@
   .game-container {
     flex-direction: column;
     align-items: center;
-    gap: 0.8rem;
+    /* 隙間を極限まで詰める */
+    gap: 0.2rem;
+    margin-top: 0.5rem;
   }
 
   .tv-right-column {
@@ -88,6 +90,9 @@
     /* スコア領域を横幅いっぱいに */
     width: 100% !important;
     justify-content: space-around;
+    /* 下の余白を削除して盤面との距離を詰める */
+    margin-bottom: 0 !important;
+    padding: 0.8rem 1.2rem;
   }
 
   .tv-left-column {
@@ -126,6 +131,8 @@
   .tv-board {
     padding: 5px;
     border-width: 3px;
+    /* 上の余白を削除してスコアエリアとの距離を詰める */
+    margin-top: 0 !important;
   }
 }
 
