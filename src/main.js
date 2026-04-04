@@ -576,13 +576,19 @@ function showBossDetail(bossId, targetEl = null) {
     if (expandBtn && video) {
       expandBtn.onclick = () => {
         // 全画面表示のトグル（開始/解除）
-        if (!document.fullscreenElement && 
-            !document.webkitFullscreenElement && 
-            !document.msFullscreenElement) {
+        const isFullscreen = document.fullscreenElement || 
+                           document.webkitFullscreenElement || 
+                           document.msFullscreenElement ||
+                           video.webkitDisplayingFullscreen; // iOS用監視
+
+        if (!isFullscreen) {
           if (container.requestFullscreen) {
             container.requestFullscreen();
           } else if (container.webkitRequestFullscreen) {
             container.webkitRequestFullscreen();
+          } else if (video.webkitEnterFullscreen) {
+            // iOS (iPhone) 用フォールバック: 動画本体をフルスクリーンに
+            video.webkitEnterFullscreen();
           } else if (container.msRequestFullscreen) {
             container.msRequestFullscreen();
           }
@@ -591,6 +597,8 @@ function showBossDetail(bossId, targetEl = null) {
             document.exitFullscreen();
           } else if (document.webkitExitFullscreen) {
             document.webkitExitFullscreen();
+          } else if (video.webkitExitFullscreen) {
+            video.webkitExitFullscreen();
           } else if (document.msExitFullscreen) {
             document.msExitFullscreen();
           }
