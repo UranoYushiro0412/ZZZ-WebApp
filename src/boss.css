@@ -9,7 +9,7 @@
   --attr-phys: #FFCC00;
   /* 物理 (イエロー) */
   --attr-elec: #0080FF;
-  /* 雷 (ライトブルー) */
+  /* 電気 (ライトブルー) */
   --boss-card-bg: rgba(20, 20, 20, 0.95);
   --boss-accent: #00ffcc;
 }
@@ -134,7 +134,7 @@
 .boss-image-container {
   width: 100%;
   aspect-ratio: 1 / 1.415;
-  /* ご指定ের比率（白銀比に近い比率） */
+  /* ご指定の比率（白銀比に近い比率） */
   overflow: hidden;
   border-radius: 8px;
   border: 1px solid #444;
