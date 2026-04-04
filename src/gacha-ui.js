@@ -113,10 +113,11 @@ export function renderGachaHistory({ currentGacha, gmHistoryList }) {
   history.forEach(item => {
     const div = document.createElement('div');
     div.className = 'history-item';
+    const rankClass = item.rank ? item.rank.toLowerCase() : 's';
     div.innerHTML = `
-      <span class="hist-rank-${item.rank.toLowerCase()}">[${item.rank}]</span>
+      <span class="hist-rank-${rankClass}">[${item.rank || 'S'}]</span>
       <span class="hist-name">${item.name}</span>
-      <span class="hist-count">${item.pityCount}回目</span>
+      <span class="hist-count">${item.pityCount || item.pulls || '--'}回目</span>
     `;
     gmHistoryList.appendChild(div);
   });

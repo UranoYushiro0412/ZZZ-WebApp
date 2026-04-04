@@ -97,6 +97,7 @@ export class GachaSystem {
       // 履歴に追加（最新を先頭に）
       if (!state.history) state.history = [];
       state.history.unshift({
+        rank: 'S',
         name: resultName,
         pulls: currentPullS,
         isPickup: isPickup,
