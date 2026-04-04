@@ -1,4 +1,5 @@
 import { BOSS_LIST, CURRENT_BOSS_IDS } from './boss-data.js';
+console.log("ZZZ-Tools Loaded! (v1.0.1)");
 import { GachaSystem } from './gacha.js';
 import { initGachaBannerList, updateGachaView, displayGachaResults, initGachaModals } from './gacha-ui.js';
 import { renderBossList, showBossDetail } from './boss-ui.js';
