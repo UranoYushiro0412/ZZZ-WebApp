@@ -382,30 +382,34 @@
 
 @media (max-width: 600px) {
   .tv-header-nav {
-    margin-bottom: 0 !important;
+    margin-bottom: 0.8rem !important;
   }
 
   .page-title {
     font-size: 1.3rem !important;
-    margin-bottom: 0 !important;
+    margin-bottom: 0.5rem !important;
   }
 
   .subtitle {
-    margin: 0.2rem 0 !important;
-    font-size: 0.7rem;
+    margin: 1rem 0 !important;
+    font-size: 0.75rem;
   }
 
   .tv-grid {
-    width: 80vw !important;
-    height: 80vw !important;
+    /* 余裕を持たせるため75%幅に調整 */
+    width: 75vw !important;
+    height: 75vw !important;
+    max-width: 350px !important;
+    max-height: 350px !important;
     grid-template-columns: repeat(7, 1fr) !important;
     grid-template-rows: repeat(7, 1fr) !important;
+    gap: 2px !important;
   }
 
   .tv-board {
-    padding: 5px;
+    padding: 8px;
     border-width: 3px;
-    margin: 0 auto !important;
+    margin: 0 auto 2rem auto !important;
     display: flex !important;
     justify-content: center !important;
   }

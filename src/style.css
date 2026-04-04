@@ -104,11 +104,11 @@ h3,
 
 @media (max-width: 600px) {
   #app-container {
-    padding: 0.5rem 0.5rem;
+    padding: 1rem 0.5rem;
   }
   
   .view {
-    padding: 0;
+    padding: 1rem 0;
   }
 }
 
