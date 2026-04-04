@@ -106,9 +106,9 @@ h3,
   #app-container {
     padding: 1rem 0.5rem;
   }
-  
+
   .view {
-    padding: 1rem 0;
+    padding: 0rem 0;
   }
 }
 
