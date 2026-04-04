@@ -257,10 +257,10 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 6rem;
+  font-size: 6.5rem; /* 少し大きく */
   font-weight: 900;
-  color: var(--chara-accent);
-  text-shadow: 0 0 20px rgba(226, 255, 0, 0.8), 0 0 40px rgba(61, 243, 108, 0.5);
+  color: #fff; /* 白に変更 */
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(61, 243, 108, 0.6);
   font-family: 'Jura', sans-serif;
   z-index: 100;
   pointer-events: none;
