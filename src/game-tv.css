@@ -242,3 +242,32 @@
   }
 }
 
+/* レイアウトを維持したまま非表示にする */
+.v-hidden {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* カウントダウン表示 */
+.tv-countdown {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 6rem;
+  font-weight: 900;
+  color: var(--chara-accent);
+  text-shadow: 0 0 20px rgba(226, 255, 0, 0.8), 0 0 40px rgba(61, 243, 108, 0.5);
+  font-family: 'Jura', sans-serif;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.tv-countdown.pop {
+  animation: countdownPop 0.4s ease-out;
+}
+
+@keyframes countdownPop {
+  0% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}

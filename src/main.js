@@ -67,7 +67,7 @@ function showView(viewId) {
   if (viewId !== 'view-game-tv' && window.currentGameTV) {
     window.currentGameTV.stopAndReset();
     const btnTV = document.getElementById('btn-tv-start');
-    if (btnTV) btnTV.style.display = 'block';
+    if (btnTV) btnTV.classList.remove('v-hidden');
   }
   if (viewId !== 'view-game-coin' && window.currentGameCoin) window.currentGameCoin.stop();
   if (viewId !== 'view-soul-hounds' && window.soulHoundsGame) window.soulHoundsGame.isPlaying = false;
@@ -182,7 +182,7 @@ if (btnTVStart) {
   // インスタンスは最初の一度だけ生成する
   window.currentGameTV = new GameTV(tvBoard, tvScore, (score, msg) => {
     alert(`${msg}\n最終スコア: ${score}`);
-    btnTVStart.style.display = 'block';
+    btnTVStart.classList.remove('v-hidden');
     window.currentGameTV.stopAndReset();
   });
   
@@ -195,8 +195,9 @@ if (btnTVStart) {
   });
 
   btnTVStart.onclick = () => {
-    window.currentGameTV.start();
-    btnTVStart.style.display = 'none';
+    const countdownEl = document.getElementById('tv-countdown');
+    window.currentGameTV.startCountdown(countdownEl);
+    btnTVStart.classList.add('v-hidden');
   };
 
   const btnTVBack = document.getElementById('btn-tv-back');

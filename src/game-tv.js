@@ -126,17 +126,57 @@ export class GameTV {
     this.onGameOver(this.score, msg);
   }
 
-  // ゲームスタート
-  start() {
+  // カウントダウン演出を伴う開始
+  startCountdown(countdownEl) {
+    if (this.isPlaying) return;
+
+    // 初期盤面を描画（カウントダウン中に背景が見えるように）
     this.score = 0;
     this.scoreEl.textContent = this.score;
     this.player = { x: 3, y: 3 };
     this.enemies = [];
     this.spawnCoin();
+    this.render();
+
+    let count = 3;
+    countdownEl.classList.remove('hidden');
+    countdownEl.textContent = count;
+    countdownEl.classList.add('pop');
+
+    const timer = setInterval(() => {
+      count--;
+      if (count > 0) {
+        countdownEl.textContent = count;
+        countdownEl.classList.remove('pop');
+        countdownEl.offsetHeight; // reflow
+        countdownEl.classList.add('pop');
+      } else if (count === 0) {
+        countdownEl.textContent = "START!";
+        countdownEl.classList.remove('pop');
+        countdownEl.offsetHeight;
+        countdownEl.classList.add('pop');
+      } else {
+        clearInterval(timer);
+        countdownEl.classList.add('hidden');
+        countdownEl.classList.remove('pop');
+        this.start(true); // すでに初期化済みなので引数でスキップ
+      }
+    }, 1000);
+  }
+
+  // ゲームスタート
+  start(skipInit = false) {
+    if (!skipInit) {
+      this.score = 0;
+      this.scoreEl.textContent = this.score;
+      this.player = { x: 3, y: 3 };
+      this.enemies = [];
+      this.spawnCoin();
+    }
     this.isPlaying = true;
     this.render();
 
-    // 最初は少しゆっくり2.5秒ごとに増え、徐々に早くしていくロジックは今回省略し一律2秒
+    // 侵蝕（敵）の生成開始
     if(this.spawnTimer) clearInterval(this.spawnTimer);
     this.spawnTimer = setInterval(() => {
       this.spawnEnemy();
