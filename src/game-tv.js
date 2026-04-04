@@ -9,9 +9,24 @@ export class GameTV {
     this.coin = { x: 4, y: 4 };
     this.enemies = []; // {x, y}
     this.score = 0;
-    
     this.isPlaying = false;
     this.spawnTimer = null;
+  }
+
+  // 外部から操作ボタンを紐付ける & キーボードリスナー
+  attachControls(controls) {
+    window.addEventListener('keydown', (e) => {
+      if (!this.isPlaying) return;
+      if (['ArrowUp', 'w'].includes(e.key)) this.movePlayer(0, -1);
+      if (['ArrowDown', 's'].includes(e.key)) this.movePlayer(0, 1);
+      if (['ArrowLeft', 'a'].includes(e.key)) this.movePlayer(-1, 0);
+      if (['ArrowRight', 'd'].includes(e.key)) this.movePlayer(1, 0);
+    });
+
+    if (controls.up) controls.up.onclick = () => this.movePlayer(0, -1);
+    if (controls.down) controls.down.onclick = () => this.movePlayer(0, 1);
+    if (controls.left) controls.left.onclick = () => this.movePlayer(-1, 0);
+    if (controls.right) controls.right.onclick = () => this.movePlayer(1, 0);
   }
 
   // 指定した座標が盤面内かチェック
@@ -132,6 +147,17 @@ export class GameTV {
   stop() {
     this.isPlaying = false;
     if(this.spawnTimer) clearInterval(this.spawnTimer);
+  }
+
+  // 停止して初期盤面にリセット（ホームに戻った時やゲームオーバー時に呼ぶ）
+  stopAndReset() {
+    this.stop();
+    this.score = 0;
+    this.scoreEl.textContent = this.score;
+    this.player = { x: 2, y: 2 };
+    this.coin = { x: 4, y: 4 };
+    this.enemies = [];
+    this.render();
   }
 
   // 画面の再描画

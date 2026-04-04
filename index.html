@@ -360,20 +360,23 @@
 
     <!-- 画面5: ミニゲーム TV避けゲー -->
     <section id="view-game-tv" class="view hidden">
-      <h1 class="page-title">HOLLOW EXPLORATION</h1>
+      <h1 class="page-title">ホロウ探索</h1>
       <p class="subtitle">赤いマス（侵蝕）を避け、ギアコインを集めよう！</p>
 
       <div class="game-container">
-        <div class="game-header">
-          <span>SCORE: <span id="tv-score" class="score-board">0</span></span>
-          <button id="btn-tv-start" class="btn-gacha">EXPLORE START</button>
+        <!-- ボードとヘッダーをまとめるラッパー (左側配置用) -->
+        <div class="tv-main-section">
+          <div class="game-header">
+            <span>SCORE: <span id="tv-score" class="score-board">0</span></span>
+            <button id="btn-tv-start" class="btn-gacha">GAME START</button>
+          </div>
+
+          <div id="tv-board" class="tv-board">
+            <!-- JSでセル生成 -->
+          </div>
         </div>
 
-        <div id="tv-board" class="tv-board">
-          <!-- JSでセル生成 -->
-        </div>
-
-        <!-- スマホ用 操作パッド -->
+        <!-- スマホ用 操作パッド (右側配置用) -->
         <div class="dpad">
           <button id="btn-up" class="btn-dir btn-up">▲</button>
           <button id="btn-left" class="btn-dir btn-left">◀</button>

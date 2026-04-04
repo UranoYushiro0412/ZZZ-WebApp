@@ -64,7 +64,11 @@ function showView(viewId) {
       if (btn) btn.style.display = 'block';
     }
   };
-  if (viewId !== 'view-game-tv' && window.currentGameTV) window.currentGameTV.stop();
+  if (viewId !== 'view-game-tv' && window.currentGameTV) {
+    window.currentGameTV.stopAndReset();
+    const btnTV = document.getElementById('btn-tv-start');
+    if (btnTV) btnTV.style.display = 'block';
+  }
   if (viewId !== 'view-game-coin' && window.currentGameCoin) window.currentGameCoin.stop();
   if (viewId !== 'view-soul-hounds' && window.soulHoundsGame) window.soulHoundsGame.isPlaying = false;
 }
@@ -172,13 +176,25 @@ initGachaModals({
 // --- 各種ミニゲームの初期化 ---
 const btnTVStart = document.getElementById('btn-tv-start');
 if (btnTVStart) {
+  const tvBoard = document.getElementById('tv-board');
+  const tvScore = document.getElementById('tv-score');
+  
+  // インスタンスは最初の一度だけ生成する
+  window.currentGameTV = new GameTV(tvBoard, tvScore, (score, msg) => {
+    alert(`${msg}\n最終スコア: ${score}`);
+    btnTVStart.style.display = 'block';
+    window.currentGameTV.stopAndReset();
+  });
+  
+  // 操作ボタン紐付け
+  window.currentGameTV.attachControls({
+    up: document.getElementById('btn-up'),
+    down: document.getElementById('btn-down'),
+    left: document.getElementById('btn-left'),
+    right: document.getElementById('btn-right')
+  });
+
   btnTVStart.onclick = () => {
-    const tvBoard = document.getElementById('tv-board');
-    const tvScore = document.getElementById('tv-score');
-    window.currentGameTV = new GameTV(tvBoard, tvScore, (score, msg) => {
-      alert(`${msg}\n最終スコア: ${score}`);
-      btnTVStart.style.display = 'block';
-    });
     window.currentGameTV.start();
     btnTVStart.style.display = 'none';
   };
