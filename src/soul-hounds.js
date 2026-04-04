@@ -148,6 +148,7 @@ export default class SoulHounds {
   }
 
   start() {
+    this.resize();
     this.isPlaying = true;
     document.getElementById('sh-start-screen').classList.add('hidden');
     this.energy = 100;
