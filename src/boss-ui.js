@@ -1,5 +1,10 @@
 import { BOSS_LIST, PERIOD_DATA, BOSS_VIDEOS, CURRENT_BOSS_IDS } from './boss-data.js';
 import { GLOBAL_MAX_STATS, BOSS_LATEST_DATA, formatLargeNum } from './boss-utils.js';
+// 環境に依存せず画像等のパスを正しく解決するためのヘルパー
+const getAssetPath = (path) => {
+  const base = import.meta.env.BASE_URL || '/';
+  return base.endsWith('/') ? base + path : base + '/' + path;
+};
 
 /**
  * 6角形レーダーチャートのSVG生成
@@ -133,12 +138,22 @@ export function createHpTrendSvg(bossName) {
     dots += `<circle cx="${getX(d.x)}" cy="${getY(d.hp)}" r="3" class="trend-dot" />`;
   });
 
+  // グラデーションの塗りつぶし領域のためのポリゴン
+  const fillPoints = `${getX(data[0].x)},${height - paddingY} ${points} ${getX(data[data.length - 1].x)},${height - paddingY}`;
+
   return `
     <div class="trend-chart-wrapper">
       <div class="trend-chart-title">HP 推移 (第15期～第33期)</div>
       <svg viewBox="0 0 ${width} ${height}" class="hp-trend-svg">
+        <defs>
+          <linearGradient id="trendGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="var(--boss-accent)" stop-opacity="0.35"/>
+            <stop offset="100%" stop-color="var(--boss-accent)" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
         ${gridLines}
         ${guideLines}
+        <polygon points="${fillPoints}" fill="url(#trendGradient)" class="trend-area" />
         <polyline points="${points}" class="trend-line" />
         ${dots}
       </svg>
@@ -202,7 +217,7 @@ function appendMobileSection(container, titleText, bosses, onSelect) {
     const card = document.createElement('div');
     card.className = 'boss-select-card';
     card.innerHTML = `
-      <img src="images/kikyoku_boss/${boss.id}.png" alt="${boss.name}" class="boss-select-card-img">
+      <img src="${getAssetPath(`images/kikyoku_boss/${boss.id}.png`)}" alt="${boss.name}" class="boss-select-card-img">
       <div class="boss-select-card-info">
         <div class="boss-select-card-name">${boss.name}</div>
       </div>
@@ -256,7 +271,7 @@ export function showBossDetail({ bossId, bossDetail, bossLayout, stickyBossName,
     <div class="boss-detail-main-content">
       <div class="boss-image-column">
         <div class="boss-image-container">
-          <img src="images/kikyoku_boss/${boss.id}.png" alt="${boss.name}" class="boss-hero-img">
+          <img src="${getAssetPath(`images/kikyoku_boss/${boss.id}.png`)}" alt="${boss.name}" class="boss-hero-img">
         </div>
       </div>
       <div class="boss-info-column">
@@ -266,7 +281,7 @@ export function showBossDetail({ bossId, bossDetail, bossLayout, stickyBossName,
             <div class="attr-list">
               ${boss.weak && boss.weak.length ? boss.weak.map(w => `
                 <span class="attr-badge ${w}">
-                  <img src="images/attibute_icon/${w}.png" alt="${w}" class="attr-icon">
+                  <img src="${getAssetPath(`images/attibute_icon/${w}.png`)}" alt="${w}" class="attr-icon">
                   ${ATTR_NAME_MAP[w] || w}
                 </span>
               `).join('') : '<span class="attr-badge none">なし</span>'}
@@ -277,7 +292,7 @@ export function showBossDetail({ bossId, bossDetail, bossLayout, stickyBossName,
             <div class="attr-list">
               ${boss.resist && boss.resist.length ? boss.resist.map(r => `
                 <span class="attr-badge ${r}">
-                  <img src="images/attibute_icon/${r}.png" alt="${r}" class="attr-icon">
+                  <img src="${getAssetPath(`images/attibute_icon/${r}.png`)}" alt="${r}" class="attr-icon">
                   ${ATTR_NAME_MAP[r] || r}
                 </span>
               `).join('') : '<span class="attr-badge none">なし</span>'}
@@ -301,6 +316,7 @@ export function showBossDetail({ bossId, bossDetail, bossLayout, stickyBossName,
              データがない項目は「--」と表示されます。
            </p>
          </div>
+         <hr style="border: none; border-top: 1px dashed #444; margin: 0 0 20px 0;">
         <div class="boss-hp-trend-container">${createHpTrendSvg(boss.name)}</div>
         ${Array.isArray(BOSS_VIDEOS[bossId]) ? BOSS_VIDEOS[bossId].map((video, idx) => `
         <div class="boss-video-section">
