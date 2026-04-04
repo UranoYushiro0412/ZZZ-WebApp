@@ -172,7 +172,12 @@ initGachaModals({
 const btnTVStart = document.getElementById('btn-tv-start');
 if (btnTVStart) {
   btnTVStart.onclick = () => {
-    window.currentGameTV = new GameTV();
+    const tvBoard = document.getElementById('tv-board');
+    const tvScore = document.getElementById('tv-score');
+    window.currentGameTV = new GameTV(tvBoard, tvScore, (score, msg) => {
+      alert(`${msg}\n最終スコア: ${score}`);
+      btnTVStart.style.display = 'block';
+    });
     window.currentGameTV.start();
     btnTVStart.style.display = 'none';
   };
@@ -181,7 +186,12 @@ if (btnTVStart) {
 const btnCoinStart = document.getElementById('btn-coin-start');
 if (btnCoinStart) {
   btnCoinStart.onclick = () => {
-    window.currentGameCoin = new GameCoin();
+    const coinArea = document.getElementById('coin-area');
+    const coinScore = document.getElementById('coin-score');
+    window.currentGameCoin = new GameCoin(coinArea, coinScore, (score, msg) => {
+      alert(`${msg}\n最終スコア: ${score}`);
+      btnCoinStart.style.display = 'block';
+    });
     window.currentGameCoin.start();
     btnCoinStart.style.display = 'none';
   };
@@ -190,9 +200,10 @@ if (btnCoinStart) {
 const btnSoulHoundsStart = document.getElementById('btn-sh-start');
 if (btnSoulHoundsStart) {
   btnSoulHoundsStart.onclick = () => {
-    window.soulHoundsGame = new SoulHounds();
-    window.soulHoundsGame.start();
-    btnSoulHoundsStart.style.display = 'none';
+    if (window.soulHoundsGame) {
+      window.soulHoundsGame.start();
+      btnSoulHoundsStart.style.display = 'none';
+    }
   };
 }
 

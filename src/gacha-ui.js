@@ -168,8 +168,11 @@ export function initGachaModals({
 
   // 履歴表示
   document.getElementById('gm-btn-history')?.addEventListener('click', () => {
-    renderGachaHistory({ currentGacha: getGacha(), gmHistoryList });
-    gmHistoryModal.classList.remove('hidden');
+    const g = getGacha();
+    if (g) {
+      renderGachaHistory({ currentGacha: g, gmHistoryList });
+    }
+    gmHistoryModal?.classList.remove('hidden');
   });
 
   document.getElementById('gm-btn-history-close')?.addEventListener('click', () => {
