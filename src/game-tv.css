@@ -241,10 +241,12 @@
 }
 
 .btn-dir {
+  width: 70px; /* 固定サイズを徹底 */
+  height: 70px;
   background: #2a2245;
   border: 2px solid #3d2b5e;
   color: white;
-  font-size: 2rem;
+  font-size: 2.2rem; /* 視認性向上のため少し大きく */
   border-radius: 12px;
   cursor: pointer;
   display: flex;
@@ -254,10 +256,17 @@
   touch-action: manipulation;
   transition: 0.2s;
   box-shadow: 0 4px 0 #111;
+  padding: 0;
+  line-height: 1;
+}
+
+/* 記号が記号によって縦横比が微妙に違うのを補正 */
+.btn-left, .btn-right {
+  font-size: 2.4rem; /* 横向きの方が小さく見えやすいため微調整 */
 }
 
 .btn-dir:hover {
-  background: #3d2b5e;
+  background: #3d2b5e; /* v329. */
   transform: translateY(-2px);
   box-shadow: 0 6px 0 #111;
 }
