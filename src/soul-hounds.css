@@ -281,6 +281,10 @@
   z-index: 20;
 }
 
+.sh-start-screen.hidden {
+  display: none !important;
+}
+
 .sh-logo {
   font-size: 40px;
   font-weight: 900;
