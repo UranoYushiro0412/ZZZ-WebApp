@@ -108,14 +108,18 @@ h3,
   }
 
   .view {
-    padding: 0rem 0;
+    padding: 0;
+  }
+
+  .subtitle {
+    margin: 0.1rem 0 1rem 0 !important;
   }
 }
 
 .subtitle {
   text-align: center;
   color: var(--text-sub);
-  margin: 2rem 0;
+  margin: 0.2rem 0 1.5rem 0;
 }
 
 /* Home Menu Grid */
