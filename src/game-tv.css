@@ -1,9 +1,10 @@
 /* ホロウ探索風（TVゲーム）専用のCSS */
 
 .tv-header-nav {
+  position: relative;
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 1rem;
   margin-bottom: 2rem;
   width: 100%;
   max-width: 900px;
@@ -12,6 +13,8 @@
 }
 
 .tv-back-btn {
+  position: absolute;
+  left: 0;
   width: 45px;
   height: 45px;
   background: #2a2245;
@@ -24,6 +27,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 10;
 }
 
 .tv-back-btn:hover {
@@ -50,12 +54,13 @@
   flex: 0 1 300px;
   display: flex;
   flex-direction: column;
-  gap: 3rem; /* スコアと操作キーの間の距離を広げる */
+  align-items: center; /* カラム内の要素を中央寄せ */
+  gap: 3rem;
 }
 
 @media (max-width: 850px) {
   .tv-header-nav {
-    justify-content: center;
+    flex-direction: row; /* スマホでも横並び維持 */
   }
   .game-container {
     flex-direction: column;
@@ -67,19 +72,26 @@
 .game-header {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  align-items: center; /* ヘッダー内も中央寄せ */
+  gap: 1.5rem;
   width: 100%;
-  padding: 1.2rem;
+  padding: 1.5rem;
   background: rgba(0,0,0,0.7);
   border: 1px solid #3d2b5e;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 }
 
+#btn-tv-start {
+  width: auto;
+  min-width: 160px; /* 長すぎないように調整 */
+  padding: 0.8rem 2rem;
+}
+
 .tv-score-box {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center; /* スコアも中央寄せ */
   gap: 0.3rem;
 }
 
