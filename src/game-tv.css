@@ -71,11 +71,12 @@
 
 .game-header {
   display: flex;
-  flex-direction: column;
-  align-items: center; /* ヘッダー内も中央寄せ */
-  gap: 1.5rem;
+  flex-direction: row; /* 横並びに戻す */
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
   width: 100%;
-  padding: 1.5rem;
+  padding: 1.2rem;
   background: rgba(0,0,0,0.7);
   border: 1px solid #3d2b5e;
   border-radius: 12px;
@@ -83,27 +84,31 @@
 }
 
 #btn-tv-start {
-  width: auto;
-  min-width: 160px; /* 長すぎないように調整 */
-  padding: 0.8rem 2rem;
+  width: 100px; /* 2行になったので、よりコンパクトに */
+  height: auto;
+  padding: 0.5rem 1rem;
+  line-height: 1.2;
+  font-size: 0.85rem;
+  text-align: center;
 }
 
 .tv-score-box {
   display: flex;
-  flex-direction: column;
-  align-items: center; /* スコアも中央寄せ */
-  gap: 0.3rem;
+  flex-direction: row; /* スコアも横並びに */
+  align-items: baseline;
+  gap: 0.5rem;
 }
 
 .score-label {
-  font-size: 0.8rem;
+  font-size: 1rem;
+  font-weight: bold;
   color: #a389ff;
   font-family: 'Jura', sans-serif;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
 }
 
 .score-board {
-  font-size: 2.2rem;
+  font-size: 1.8rem;
   font-family: 'Jura', sans-serif;
   color: var(--chara-accent);
   text-shadow: 0 0 10px var(--chara-accent);
