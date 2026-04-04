@@ -1,5 +1,5 @@
-import { characterDb } from './character-db.js';
-import { weaponDb } from './weapon-db.js';
+import { characterDb } from './db-character.js';
+import { weaponDb } from './db-weapon.js';
 
 export const stdCharactersS = ["猫又", "11号", "クレタ", "ライカン", "グレース", "リナ"];
 export const stdWeaponsS = [
