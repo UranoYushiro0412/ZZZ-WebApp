@@ -24,6 +24,7 @@ const btnHome = document.getElementById('btn-home');
 
 // --- ナビゲーション(画面切り替え)処理 ---
 function showView(viewId) {
+  window.scrollTo(0, 0);
   document.querySelectorAll('.view').forEach(el => {
     el.classList.remove('active');
     el.classList.add('hidden');
