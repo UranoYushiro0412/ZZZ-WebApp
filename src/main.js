@@ -7,14 +7,14 @@ import { GameTV } from './game-tv.js';
 import { GameCoin } from './game-coin.js';
 import SoulHounds from './soul-hounds.js';
 
-// CSS Imports
+// --- CSSの読み込み ---
 import './gacha.css';
 import './poly.css';
 import './game-tv.css';
 import './game-coin.css';
 import './soul-hounds.css';
 
-// --- DOM Elements (Global/Core) ---
+// --- DOM要素 (グローバル/コア部分) ---
 const bossLayout = document.getElementById('boss-layout-wrapper');
 const bossSidebar = document.getElementById('boss-sidebar');
 const bossDetail = document.getElementById('boss-detail');
@@ -22,7 +22,7 @@ const bossStickyHeader = document.getElementById('boss-sticky-header');
 const stickyBossName = document.getElementById('sticky-boss-name');
 const btnHome = document.getElementById('btn-home');
 
-// --- Navigation Logic ---
+// --- ナビゲーション(画面切り替え)処理 ---
 function showView(viewId) {
   document.querySelectorAll('.view').forEach(el => {
     el.classList.remove('active');
@@ -56,7 +56,7 @@ function showView(viewId) {
     }
   }
 
-  // Stop games if navigating away
+  // 他の画面に遷移した場合は、実行中のゲームを停止する
   const stopGame = (game, startBtnId) => {
     if (viewId !== `view-game-${game.type}` && game.instance) {
       game.instance.stop();
@@ -69,10 +69,10 @@ function showView(viewId) {
   if (viewId !== 'view-soul-hounds' && window.soulHoundsGame) window.soulHoundsGame.isPlaying = false;
 }
 
-// Global Back Button
+// 全画面共通の「ホームに戻る」ボタン
 if (btnHome) btnHome.addEventListener('click', () => showView('view-home'));
 
-// Home Menu Buttons
+// ホーム画面のメニューカードをクリックした時の処理
 document.querySelectorAll('.menu-card:not(.disabled)').forEach(card => {
   card.addEventListener('click', () => {
     let targetView = card.getAttribute('data-target');
@@ -83,7 +83,7 @@ document.querySelectorAll('.menu-card:not(.disabled)').forEach(card => {
   });
 });
 
-// --- Boss Section Setup ---
+// --- ボス情報画面の初期設定 ---
 const bossMobileSelectList = document.getElementById('boss-mobile-select-list');
 const bossBackBtn = document.getElementById('btn-boss-back');
 const bossBackBtnSticky = document.getElementById('btn-boss-back-sticky');
@@ -109,7 +109,7 @@ window.addEventListener('scroll', () => {
   }
 });
 
-// Initialize Boss UI
+// ボス情報のUI（一覧リスト）を描画する
 renderBossList({
   bossSidebar,
   bossMobileSelectList,
@@ -117,7 +117,7 @@ renderBossList({
   onGoToBossView: () => showView('view-boss')
 });
 
-// --- Gacha Section Setup ---
+// --- ガチャ(変調)画面の初期設定 ---
 let currentGacha = null;
 const gmTitle = document.getElementById('gm-title');
 const gmStatTotal = document.getElementById('gm-stat-total');
@@ -142,7 +142,7 @@ initGachaBannerList({
   }
 });
 
-// Gacha Buttons
+// ガチャ実行（引く）ボタンのアクション
 const btnPull1 = document.getElementById('gm-btn-pull-1');
 const btnPull10 = document.getElementById('gm-btn-pull-10');
 if (btnPull1) btnPull1.onclick = () => displayGachaResults({ results: [currentGacha.pull()], gmPyramid, updateUI });
@@ -156,7 +156,7 @@ const modBtnCancel = document.getElementById('mod-btn-cancel');
 if (modBtnCancel) modBtnCancel.onclick = () => gmModal.classList.add('hidden');
 
 initGachaModals({
-  currentGacha: () => currentGacha, // getter
+  currentGacha: () => currentGacha, // 常に最新のガチャ情報を取得するゲッター関数
   gmModal,
   gmHistoryModal: document.getElementById('gm-history-modal'),
   gmHistoryList: document.getElementById('gm-history-list'),
@@ -169,7 +169,7 @@ initGachaModals({
   }
 });
 
-// --- Mini Games Init ---
+// --- 各種ミニゲームの初期化 ---
 const btnTVStart = document.getElementById('btn-tv-start');
 if (btnTVStart) {
   btnTVStart.onclick = () => {
@@ -208,5 +208,5 @@ if (btnSoulHoundsStart) {
   };
 }
 
-// Initial View
+// アプリケーション起動時の初期画面を「ホーム」に設定
 showView('view-home');
