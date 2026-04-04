@@ -187,7 +187,7 @@ if (btnCoinStart) {
   };
 }
 
-const btnSoulHoundsStart = document.getElementById('btn-soul-hounds-start');
+const btnSoulHoundsStart = document.getElementById('btn-sh-start');
 if (btnSoulHoundsStart) {
   btnSoulHoundsStart.onclick = () => {
     window.soulHoundsGame = new SoulHounds();

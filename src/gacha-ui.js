@@ -129,12 +129,27 @@ export function initGachaModals({
   currentGacha, gmModal, gmHistoryModal, gmHistoryList, 
   modPityS, modPityA, modGuaranteed, updateUI 
 }) {
+  // ゲッター関数から現在のインスタンスを取得するヘルパー
+  const getGacha = () => (typeof currentGacha === 'function' ? currentGacha() : currentGacha);
+
+  // 設定ボタン
+  document.getElementById('gm-btn-settings')?.addEventListener('click', () => {
+    const g = getGacha();
+    if (!g) return;
+    const state = g.getState();
+    modPityS.value = state.pitySCount;
+    modPityA.value = state.pityACount;
+    modGuaranteed.checked = state.isGuaranteedPickup;
+    gmModal.classList.remove('hidden');
+  });
+
   // 設定保存
   document.getElementById('mod-btn-save')?.addEventListener('click', () => {
-    if (!currentGacha) return;
+    const g = getGacha();
+    if (!g) return;
     gachaStateMgr.updateGroupState(
-      currentGacha.groupId,
-      parseInt(modPityS.value) || currentGacha.maxS,
+      g.groupId,
+      parseInt(modPityS.value) || g.maxS,
       parseInt(modPityA.value) || 10,
       modGuaranteed.checked
     );
@@ -144,15 +159,16 @@ export function initGachaModals({
 
   // リセット
   document.getElementById('mod-btn-reset')?.addEventListener('click', () => {
-    if (!currentGacha) return;
-    gachaStateMgr.resetGroup(currentGacha.groupId, currentGacha.maxS);
+    const g = getGacha();
+    if (!g) return;
+    gachaStateMgr.resetGroup(g.groupId, g.maxS);
     gmModal.classList.add('hidden');
     updateUI();
   });
 
   // 履歴表示
   document.getElementById('gm-btn-history')?.addEventListener('click', () => {
-    renderGachaHistory({ currentGacha, gmHistoryList });
+    renderGachaHistory({ currentGacha: getGacha(), gmHistoryList });
     gmHistoryModal.classList.remove('hidden');
   });
 
