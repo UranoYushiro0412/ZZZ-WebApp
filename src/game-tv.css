@@ -78,7 +78,9 @@
     order: 1;
     width: 100%;
     max-width: 500px;
-    /* 内部の要素間隔（スコアと本来のD-pad位置など）を詰める */
+    /* PC版の flex-basis (300px) が高さとして残るのを防ぐ */
+    flex: none;
+    /* 内部の要素間隔をさらに詰める */
     gap: 0.5rem;
   }
 
@@ -100,10 +102,24 @@
 }
 
 @media (max-width: 500px) {
+  .tv-header-nav {
+    margin-bottom: 0.5rem;
+  }
+
+  .page-title {
+    font-size: 1.5rem !important;
+    margin-bottom: 0.2rem !important;
+  }
+
+  .subtitle {
+    margin: 0.5rem 0 !important;
+    font-size: 0.8rem;
+  }
+
   .tv-grid {
-    /* さらに 30px に縮小 */
-    grid-template-columns: repeat(7, 30px);
-    grid-template-rows: repeat(7, 30px);
+    /* 26px に縮小して全体が収まるように */
+    grid-template-columns: repeat(7, 26px);
+    grid-template-rows: repeat(7, 26px);
     gap: 3px;
   }
 
