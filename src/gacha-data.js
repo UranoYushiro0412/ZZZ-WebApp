@@ -113,14 +113,14 @@ const buildImageMap = () => {
 
   // 武器の追加
   for (const [name, data] of Object.entries(weaponDb)) {
-    if (name !== 'エイリアス') {
+    if (name !== '別名') {
       map[name] = data.image;
     }
   }
 
-  // 武器エイリアスの反映
-  if (weaponDb.エイリアス) {
-    for (const [alias, realName] of Object.entries(weaponDb.エイリアス)) {
+  // 武器別名の反映
+  if (weaponDb.別名) {
+    for (const [alias, realName] of Object.entries(weaponDb.別名)) {
       if (weaponDb[realName]) {
         map[alias] = weaponDb[realName].image;
       }
