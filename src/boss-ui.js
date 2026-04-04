@@ -138,22 +138,12 @@ export function createHpTrendSvg(bossName) {
     dots += `<circle cx="${getX(d.x)}" cy="${getY(d.hp)}" r="3" class="trend-dot" />`;
   });
 
-  // グラデーションの塗りつぶし領域のためのポリゴン
-  const fillPoints = `${getX(data[0].x)},${height - paddingY} ${points} ${getX(data[data.length - 1].x)},${height - paddingY}`;
-
   return `
     <div class="trend-chart-wrapper">
       <div class="trend-chart-title">HP 推移 (第15期～第33期)</div>
       <svg viewBox="0 0 ${width} ${height}" class="hp-trend-svg">
-        <defs>
-          <linearGradient id="trendGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="var(--boss-accent)" stop-opacity="0.35"/>
-            <stop offset="100%" stop-color="var(--boss-accent)" stop-opacity="0"/>
-          </linearGradient>
-        </defs>
         ${gridLines}
         ${guideLines}
-        <polygon points="${fillPoints}" fill="url(#trendGradient)" class="trend-area" />
         <polyline points="${points}" class="trend-line" />
         ${dots}
       </svg>
