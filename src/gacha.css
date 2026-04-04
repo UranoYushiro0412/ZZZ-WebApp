@@ -107,6 +107,8 @@
 
 .gm-back-btn::before {
   content: '⮌';
+  display: block;
+  transform: translateY(-2px); /* 視覚的な中央揃えのための微調整 */
 }
 
 .gm-back-btn:hover {
