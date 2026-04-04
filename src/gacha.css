@@ -52,10 +52,18 @@
   background: #222;
 }
 
-.gacha-btn:hover {
-  background: rgba(61, 243, 108, 0.1);
+@media (hover: hover) and (pointer: fine) {
+  .gacha-btn:hover {
+    background: rgba(61, 243, 108, 0.1);
+    border-color: var(--chara-main);
+    transform: translateX(5px);
+  }
+}
+
+.gacha-btn:active {
+  background: rgba(61, 243, 108, 0.2);
   border-color: var(--chara-main);
-  transform: translateX(5px);
+  transform: scale(0.98);
 }
 
 
