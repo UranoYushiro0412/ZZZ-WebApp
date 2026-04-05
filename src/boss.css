@@ -70,6 +70,11 @@
   /* 発光（box-shadow）を削除 */
 }
 
+/* 個別調整：危局ボス詳細のアイコンのみ少し上に掲げる */
+.btn-boss-back .icon-back-arrow {
+  transform: translateY(-2px);
+}
+
 .btn-boss-back:hover {
   background: var(--boss-accent);
   color: #000;
