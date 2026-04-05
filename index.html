@@ -7,7 +7,7 @@
   <title>Zenless Zone Zero Tools</title>
   <link rel="stylesheet" href="./src/style.css">
   <link rel="stylesheet" href="./src/boss.css">
-  <!-- Build: 2026-04-05_15:31_BossSpacing -->
+  <!-- Build: 2026-04-05_15:37_BackIcon -->
 </head>
 
 <body>
@@ -91,13 +91,9 @@
 
     <!-- 画面2: ボスチェッカー -->
     <section id="view-boss" class="view hidden">
-      <h1 class="page-title">危局強襲戦 ボス情報</h1>
-
-      <!-- スマホ用：戻るナビゲーション -->
-      <div id="boss-mobile-nav" class="boss-mobile-nav">
-        <button id="btn-boss-back" class="btn-boss-back">
-          <span class="back-icon">◀</span> ボス選択
-        </button>
+      <div class="boss-header-nav">
+        <button id="btn-boss-back" class="btn-boss-back">◀</button>
+        <h1 class="page-title">危局強襲戦 ボス情報</h1>
       </div>
 
       <div id="boss-layout-wrapper" class="boss-layout show-list">
@@ -114,7 +110,7 @@
         </article>
       </div>
 
-      <!-- スマホ用：スクロール時に出現するスティッキーヘッダー (弟要素に配置してCSSで制御可能に) -->
+      <!-- スマホ用：スクロール時に出現するスティキーヘッダー (弟要素に配置してCSSで制御可能に) -->
       <div id="boss-sticky-header" class="boss-sticky-header">
         <button id="btn-boss-back-sticky" class="btn-boss-back-mini">◀</button>
         <span id="sticky-boss-name" class="sticky-boss-name">ボス詳細</span>
@@ -387,7 +383,7 @@
             </div>
             <button id="btn-tv-start" class="btn-gacha">GAME<br>START</button>
           </div>
-          
+
           <div class="dpad">
             <button id="btn-up" class="btn-dir btn-up">▲</button>
             <button id="btn-left" class="btn-dir btn-left">◀</button>
