@@ -71,9 +71,12 @@
 }
 
 /* 個別調整：危局ボス詳細のアイコン（PC・スマホ共通）とスティッキーアイコンを上に掲げる */
-.btn-boss-back .icon-back-arrow,
-.btn-boss-back-mini .icon-back-arrow {
+.btn-boss-back .icon-back-arrow {
   transform: translateY(-1px);
+}
+
+.btn-boss-back-mini .icon-back-arrow {
+  transform: translateY(-2px);
 }
 
 .btn-boss-back:hover {
