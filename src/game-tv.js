@@ -76,16 +76,16 @@ export class GameTV {
     if (this.rankEl) {
       const rank = this.calculateRank(this.score);
       this.rankEl.textContent = rank;
-      // ランクの色や発光を微調整しても良い
+      // ランクに応じた色クラスを付与
+      this.rankEl.className = 'tv-rank-badge rank-' + rank.toLowerCase();
     }
   }
 
   calculateRank(s) {
-    if (s >= 5000) return 'SS';
     if (s >= 3000) return 'S';
-    if (s >= 2000) return 'A';
-    if (s >= 1000) return 'B';
-    return 'Z';
+    if (s >= 1500) return 'A';
+    if (s >= 500) return 'B';
+    return 'X';
   }
 
   // アイテム（コイン/レア）生成
@@ -101,7 +101,7 @@ export class GameTV {
       x: spot.x,
       y: spot.y,
       type: isRare ? 'rare' : 'coin',
-      expiresAt: Date.now() + 3000 // 3秒で消滅
+      expiresAt: Date.now() + 2000 // 2秒で消滅
     });
     this.render();
   }
@@ -127,7 +127,7 @@ export class GameTV {
   updateDifficulty() {
     // スコアに応じて発生間隔を短くする (2000ms -> 最短 800ms)
     const base = 2000;
-    const accel = Math.min(1200, Math.floor(this.score / 5)); // 5点につき1ms加速
+    const accel = Math.min(1200, Math.floor(this.score / 4)); // 4点につき1ms加速 (少しペースアップ)
     this.enemyInterval = base - accel;
     
     // タイマーを再セット
@@ -203,8 +203,8 @@ export class GameTV {
 
     // 侵蝕タイマー
     this.enemyTimer = setInterval(() => this.spawnEnemy(), this.enemyInterval);
-    // アイテムタイマー (2秒ごと)
-    this.itemTimer = setInterval(() => this.spawnItem(), 2000);
+    // アイテムタイマー (1秒ごと)
+    this.itemTimer = setInterval(() => this.spawnItem(), 1000);
     // メインループ (寿命チェック用)
     this.gameLoopTimer = setInterval(() => {
       const now = Date.now();
