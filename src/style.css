@@ -112,8 +112,8 @@ h3,
 
 @media (max-width: 600px) {
   #app-container {
-    padding: 0.75rem 0.5rem;
-    /* 上のコンテナパディングを少し削る */
+    padding: 0.75rem 1.25rem;
+    /* 上のコンテナパディングを少し削りつつ、左右を 20px 確保 */
   }
 
   .page-title {
@@ -129,7 +129,7 @@ h3,
   .subtitle {
     margin: 0.75rem 0 1.5rem 0 !important;
     /* コンテナの padding 0.75 + この margin 0.75 = 合計 1.5rem (24px) */
-    font-size: 1.1rem !important;
+    font-size: 1.05rem !important;
     /* 1.3rem (約21px) で視認性と美しさを両立 */
   }
 }
