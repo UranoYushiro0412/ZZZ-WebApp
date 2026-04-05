@@ -82,14 +82,30 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
-#btn-tv-start {
-  width: 100px;
-  /* 2行になったので、よりコンパクトに */
-  height: auto;
-  padding: 0.5rem 1rem;
-  line-height: 1.2;
-  font-size: 0.85rem;
-  text-align: center;
+/* 開始ボタン */
+.tv-start-btn {
+  background: #ffffff;
+  color: #000;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: none;
+  font-family: 'Jura', sans-serif;
+  text-transform: uppercase;
+}
+
+.tv-start-btn:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: none;
+  background: #f0f0f0;
+}
+
+.tv-start-btn:active {
+  transform: translateY(1px);
 }
 
 .tv-score-box {
