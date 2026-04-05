@@ -126,6 +126,7 @@
   grid-template-columns: repeat(7, 50px);
   grid-template-rows: repeat(7, 50px);
   gap: 4px;
+  touch-action: none; /* スマホでの誤スクロール防止 */
 }
 
 /* ブラウン管の走査線風エフェクト */
@@ -153,7 +154,7 @@
   align-items: center;
   justify-content: center;
   font-size: 1.8rem;
-  transition: transform 0.1s, background-color 0.2s;
+  transition: transform 0.05s, background-color 0.05s;
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
 }
 

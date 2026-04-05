@@ -23,10 +23,10 @@ export class GameTV {
       if (['ArrowRight', 'd'].includes(e.key)) this.movePlayer(1, 0);
     });
 
-    if (controls.up) controls.up.onclick = () => this.movePlayer(0, -1);
-    if (controls.down) controls.down.onclick = () => this.movePlayer(0, 1);
-    if (controls.left) controls.left.onclick = () => this.movePlayer(-1, 0);
-    if (controls.right) controls.right.onclick = () => this.movePlayer(1, 0);
+    if (controls.up) controls.up.onpointerdown = () => this.movePlayer(0, -1);
+    if (controls.down) controls.down.onpointerdown = () => this.movePlayer(0, 1);
+    if (controls.left) controls.left.onpointerdown = () => this.movePlayer(-1, 0);
+    if (controls.right) controls.right.onpointerdown = () => this.movePlayer(1, 0);
   }
 
   // 指定した座標が盤面内かチェック
@@ -239,7 +239,8 @@ export class GameTV {
         }
 
         // タップ移動（スマホ向け・PCでも動作）
-        cell.onclick = () => {
+        cell.onpointerdown = (e) => {
+          e.preventDefault(); // 誤作動防止
           if (!this.isPlaying) return;
           const dx = x - this.player.x;
           const dy = y - this.player.y;
