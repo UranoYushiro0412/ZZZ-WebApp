@@ -1,4 +1,6 @@
 /* にゃんきちのコインキャッチャー 専用スタイル */
+
+/* 1. 全体レイアウト */
 .coin-container {
   display: flex;
   flex-direction: column;
@@ -8,6 +10,7 @@
   margin: 0 auto;
 }
 
+/* 2. ヘッダーナビゲーション (最上部) */
 .coin-header-nav {
   position: relative;
   display: flex;
@@ -20,6 +23,37 @@
   margin-right: auto;
 }
 
+.coin-back-btn .icon-back-arrow {
+  transform: translateY(-1px);
+}
+
+.coin-back-btn {
+  position: absolute;
+  left: 0;
+  width: 45px;
+  height: 45px;
+  background: #2a2245;
+  border: 2px solid #3d2b5e;
+  border-radius: 10px;
+  color: #a389ff;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 2px;
+  /* 記号をわずかに上にずらす */
+  z-index: 10;
+}
+
+.coin-back-btn:hover {
+  background: #3d2b5e;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+/* 3. ステータス・ヘッダーエリア */
 .coin-header {
   display: flex;
   justify-content: space-between;
@@ -32,77 +66,28 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
-/* ゲームエリア */
-.coin-game-area {
-  width: 100%;
-  max-width: 320px;
-  height: 450px;
-  background: #111;
-  border: 4px solid var(--chara-main);
-  border-radius: 12px;
-  position: relative;
-  overflow: hidden;
-  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
-  /* ユーザーが画面を長押しした場合のドラッグ等防ぐ */
-  touch-action: none;
-  user-select: none;
-}
-
-/* プレイヤー (にゃんきち長官想定のボンプ) */
-.coin-player {
-  position: absolute;
-  bottom: 10px;
-  width: 40px;
-  height: 40px;
-  background: #3498db;
-  border-radius: 10px;
+.coin-score-box {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  /* jsで左からの位置(X座標)を操作します */
-  left: calc(50% - 20px);
-  z-index: 10;
-  box-shadow: 0 0 10px #3498db;
-  transition: left 0.1s ease-out;
-  /* なめらかな移動のため */
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.5rem;
 }
 
-.coin-player::after {
-  content: '🐾';
+.coin-score-label {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #a389ff;
+  font-family: 'Jura', sans-serif;
+  letter-spacing: 1px;
 }
 
-/* 落下アイテムの基本設定 */
-.falling-item {
-  position: absolute;
-  top: -30px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  /* y座標とx座標はjsで操作 */
+.coin-score-value {
+  font-size: 1.8rem;
+  font-family: 'Jura', sans-serif;
+  color: var(--chara-accent);
+  text-shadow: 0 0 5px var(--chara-accent);
 }
 
-.item-coin::after {
-  content: '🪙';
-  text-shadow: 0 0 10px #f1c40f;
-}
-
-.item-bomb::after {
-  content: '💣';
-  text-shadow: 0 0 10px #ff0000;
-}
-
-.item-poly::after {
-  content: '💎';
-  text-shadow: 0 0 15px #00f0ff, 0 0 5px #fff;
-  animation: pulseCoin 0.5s infinite alternate;
-}
-
-/* ランクバッジと配色（個別に調整可能） */
 .coin-rank-badge {
   background: transparent !important;
   padding: 0;
@@ -134,30 +119,76 @@
   color: #ffd700;
 }
 
-/* スコア表示エリア */
-.coin-score-box {
+/* 4. ゲームメインエリア */
+.coin-game-area {
+  width: 100%;
+  max-width: 320px;
+  height: 450px;
+  background: #111;
+  border: 4px solid var(--chara-main);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+  /* ユーザーが画面を長押しした場合のドラッグ等防ぐ */
+  touch-action: none;
+  user-select: none;
+}
+
+/* 5. ゲーム内オブジェクト */
+.coin-player {
+  position: absolute;
+  bottom: 10px;
+  width: 40px;
+  height: 40px;
+  background: #3498db;
+  border-radius: 10px;
   display: flex;
-  flex-direction: row;
-  align-items: baseline;
-  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  /* jsで左からの位置(X座標)を操作します */
+  left: calc(50% - 20px);
+  z-index: 10;
+  box-shadow: 0 0 10px #3498db;
+  transition: left 0.1s ease-out;
+  /* なめらかな移動のため */
 }
 
-.coin-score-label {
-  font-size: 1rem;
-  font-weight: bold;
-  color: #a389ff;
-  font-family: 'Jura', sans-serif;
-  letter-spacing: 1px;
+.coin-player::after {
+  content: '🐾';
 }
 
-.coin-score-value {
-  font-size: 1.8rem;
-  font-family: 'Jura', sans-serif;
-  color: var(--chara-accent);
-  text-shadow: 0 0 5px var(--chara-accent);
+.falling-item {
+  position: absolute;
+  top: -30px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  /* y座標とx座標はjsで操作 */
 }
 
-/* 開始ボタン */
+.item-coin::after {
+  content: '🪙';
+  text-shadow: 0 0 10px #f1c40f;
+}
+
+.item-bomb::after {
+  content: '💣';
+  text-shadow: 0 0 10px #ff0000;
+}
+
+.item-poly::after {
+  content: '💎';
+  text-shadow: 0 0 15px #00f0ff, 0 0 5px #fff;
+  animation: pulseCoin 0.5s infinite alternate;
+}
+
+/* 6. 操作・コントロール系 */
 .coin-start-btn {
   background: var(--chara-main);
   color: #000;
@@ -202,21 +233,6 @@
 
 .touch-zone-right {
   right: 0;
-}
-
-/* 戻るボタンの個別定義（TVゲーム用から独立） */
-.coin-back-btn .icon-back-arrow {
-  transform: translateY(-1px);
-}
-
-.coin-back-btn {
-  position: absolute;
-  left: 0;
-  width: 45px;
-  height: 45px;
-  background: #2a2245;
-  border: 2px solid #3d2b5e;
-  border-radius: 10px;
   color: #a389ff;
   font-size: 1.3rem;
   cursor: pointer;
