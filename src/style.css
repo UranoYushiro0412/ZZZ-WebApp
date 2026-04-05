@@ -127,8 +127,9 @@ h3,
   }
 
   .subtitle {
-    margin: 0.75rem 0 1.5rem 0 !important; /* コンテナの padding 0.75 + この margin 0.75 = 合計 1.5rem (24px) */
-    font-size: 1.1rem;
+    margin: 0.75rem 0 1.5rem 0 !important;
+    /* コンテナの padding 0.75 + この margin 0.75 = 合計 1.5rem (24px) */
+    font-size: 1.5rem;
   }
 }
 
