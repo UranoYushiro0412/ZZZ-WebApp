@@ -97,7 +97,7 @@ h3,
 .page-title {
   font-size: 2.2rem;
   color: var(--chara-main);
-  margin-bottom: 0.5rem;
+  margin: 1.5rem 0 0.5rem 0; /* PC: 上に24px、下に8px */
   text-align: center;
   text-transform: uppercase;
 }
@@ -107,19 +107,24 @@ h3,
     padding: 1rem 0.5rem;
   }
 
+  .page-title {
+    margin-top: 1rem !important; /* スマホ: 上の余白を16pxに設定 */
+    margin-bottom: 0.5rem !important;
+  }
+
   .view {
     padding: 0;
   }
 
   .subtitle {
-    margin: 0.1rem 0 1rem 0 !important;
+    margin: 0.5rem 0 1rem 0 !important; /* スマホ: 上下にバランス良く配置 */
   }
 }
 
 .subtitle {
   text-align: center;
   color: var(--text-sub);
-  margin: 2rem 0;
+  margin: 0.5rem 0 2rem 0; /* PC: タイトルとの間を詰めつつ、下は空ける */
 }
 
 /* Home Menu Grid */
