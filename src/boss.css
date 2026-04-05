@@ -43,13 +43,15 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  max-width: 100%; /* 幅制限を解除してボタンを端へ寄せやすくする */
+  max-width: 100%;
+  /* 幅制限を解除してボタンを端へ寄せやすくする */
   margin: 0 auto 10px;
 }
 
 .btn-boss-back {
   position: absolute;
-  left: 30px; /* PCではさらに左端へ */
+  left: 30px;
+  /* PCではさらに左端へ */
   top: 50%;
   transform: translateY(-50%);
   width: 42px;
@@ -61,7 +63,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.8rem;
+  font-size: 1.2rem;
   cursor: pointer;
   z-index: 10;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -250,8 +252,9 @@
   .btn-boss-back {
     width: 36px;
     height: 36px;
-    font-size: 1.1rem;
-    left: 5px; /* スマホでは少し内側に寄せても良い */
+    font-size: 1.3rem;
+    left: 5px;
+    /* スマホでは少し内側に寄せても良い */
   }
 
   /* スティッキーヘッダー */
@@ -331,12 +334,14 @@
   flex-direction: column;
   gap: 12px;
   max-width: 600px;
-  margin: 0 auto 20px; /* 上側の 20px を 0 にして subtitle との距離を縮める */
+  margin: 0 auto 20px;
+  /* 上側の 20px を 0 にして subtitle との距離を縮める */
   padding: 0 15px 40px;
 }
 
 .boss-mobile-select-list .section-heading {
-  margin: 15px 0 10px; /* 20px から 15px へ微減 */
+  margin: 15px 0 10px;
+  /* 20px から 15px へ微減 */
   padding-left: 5px;
   border-left: 3px solid var(--boss-accent);
   color: #fff;
@@ -345,7 +350,8 @@
 
 /* サブタイトル直後の余白を調整 */
 #view-boss-mobile-select .subtitle {
-  margin-bottom: 0.4rem !important; /* 1.5rem を 0.4rem (約6px) まで削減 */
+  margin-bottom: 0.4rem !important;
+  /* 1.5rem を 0.4rem (約6px) まで削減 */
 }
 
 .boss-select-card {
