@@ -212,41 +212,40 @@
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
-/* プレイヤー：青いテレビ（ボンプ） */
+/* プレイヤー：専用画像 */
 .tv-cell.player {
-  background: #3498db;
-  box-shadow: 0 0 15px #3498db;
+  background: url('/images/TV_game/player.png') no-repeat center;
+  background-size: contain;
+  box-shadow: none; /* 画像主体にするためシャドウを削除 */
   transform: scale(1.05);
   z-index: 10;
 }
 
 .tv-cell.player::after {
-  content: '📺';
+  content: ''; /* 絵文字を削除 */
 }
 
-/* コイン：黄色のギアコイン */
+/* コイン：専用画像 */
 .tv-cell.coin {
-  background: var(--chara-accent);
-  box-shadow: 0 0 15px var(--chara-accent);
+  background: url('/images/TV_game/coin.png') no-repeat center;
+  background-size: contain;
+  box-shadow: none;
   animation: pulseCoin 1s infinite alternate;
 }
 
 .tv-cell.coin::after {
-  content: '🪙';
-  font-size: 1.5rem;
-  animation: pulseCoin 0.5s infinite alternate;
+  content: ''; /* 絵文字を削除 */
 }
 
-/* レアコイン：スコア3倍 */
+/* 特大コイン：専用画像 */
 .tv-cell.coin-large {
-  background: #f1c40f;
-  box-shadow: 0 0 20px #f1c40f;
+  background: url('/images/TV_game/manycoin.png') no-repeat center;
+  background-size: contain;
+  box-shadow: none;
 }
 
 .tv-cell.coin-large::after {
-  content: '💎';
-  font-size: 1.6rem;
-  animation: pulseCoin 0.3s infinite alternate;
+  content: ''; /* 絵文字を削除 */
 }
 
 /* 寿命が近いアイテムの点滅 */
