@@ -99,11 +99,15 @@
   margin-bottom: 0.8rem;
 }
 
+.gm-back-btn .icon-back-arrow {
+  transform: translateY(-1px);
+}
+
 .gm-back-btn {
   background: transparent;
   border: 1px solid #555;
   color: #fff;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   border-radius: 50%;
   width: 40px;
   height: 40px;
