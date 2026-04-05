@@ -103,10 +103,18 @@
   -webkit-text-stroke: 0.6px currentColor;
 }
 
-.rank-x { color: #bbb; }
-.rank-b { color: #4da8da; }
-.rank-a { color: #fca5f1; }
-.rank-s { color: #ffd700; }
+.rank-x {
+  color: #bbb;
+}
+.rank-b {
+  color: #4da8da;
+}
+.rank-a {
+  color: #fca5f1;
+}
+.rank-s {
+  color: #ffd700;
+}
 
 /* 4. ゲームメインエリア */
 .coin-game-area {
@@ -157,8 +165,16 @@
   font-size: 1.5rem;
 }
 
-.item-coin::after { content: '🪙'; text-shadow: 0 0 10px #f1c40f; }
-.item-bomb::after { content: '💣'; text-shadow: 0 0 10px #ff0000; }
+.item-coin::after {
+  content: '🪙';
+  text-shadow: 0 0 10px #f1c40f;
+}
+
+.item-bomb::after {
+  content: '💣';
+  text-shadow: 0 0 10px #ff0000;
+}
+
 .item-poly::after {
   content: '💎';
   text-shadow: 0 0 15px #00f0ff, 0 0 5px #fff;
@@ -201,5 +217,10 @@
   opacity: 0;
 }
 
-.touch-zone-left { left: 0; }
-.touch-zone-right { right: 0; }
+.touch-zone-left {
+  left: 0;
+}
+
+.touch-zone-right {
+  right: 0;
+}
