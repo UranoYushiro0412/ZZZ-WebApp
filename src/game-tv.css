@@ -450,7 +450,7 @@
     justify-content: space-between;
     margin-bottom: 0 !important;
     /* 左側(ランク側)をさらに詰め、右側(ボタン側)も調整 */
-    padding: 0.8rem 0.5rem 0.8rem 0.5rem;
+    padding: 0.8rem 0.8rem 0.8rem 0.8rem;
   }
 
   .tv-left-column {
