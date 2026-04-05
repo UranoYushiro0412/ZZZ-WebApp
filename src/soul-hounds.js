@@ -3,9 +3,9 @@ export default class SoulHounds {
     this.canvas = document.getElementById('soul-hounds-canvas');
     this.ctx = this.canvas.getContext('2d');
     
-    // Grid Setup (Match original 9-column style)
+    // グリッド設定 (オリジナルの9列スタイルに合わせる)
     this.cols = 9;
-    this.rows = 15; // Visible rows
+    this.rows = 15; // 画面内に表示される行数
     this.blockSize = 40;
     this.grid = [];
     
@@ -13,7 +13,7 @@ export default class SoulHounds {
       x: 4, 
       y: 2, 
       px: 160, 
-      py: 80, // Pixel coordinates for smooth movement
+      py: 80, // スムーズな移動のためのピクセル座標
       vx: 0, 
       vy: 0,
       scaleX: 1, 
@@ -30,18 +30,18 @@ export default class SoulHounds {
     this.isPlaying = false;
     this.frameCounter = 0;
     
-    // FX
+    // エフェクト演出
     this.particles = [];
     this.shakeTime = 0;
     this.hitStop = 0;
     this.blockCache = {};
     
-    // Color Palette (Vibrant jelly colors)
+    // カラーパレット (鮮やかなジェリーカラー)
     this.colors = [
-      { main: '#ff3e88', light: '#ff6fb5', dark: '#cc1a5a', aura: 'rgba(255,62,136,0.3)', pattern: 'eye' },    // Pink
-      { main: '#3e9aff', light: '#6fcbff', dark: '#1a5acc', aura: 'rgba(62,154,255,0.3)', pattern: 'wave' },  // Blue
-      { main: '#ffcc3e', light: '#ffec6f', dark: '#cc9a1a', aura: 'rgba(255,204,62,0.3)', pattern: 'spiral' }, // Yellow
-      { main: '#9eff3e', light: '#cbff6f', dark: '#7acc1a', aura: 'rgba(158,255,62,0.3)', pattern: 'dot' }    // Green
+      { main: '#ff3e88', light: '#ff6fb5', dark: '#cc1a5a', aura: 'rgba(255,62,136,0.3)', pattern: 'eye' },    // ピンク
+      { main: '#3e9aff', light: '#6fcbff', dark: '#1a5acc', aura: 'rgba(62,154,255,0.3)', pattern: 'wave' },  // 青
+      { main: '#ffcc3e', light: '#ffec6f', dark: '#cc9a1a', aura: 'rgba(255,204,62,0.3)', pattern: 'spiral' }, // 黄色
+      { main: '#9eff3e', light: '#cbff6f', dark: '#7acc1a', aura: 'rgba(158,255,62,0.3)', pattern: 'dot' }    // 緑
     ];
 
     this.init();
@@ -106,13 +106,13 @@ export default class SoulHounds {
   init() {
     this.grid = [];
     for (let r = 0; r < 25; r++) {
-      this.generateRow(r, r < 5); // 5 rows of empty space initially
+      this.generateRow(r, r < 5); // 最初は上部5行を空にする
     }
     this.player.px = this.player.x * this.blockSize;
     this.player.py = this.player.y * this.blockSize;
   }
 
-  // Neighbor-Weighting Clustered Generation
+  // 周囲の重み付けを考慮したクラスター生成
   generateRow(r, empty = false) {
     const row = [];
     for (let c = 0; c < this.cols; c++) {
@@ -124,7 +124,7 @@ export default class SoulHounds {
       // 確率的なクラスター生成
       let colorIndex = Math.floor(Math.random() * this.colors.length);
       
-      // 左または上のブロックと比較して重み付け
+      // 左または上のブロックと比較して同職になりやすく重み付け
       const left = c > 0 ? row[c - 1] : null;
       const up = r > 0 && this.grid[r - 1] ? this.grid[r - 1][c] : null;
       
@@ -139,7 +139,7 @@ export default class SoulHounds {
       if (rand < 0.1) {
         row.push({ type: 'spike', isPopping: false });
       } else if (rand < 0.15) {
-        row.push({ type: 'item', colorIndex: 0, isPopping: false }); // Pomegranate for energy
+        row.push({ type: 'item', colorIndex: 0, isPopping: false }); // 回復アイテム
       } else {
         row.push({ type: 'normal', colorIndex, isPopping: false, popTimer: 0 });
       }
@@ -172,35 +172,35 @@ export default class SoulHounds {
       return;
     }
 
-    // Energy Decay
+    // エネルギーの自然減少
     this.energy -= 0.015;
     if (this.energy <= 0) this.loseLife("エネルギー切れ！");
 
-    // Smooth Pixel Player Position -> Grid Position
+    // スムーズなピクセル座標からグリッド座標への変換
     this.player.x = Math.floor((this.player.px + this.blockSize / 2) / this.blockSize);
     this.player.y = Math.floor((this.player.py + this.blockSize / 2) / this.blockSize);
 
-    // Gravity & Jump Physics
-    this.player.vy += 0.25; // Constant Gravity (Slow/Smooth fall)
+    // 重力とジャンプの物理演算
+    this.player.vy += 0.25; // 一定の重力（ゆっくり滑らかに落下）
     this.player.py += this.player.vy;
 
-    // Collision Detection (Bottom)
+    // 衝突判定 (足元)
     const nextYGrid = Math.floor((this.player.py + this.blockSize - 2) / this.blockSize);
     const belowLeft = this.getBlockAt(this.player.px + 5, this.player.py + this.blockSize);
     const belowRight = this.getBlockAt(this.player.px + this.blockSize - 5, this.player.py + this.blockSize);
 
     if (belowLeft || belowRight) {
       if (this.player.vy > 0) {
-        // Landing
+        // 着地
         if (this.player.vy > 2) {
-          this.player.scaleY = 0.7; // Squash on landing
+          this.player.scaleY = 0.7; // 着地時の潰れ演出
           this.player.scaleX = 1.3;
         }
         this.player.py = Math.floor(this.player.py / this.blockSize) * this.blockSize;
         this.player.vy = 0;
         this.player.isGrounded = true;
         
-        // Spike Damage
+        // トゲ接触ダメージ
         if ((belowLeft && belowLeft.type === 'spike') || (belowRight && belowRight.type === 'spike')) {
           this.loseLife("トゲ接触！");
         }
@@ -209,21 +209,21 @@ export default class SoulHounds {
       this.player.isGrounded = false;
     }
 
-    // Lateral Movement (Smoother)
+    // 横方向の移動（摩擦あり）
     this.player.px += this.player.vx;
-    this.player.vx *= 0.8; // Friction
+    this.player.vx *= 0.8; // 摩擦
 
     if (this.getBlockAt(this.player.px - 2, this.player.py + 5) || this.getBlockAt(this.player.px + this.blockSize + 2, this.player.py + 5)) {
       this.player.px -= this.player.vx;
       this.player.vx = 0;
     }
 
-    // Camera Support (Follow Smoothly)
+    // カメラ挙動 (プレイヤーをスムーズに追従)
     const targetCameraY = (this.player.py - this.canvas.height / 3);
     if (!this.cameraY) this.cameraY = targetCameraY;
     this.cameraY += (targetCameraY - this.cameraY) * 0.1;
 
-    // Depth Calculation
+    // 深度(Depth)の計算
     const currentDepth = Math.floor(this.player.py / (this.blockSize * 1.5));
     if (currentDepth > this.depth) {
       this.depth = currentDepth;
@@ -232,19 +232,20 @@ export default class SoulHounds {
       }
     }
 
-    // Physics Area Limiting (Performance)
+    // 物理演算の負荷軽減 (2フレームに1度実行)
     if (this.frameCounter % 2 === 0) {
       this.applyBlockGravity();
     }
     this.processPopTimers();
 
-    // FX
+    // パーティクル管理
     this.particles = this.particles.filter(p => {
       p.x += p.vx; p.y += p.vy; p.vy += 0.2; p.life -= 0.02;
       return p.life > 0;
     });
     if (this.shakeTime > 0) this.shakeTime--;
     
+    // スケールの復元アニメーション
     this.player.scaleX += (1 - this.player.scaleX) * 0.15;
     this.player.scaleY += (1 - this.player.scaleY) * 0.15;
     this.frameCounter++;
@@ -261,7 +262,7 @@ export default class SoulHounds {
 
   jump() {
     if (this.player.isGrounded) {
-      this.player.vy = -6.5; // Jump Force
+      this.player.vy = -6.5; // ジャンプ力
       this.player.isGrounded = false;
       this.player.scaleY = 1.4;
       this.player.scaleX = 0.7;
@@ -269,12 +270,11 @@ export default class SoulHounds {
   }
 
   dig(hDir, vDir) {
-    // Current direction or specified direction
+    // 現在の方向または指定された方向
     const targetX = this.player.x + hDir;
     const targetY = this.player.y + (vDir || 0);
     
-    // In Soul Hounds, you usually dig the one you are facing or below.
-    // If no direction, dig DOWN.
+    // ソウルハウンドでは、通常、向いている先または真下を掘る
     let finalTargetX = targetX;
     let finalTargetY = targetY;
     if (hDir === 0 && vDir === 0) finalTargetY = this.player.y + 1;
@@ -297,11 +297,12 @@ export default class SoulHounds {
       this.triggerShake(6);
       this.hitStop = 5;
       this.checkChains(tx, ty, block.colorIndex);
-      this.player.scaleX = 1.2; // Dig stretch
+      this.player.scaleX = 1.2; // 掘削時の伸縮演出
     }
   }
 
   applyBlockGravity() {
+    // 画面外のブロックには物理を適用させない
     const startR = Math.max(0, Math.floor(this.cameraY / this.blockSize) - 5);
     const endR = Math.min(this.grid.length - 2, startR + 25);
     for (let r = endR; r >= startR; r--) {
@@ -328,7 +329,7 @@ export default class SoulHounds {
         if (b) { b.isPopping = true; b.popTimer = 12; }
       });
     } else {
-      // Just single block break
+      // 単発ブロックの破壊
       this.grid[sy][sx] = null;
       this.createExplosion(sx * this.blockSize, sy * this.blockSize, this.colors[colorIdx].main);
       this.score += 10;
@@ -373,24 +374,24 @@ export default class SoulHounds {
       alert(`GAME OVER\nScore: ${this.score}\nDepth: ${this.depth}m`);
       location.reload();
     } else {
-      // Small invincibility / respawn up a bit
+      // 復帰時、少し上に戻して無敵時間を想定
       this.player.py -= this.blockSize * 2;
       this.energy = Math.max(this.energy, 30);
     }
   }
 
   updateUI() {
-    // Energy Ring (SVG)
+    // エネルギーリング (SVG)
     const ring = document.getElementById('sh-energy-ring');
     const offset = 283 - (283 * this.energy) / 100;
     ring.style.strokeDashoffset = offset;
     ring.style.stroke = this.energy < 25 ? '#ff3e3e' : '#a389ff';
     document.getElementById('sh-energy-text').textContent = Math.ceil(this.energy);
     
-    // Lives
+    // 残機
     document.getElementById('sh-lives').textContent = this.lives;
     
-    // Zero Padded Stats
+    // 0埋めされた統計情報
     document.getElementById('sh-depth').textContent = String(this.depth).padStart(5, '0');
     document.getElementById('sh-score').textContent = String(this.score).padStart(7, '0');
   }
@@ -427,12 +428,12 @@ export default class SoulHounds {
     
     if (block.type === 'normal') {
       const clr = this.colors[block.colorIndex];
-      // Jelly Body
+      // ブロック本体
       this.ctx.fillStyle = clr.main;
       this.roundRect(0, 0, s, s, 8);
       this.ctx.fill();
       
-      // Inner Pattern (Premium Detail)
+      // 内部パターン (ディテール演出)
       this.ctx.strokeStyle = 'rgba(255,255,255,0.3)';
       this.ctx.lineWidth = 2;
       this.ctx.beginPath();
@@ -453,7 +454,7 @@ export default class SoulHounds {
         this.ctx.fillRect(0,0,s,s);
       }
     } else if (block.type === 'spike') {
-      // Glowing Metallic Spike
+      // 発光する金属的なトゲ
       this.ctx.fillStyle = '#1a1a1a';
       this.ctx.fillRect(0, s*0.7, s, s*0.3);
       this.ctx.fillStyle = '#ff2a6d';
@@ -462,6 +463,7 @@ export default class SoulHounds {
       this.ctx.fill();
       this.ctx.strokeStyle = '#fff'; this.ctx.lineWidth=1; this.ctx.stroke();
     } else if (block.type === 'item') {
+      // アイテム描画
       this.ctx.fillStyle = '#ff3e3e';
       this.ctx.beginPath(); this.ctx.arc(s/2, s/2, s*0.3, 0, Math.PI*2); this.ctx.fill();
       this.ctx.fillStyle = '#fff'; this.ctx.fillRect(s/2-1, s/2-5, 2, 4);
@@ -475,13 +477,13 @@ export default class SoulHounds {
     this.ctx.translate(this.player.px + this.blockSize/2, this.player.py + this.blockSize/2);
     this.ctx.scale(this.player.scaleX, this.player.scaleY);
     
-    // Drill Bunny (Simplified Art)
+    // ドリルバニー (簡易アート)
     this.ctx.fillStyle = '#eee';
-    this.ctx.fillRect(-12, -15, 24, 25); // Body
+    this.ctx.fillRect(-12, -15, 24, 25); // 本体
     this.ctx.fillStyle = '#333';
-    this.ctx.fillRect(-8, -10, 4, 4); this.ctx.fillRect(4, -10, 4, 4); // Eyes
+    this.ctx.fillRect(-8, -10, 4, 4); this.ctx.fillRect(4, -10, 4, 4); // 目
     
-    // Drill
+    // ドリル
     this.ctx.fillStyle = '#777';
     this.ctx.beginPath();
     this.ctx.moveTo(-10, 10); this.ctx.lineTo(10, 10); this.ctx.lineTo(0, 25);
@@ -512,7 +514,7 @@ export default class SoulHounds {
   }
 
   createFloatText(x, y, text, color) {
-    // Implement floating text if needed
+    // 必要に応じて浮遊テキストを実装
   }
 
   drawParticles() {
@@ -525,5 +527,5 @@ export default class SoulHounds {
   }
 }
 
-// Global Initialization
+// グローバル初期化
 window.soulHoundsGame = new SoulHounds();

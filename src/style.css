@@ -51,7 +51,7 @@ body {
   flex-direction: column;
 }
 
-/* Typography */
+/* タイポグラフィ */
 h1,
 h2,
 h3,
@@ -59,7 +59,7 @@ h3,
   font-family: 'Jura', sans-serif;
 }
 
-/* Navbar */
+/* ナビゲーションバー */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -94,7 +94,7 @@ h3,
   color: var(--bg-dark);
 }
 
-/* Layout Core */
+/* レイアウト構成 */
 #app-container {
   flex: 1;
   padding: 1rem 1rem;
@@ -152,7 +152,7 @@ h3,
   }
 }
 
-/* Home Menu Grid */
+/* ホーム画面のメニューグリッド */
 .menu-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -220,7 +220,7 @@ h3,
   color: var(--text-sub);
 }
 
-/* Boss Layout */
+/* ボス画面のレイアウト */
 .boss-layout {
   display: flex;
   gap: 2rem;
@@ -270,7 +270,7 @@ h3,
   font-weight: bold;
 }
 
-/* Detail Area */
+/* 詳細表示エリア */
 .boss-detail-container {
   flex: 3;
   min-width: 300px;
@@ -368,7 +368,7 @@ h3,
   color: var(--chara-accent);
 }
 
-/* Animations */
+/* アニメーション */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -385,7 +385,7 @@ h3,
   animation: fadeIn 0.4s ease forwards;
 }
 
-/* Responsive */
+/* レスポンシブ構成 */
 @media (max-width: 768px) {
   .boss-layout {
     flex-direction: column;
