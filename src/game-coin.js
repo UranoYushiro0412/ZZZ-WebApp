@@ -59,7 +59,7 @@ export class GameCoin {
     if (this.rankEl) {
       const rank = this.calculateRank(this.score);
       this.rankEl.textContent = rank;
-      this.rankEl.className = 'tv-rank-badge rank-' + rank.toLowerCase();
+      this.rankEl.className = 'coin-rank-badge rank-' + rank.toLowerCase();
     }
   }
 
