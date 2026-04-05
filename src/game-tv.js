@@ -168,6 +168,8 @@ export class GameTV {
     clearInterval(this.itemTimer);
     clearInterval(this.gameLoopTimer);
     if (this.countdownTimer) clearInterval(this.countdownTimer);
+    // カウントダウン表示を強制非表示
+    if (this.countdownEl) this.countdownEl.classList.add('hidden');
   }
 
   // カウントダウン演出
@@ -175,9 +177,10 @@ export class GameTV {
     if (this.isPlaying) return;
     this.stopAndReset();
     
+    this.countdownEl = countdownEl; // 要素を保持
     let count = 3;
-    countdownEl.textContent = count;
-    countdownEl.classList.remove('hidden');
+    this.countdownEl.textContent = count;
+    this.countdownEl.classList.remove('hidden');
     
     this.countdownTimer = setInterval(() => {
       count--;
