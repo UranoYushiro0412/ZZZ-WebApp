@@ -154,3 +154,34 @@
 .touch-zone-right {
   right: 0;
 }
+
+/* 戻るボタンの個別定義（TVゲーム用から独立） */
+.coin-back-btn .icon-back-arrow {
+  transform: translateY(-1px);
+}
+
+.coin-back-btn {
+  position: absolute;
+  left: 0;
+  width: 45px;
+  height: 45px;
+  background: #2a2245;
+  border: 2px solid #3d2b5e;
+  border-radius: 10px;
+  color: #a389ff;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 2px;
+  /* 記号をわずかに上にずらす */
+  z-index: 10;
+}
+
+.coin-back-btn:hover {
+  background: #3d2b5e;
+  color: #fff;
+  transform: scale(1.05);
+}
