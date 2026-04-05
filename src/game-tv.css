@@ -132,21 +132,21 @@
 }
 
 .rank-b {
-  background: #3498db;
+  background: #4da8da;
   color: #fff;
-  box-shadow: 0 0 10px #3498db;
+  box-shadow: 0 0 10px #4da8da;
 }
 
 .rank-a {
-  background: #9b59b6;
-  color: #fff;
-  box-shadow: 0 0 12px #9b59b6;
+  background: #fca5f1;
+  color: #000; /* 明るい色なので文字を黒に */
+  box-shadow: 0 0 12px #fca5f1;
 }
 
 .rank-s {
-  background: #f1c40f;
+  background: #ffd700;
   color: #000;
-  box-shadow: 0 0 20px #f1c40f, 0 0 10px #fff;
+  box-shadow: 0 0 20px #ffd700, 0 0 10px #fff;
 }
 
 /* TV Grid Board - Changed to 7x7 */
