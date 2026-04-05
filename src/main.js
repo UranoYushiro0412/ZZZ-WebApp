@@ -285,5 +285,13 @@ if (btnSoulHoundsStart) {
   };
 }
 
+const btnSoulHoundsBack = document.getElementById('btn-sh-back');
+if (btnSoulHoundsBack) {
+  btnSoulHoundsBack.onclick = () => {
+    if (window.soulHoundsGame) window.soulHoundsGame.isPlaying = false;
+    showView('view-home');
+  };
+}
+
 // アプリケーション起動時の初期画面を「ホーム」に設定
 showView('view-home');
