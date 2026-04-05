@@ -104,11 +104,11 @@ h3,
 
 @media (max-width: 600px) {
   #app-container {
-    padding: 1rem 0.5rem;
+    padding: 0.75rem 0.5rem; /* 上のコンテナパディングを少し削る */
   }
 
   .page-title {
-    margin-top: 1rem !important; /* スマホ: 上の余白を16pxに設定 */
+    margin-top: 0.75rem !important; /* 合計で 0.75 + 0.75 = 1.5rem (上の隙間) */
     margin-bottom: 0.5rem !important;
   }
 
@@ -117,7 +117,7 @@ h3,
   }
 
   .subtitle {
-    margin: 0.5rem 0 1rem 0 !important; /* スマホ: 上下にバランス良く配置 */
+    margin: 0.5rem 0 1.5rem 0 !important; /* 下のマージンを 1.5rem に (下の隙間) */
   }
 }
 
