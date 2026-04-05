@@ -31,6 +31,43 @@ export class GameTV {
     if (controls.down) controls.down.onpointerdown = () => this.movePlayer(0, 1);
     if (controls.left) controls.left.onpointerdown = () => this.movePlayer(-1, 0);
     if (controls.right) controls.right.onpointerdown = () => this.movePlayer(1, 0);
+
+    // --- スマホ向けスワイプ操作の実装 ---
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    this.boardEl.addEventListener('touchstart', (e) => {
+      if (!this.isPlaying) return;
+      touchStartX = e.changedTouches[0].clientX;
+      touchStartY = e.changedTouches[0].clientY;
+    }, { passive: false });
+
+    // スワイプ中の画面スクロールを防止
+    this.boardEl.addEventListener('touchmove', (e) => {
+      if (this.isPlaying) e.preventDefault();
+    }, { passive: false });
+
+    this.boardEl.addEventListener('touchend', (e) => {
+      if (!this.isPlaying) return;
+      const touchEndX = e.changedTouches[0].clientX;
+      const touchEndY = e.changedTouches[0].clientY;
+
+      const dx = touchEndX - touchStartX;
+      const dy = touchEndY - touchStartY;
+      const absX = Math.abs(dx);
+      const absY = Math.abs(dy);
+
+      // 一定以上の距離を動かした場合のみ「スワイプ」とみなす
+      if (Math.max(absX, absY) > 30) {
+        if (absX > absY) {
+          // 横方向
+          this.movePlayer(dx > 0 ? 1 : -1, 0);
+        } else {
+          // 縦方向
+          this.movePlayer(0, dy > 0 ? 1 : -1);
+        }
+      }
+    }, { passive: false });
   }
 
   isValid(x, y) {
