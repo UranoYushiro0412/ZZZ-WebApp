@@ -390,10 +390,7 @@
     margin-bottom: 0.5rem !important;
   }
 
-  .subtitle {
-    margin: 1rem 0 !important;
-    font-size: 0.75rem;
-  }
+
 
   .tv-grid {
     /* 余裕を持たせるため75%幅に調整 */
