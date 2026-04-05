@@ -12,6 +12,10 @@
   margin-right: auto;
 }
 
+.tv-back-btn .icon-back-arrow {
+  transform: translateY(-1px);
+}
+
 .tv-back-btn {
   position: absolute;
   left: 0;
@@ -21,7 +25,7 @@
   border: 2px solid #3d2b5e;
   border-radius: 10px;
   color: #a389ff;
-  font-size: 18px;
+  font-size: 1.3rem;
   cursor: pointer;
   transition: 0.2s;
   display: flex;
