@@ -252,7 +252,7 @@
   .btn-boss-back {
     width: 36px;
     height: 36px;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     left: 5px;
     /* スマホでは少し内側に寄せても良い */
   }
@@ -302,6 +302,7 @@
     border: none;
     width: 32px;
     height: 32px;
+    font-size: 1.3rem;
     border-radius: 4px;
     font-weight: bold;
   }
