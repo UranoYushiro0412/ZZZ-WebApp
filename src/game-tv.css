@@ -184,6 +184,7 @@
 }
 
 /* ブラウン管の走査線風エフェクト */
+/* 走査線エフェクトの透明度を少し下げて画像を明るく見せる */
 .tv-board::after {
   content: '';
   position: absolute;
@@ -192,8 +193,8 @@
   width: 100%;
   height: 100%;
   background: repeating-linear-gradient(0deg,
-      rgba(0, 0, 0, 0.15),
-      rgba(0, 0, 0, 0.15) 1px,
+      rgba(0, 0, 0, 0.1), /* 0.15 から 0.1 へ軽減 */
+      rgba(0, 0, 0, 0.1) 1px,
       transparent 1px,
       transparent 2px);
   pointer-events: none;
@@ -209,20 +210,22 @@
   justify-content: center;
   font-size: 1.8rem;
   transition: transform 0.05s, background-color 0.05s;
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+  /* 画像が置かれるため、背景の沈み込みを抑える */
 }
 
 /* プレイヤー：専用画像 */
 .tv-cell.player {
   background: url('/images/TV_game/player.png') no-repeat center;
   background-size: contain;
-  box-shadow: none; /* 画像主体にするためシャドウを削除 */
+  box-shadow: none;
+  /* 明るさとコントラストを強調 */
+  filter: brightness(1.15) contrast(1.1);
   transform: scale(1.05);
   z-index: 10;
 }
 
 .tv-cell.player::after {
-  content: ''; /* 絵文字を削除 */
+  content: '';
 }
 
 /* コイン：専用画像 */
@@ -230,11 +233,13 @@
   background: url('/images/TV_game/coin.png') no-repeat center;
   background-size: contain;
   box-shadow: none;
+  /* 明るさと彩度をブースト */
+  filter: brightness(1.2) saturate(1.2);
   animation: pulseCoin 1s infinite alternate;
 }
 
 .tv-cell.coin::after {
-  content: ''; /* 絵文字を削除 */
+  content: '';
 }
 
 /* 特大コイン：専用画像 */
@@ -242,10 +247,8 @@
   background: url('/images/TV_game/manycoin.png') no-repeat center;
   background-size: contain;
   box-shadow: none;
-}
-
-.tv-cell.coin-large::after {
-  content: ''; /* 絵文字を削除 */
+  /* 特大コインはさらに鮮やかに */
+  filter: brightness(1.2) contrast(1.2);
 }
 
 /* 寿命が近いアイテムの点滅 */
