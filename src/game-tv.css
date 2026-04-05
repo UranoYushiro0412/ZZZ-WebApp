@@ -129,23 +129,18 @@
 
 .rank-x {
   color: #bbb;
-  /* 明るいグレーに変更 */
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
 }
 
 .rank-b {
   color: #4da8da;
-  text-shadow: 0 0 5px #4da8da;
 }
 
 .rank-a {
   color: #fca5f1;
-  text-shadow: 0 0 5px #fca5f1, 0 0 5px #fff;
 }
 
 .rank-s {
   color: #ffd700;
-  text-shadow: 0 0 5px #ffd700, 0 0 5px #fff;
 }
 
 /* TV Grid Board - Changed to 7x7 */
