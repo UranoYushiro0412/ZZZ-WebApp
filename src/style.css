@@ -128,7 +128,7 @@ h3,
 
   .subtitle {
     margin: 0.5rem 0 1.5rem 0 !important;
-    /* 下のマージンを 1.5rem に (下の隙間) */
+    font-size: 1.1rem; /* スマホでは少し大きく表示 */
   }
 }
 
