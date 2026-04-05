@@ -24,7 +24,11 @@ const btnHome = document.getElementById('btn-home');
 
 // --- ナビゲーション(画面切り替え)処理 ---
 // ローカル環境（開発中）のみ「弾幕ゲー」を有効化する設定
-const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const isLocal = window.location.hostname === 'localhost' || 
+                window.location.hostname === '127.0.0.1' || 
+                window.location.hostname.startsWith('192.168.') ||
+                window.location.protocol === 'file:';
+
 if (isLocal) {
   const coinCard = document.querySelector('.menu-card[data-target="view-game-coin"]');
   if (coinCard) {
@@ -84,7 +88,11 @@ function showView(viewId) {
     const btnTV = document.getElementById('btn-tv-start');
     if (btnTV) btnTV.classList.remove('v-hidden');
   }
-  if (viewId !== 'view-game-coin' && window.currentGameCoin) window.currentGameCoin.stop();
+  if (viewId !== 'view-game-coin' && window.currentGameCoin) {
+    window.currentGameCoin.stopAndReset();
+    const btnCoin = document.getElementById('btn-coin-start');
+    if (btnCoin) btnCoin.classList.remove('v-hidden');
+  }
   if (viewId !== 'view-soul-hounds' && window.soulHoundsGame) window.soulHoundsGame.isPlaying = false;
 }
 

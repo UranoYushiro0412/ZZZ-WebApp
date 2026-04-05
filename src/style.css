@@ -36,6 +36,10 @@
   display: none !important;
 }
 
+.v-hidden {
+  visibility: hidden !important;
+}
+
 body {
   font-family: 'Noto Sans JP', sans-serif;
   background-color: var(--bg-dark);
