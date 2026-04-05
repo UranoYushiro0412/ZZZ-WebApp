@@ -312,7 +312,7 @@
   grid-template-columns: repeat(3, 70px);
   grid-template-rows: repeat(3, 70px);
   gap: 12px;
-  margin-top: 1rem;
+  margin-top: 0rem;
 }
 
 .btn-dir {
@@ -449,6 +449,10 @@
     justify-content: space-around;
     margin-bottom: 0 !important;
     padding: 0.8rem 1.2rem;
+  }
+
+  .tv-rank-badge {
+    margin-left: -0.6rem;
   }
 
   .tv-left-column {
