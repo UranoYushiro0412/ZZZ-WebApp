@@ -95,7 +95,7 @@
   gap: 0.5rem;
 }
 
-.score-label {
+.tv-score-label {
   font-size: 1rem;
   font-weight: bold;
   color: #a389ff;
@@ -103,11 +103,25 @@
   letter-spacing: 1px;
 }
 
-.score-board {
+.tv-score-value {
   font-size: 1.8rem;
   font-family: 'Jura', sans-serif;
   color: var(--chara-accent);
   text-shadow: 0 0 10px var(--chara-accent);
+}
+
+.tv-rank-badge {
+  background: var(--chara-main);
+  color: #000;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 800;
+  font-family: 'Jura', sans-serif;
+  font-size: 1.2rem;
+  box-shadow: 0 0 10px var(--chara-main);
+  margin-left: 0.5rem;
+  min-width: 35px;
+  text-align: center;
 }
 
 /* TV Grid Board - Changed to 7x7 */
@@ -179,7 +193,31 @@
 
 .tv-cell.coin::after {
   content: '🪙';
-  font-size: 1.4rem;
+  font-size: 1.5rem;
+  animation: pulseCoin 0.5s infinite alternate;
+}
+
+/* レアコイン：スコア3倍 */
+.tv-cell.coin-large {
+  background: #f1c40f;
+  box-shadow: 0 0 20px #f1c40f;
+}
+
+.tv-cell.coin-large::after {
+  content: '💎';
+  font-size: 1.6rem;
+  animation: pulseCoin 0.3s infinite alternate;
+}
+
+/* 寿命が近いアイテムの点滅 */
+.blink-urgent {
+  animation: blinkFast 0.3s infinite !important;
+}
+
+@keyframes blinkFast {
+  0% { opacity: 1; }
+  50% { opacity: 0.3; }
+  100% { opacity: 1; }
 }
 
 /* 敵（侵食エリア）：赤いテレビ */

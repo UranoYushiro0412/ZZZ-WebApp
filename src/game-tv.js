@@ -1,16 +1,20 @@
 export class GameTV {
-  constructor(boardEl, scoreEl, onGameOver) {
+  constructor(boardEl, scoreEl, rankEl, onGameOver) {
     this.boardEl = boardEl;
     this.scoreEl = scoreEl;
+    this.rankEl = rankEl;
     this.onGameOver = onGameOver; // Callback
-    
+
     this.gridSize = 7;
     this.player = { x: 3, y: 3 };
-    this.coin = { x: 5, y: 5 };
+    this.items = []; // [{x, y, type: 'coin'|'rare', expiresAt}]
     this.enemies = []; // {x, y}
     this.score = 0;
     this.isPlaying = false;
-    this.spawnTimer = null;
+    this.enemyInterval = 2000;
+
+    this.spawnTimerArr = []; // タイマー管理用
+    this.gameLoopTimer = null;
   }
 
   // 外部から操作ボタンを紐付ける & キーボードリスナー
@@ -29,7 +33,6 @@ export class GameTV {
     if (controls.right) controls.right.onpointerdown = () => this.movePlayer(1, 0);
   }
 
-  // 指定した座標が盤面内かチェック
   isValid(x, y) {
     return x >= 0 && x < this.gridSize && y >= 0 && y < this.gridSize;
   }
@@ -49,207 +52,223 @@ export class GameTV {
     }
   }
 
-  // 衝突判定（コイン獲得、敵接触）
   checkCollisions() {
-    // 敵にあたった？
+    // 敵（侵蝕）
     const hitEnemy = this.enemies.some(e => e.x === this.player.x && e.y === this.player.y);
     if (hitEnemy) {
       this.gameOver();
       return;
     }
 
-    // コイン拾った？
-    if (this.player.x === this.coin.x && this.player.y === this.coin.y) {
-      this.score += 100;
-      this.scoreEl.textContent = this.score;
-      this.spawnCoin();
+    // アイテム（コイン）
+    const itemIndex = this.items.findIndex(i => i.x === this.player.x && i.y === this.player.y);
+    if (itemIndex !== -1) {
+      const item = this.items[itemIndex];
+      const points = item.type === 'rare' ? 300 : 100;
+      this.score += points;
+      this.items.splice(itemIndex, 1); // 取得
+      this.updateUI();
     }
   }
 
-  // コインを空きマスに生成
-  spawnCoin() {
-    let emptySpots = [];
-    for (let y = 0; y < this.gridSize; y++) {
-      for (let x = 0; x < this.gridSize; x++) {
-        // プレイヤーでも敵でもないマスのリスト
-        const isPlayer = (x === this.player.x && y === this.player.y);
-        const isEnemy = this.enemies.some(e => e.x === x && e.y === y);
-        if (!isPlayer && !isEnemy) {
-          emptySpots.push({ x, y });
-        }
-      }
+  updateUI() {
+    if (this.scoreEl) this.scoreEl.textContent = this.score;
+    if (this.rankEl) {
+      const rank = this.calculateRank(this.score);
+      this.rankEl.textContent = rank;
+      // ランクの色や発光を微調整しても良い
     }
+  }
+
+  calculateRank(s) {
+    if (s >= 5000) return 'SS';
+    if (s >= 3000) return 'S';
+    if (s >= 2000) return 'A';
+    if (s >= 1000) return 'B';
+    return 'Z';
+  }
+
+  // アイテム（コイン/レア）生成
+  spawnItem() {
+    if (!this.isPlaying) return;
+    const emptySpots = this.getEmptySpots();
+    if (emptySpots.length === 0) return;
+
+    const spot = emptySpots[Math.floor(Math.random() * emptySpots.length)];
+    const isRare = Math.random() < 0.15; // 15%でレア
     
-    if (emptySpots.length > 0) {
-      const spot = emptySpots[Math.floor(Math.random() * emptySpots.length)];
-      this.coin = { x: spot.x, y: spot.y };
-    }
+    this.items.push({
+      x: spot.x,
+      y: spot.y,
+      type: isRare ? 'rare' : 'coin',
+      expiresAt: Date.now() + 3000 // 3秒で消滅
+    });
+    this.render();
   }
 
-  // 敵（侵蝕）を増やす処理（一定時間ごと）
+  // 敵（侵蝕）生成
   spawnEnemy() {
     if (!this.isPlaying) return;
+    const emptySpots = this.getEmptySpots(true); // プレイヤー近傍を避ける
+    if (emptySpots.length === 0) return;
+
+    const spot = emptySpots[Math.floor(Math.random() * emptySpots.length)];
+    this.enemies.push({ x: spot.x, y: spot.y });
     
-    let emptySpots = [];
+    // 生成頻度の動的変化
+    this.updateDifficulty();
+    
+    this.render();
+    if (this.enemies.length > 25) {
+      this.gameOver("ホロウが限界まで侵蝕しました。");
+    }
+  }
+
+  updateDifficulty() {
+    // スコアに応じて発生間隔を短くする (2000ms -> 最短 800ms)
+    const base = 2000;
+    const accel = Math.min(1200, Math.floor(this.score / 5)); // 5点につき1ms加速
+    this.enemyInterval = base - accel;
+    
+    // タイマーを再セット
+    clearInterval(this.enemyTimer);
+    this.enemyTimer = setInterval(() => this.spawnEnemy(), this.enemyInterval);
+  }
+
+  getEmptySpots(avoidPlayer = false) {
+    let spots = [];
     for (let y = 0; y < this.gridSize; y++) {
       for (let x = 0; x < this.gridSize; x++) {
-        // コインやプレイヤーの位置には湧かない
-        const isPlayer = (x === this.player.x && y === this.player.y);
-        const isCoin = (x === this.coin.x && y === this.coin.y);
-        const isEnemy = this.enemies.some(e => e.x === x && e.y === y);
+        const isP = (x === this.player.x && y === this.player.y);
+        const isI = this.items.some(i => i.x === x && i.y === y);
+        const isE = this.enemies.some(e => e.x === x && e.y === y);
         
-        // プレイヤーの真横やすぐ近く（距離1以内）には極力湧かせない（即死回避）
-        const dist = Math.abs(this.player.x - x) + Math.abs(this.player.y - y);
-
-        if (!isPlayer && !isCoin && !isEnemy && dist > 1) {
-          emptySpots.push({ x, y });
+        if (!isP && !isI && !isE) {
+          if (avoidPlayer) {
+            const dist = Math.abs(this.player.x - x) + Math.abs(this.player.y - y);
+            if (dist > 1) spots.push({ x, y });
+          } else {
+            spots.push({ x, y });
+          }
         }
       }
     }
-
-    if (emptySpots.length > 0) {
-      const spot = emptySpots[Math.floor(Math.random() * emptySpots.length)];
-      this.enemies.push({ x: spot.x, y: spot.y });
-      this.render();
-      
-      // 増えすぎて詰んだ場合はゲームオーバーにしてもいいかも
-      if (this.enemies.length > 20) {
-        this.gameOver("ホロウが限界まで侵蝕しました。");
-      }
-    }
+    return spots;
   }
 
   // ゲームクリア・オーバー処理
   gameOver(msg = "侵蝕（赤いTV）に触れてしまった！") {
     this.isPlaying = false;
-    clearInterval(this.spawnTimer);
+    this.clearAllTimers();
     this.onGameOver(this.score, msg);
   }
 
-  // カウントダウン演出を伴う開始
+  clearAllTimers() {
+    clearInterval(this.enemyTimer);
+    clearInterval(this.itemTimer);
+    clearInterval(this.gameLoopTimer);
+    if (this.countdownTimer) clearInterval(this.countdownTimer);
+  }
+
+  // カウントダウン演出
   startCountdown(countdownEl) {
     if (this.isPlaying) return;
-    if (!countdownEl) {
-      this.start(); // フォールバック
-      return;
-    }
-
-    // 初期盤面を描画（カウントダウン中に背景が見えるように）
-    this.score = 0;
-    this.scoreEl.textContent = this.score;
-    this.player = { x: 3, y: 3 };
-    this.enemies = [];
-    this.spawnCoin();
-    this.render();
-
+    this.stopAndReset();
+    
     let count = 3;
-    // 初期状態セット
     countdownEl.textContent = count;
     countdownEl.classList.remove('hidden');
-    countdownEl.classList.add('pop');
-
-    // 以前のタイマーがあれば掃除
-    if (this.countdownTimer) clearInterval(this.countdownTimer);
-
+    
     this.countdownTimer = setInterval(() => {
       count--;
       if (count > 0) {
         countdownEl.textContent = count;
-        countdownEl.classList.remove('pop');
-        void countdownEl.offsetWidth; // reflow
-        countdownEl.classList.add('pop');
       } else if (count === 0) {
         countdownEl.textContent = "START!";
-        countdownEl.classList.remove('pop');
-        void countdownEl.offsetWidth;
-        countdownEl.classList.add('pop');
       } else {
         clearInterval(this.countdownTimer);
-        this.countdownTimer = null;
         countdownEl.classList.add('hidden');
-        countdownEl.classList.remove('pop');
-        countdownEl.textContent = "";
-        this.start(true); // すでに初期化済みなので引数でスキップ
+        this.start();
       }
-    }, 800); // 1秒だと少し長いので0.8秒に短縮
+    }, 800);
   }
 
-  // ゲームスタート
-  start(skipInit = false) {
-    if (!skipInit) {
-      this.score = 0;
-      this.scoreEl.textContent = this.score;
-      this.player = { x: 3, y: 3 };
-      this.enemies = [];
-      this.spawnCoin();
-    }
+  start() {
     this.isPlaying = true;
-    this.render();
-
-    // 侵蝕（敵）の生成開始
-    if(this.spawnTimer) clearInterval(this.spawnTimer);
-    this.spawnTimer = setInterval(() => {
-      this.spawnEnemy();
-    }, 2000);
-  }
-
-  // 完全停止
-  stop() {
-    this.isPlaying = false;
-    if (this.spawnTimer) clearInterval(this.spawnTimer);
-    if (this.countdownTimer) clearInterval(this.countdownTimer);
-    this.spawnTimer = null;
-    this.countdownTimer = null;
-
-    // カウントダウン表示が出ていれば隠す
-    const countdownEl = document.getElementById('tv-countdown');
-    if (countdownEl) {
-      countdownEl.classList.add('hidden');
-      countdownEl.classList.remove('pop');
-    }
-  }
-
-  // 停止して初期盤面にリセット（ホームに戻った時やゲームオーバー時に呼ぶ）
-  stopAndReset() {
-    this.stop();
     this.score = 0;
-    this.scoreEl.textContent = this.score;
-    this.player = { x: 3, y: 3 };
-    this.coin = { x: 5, y: 5 };
+    this.enemyInterval = 2000;
+    this.items = [];
     this.enemies = [];
+    this.updateUI();
+
+    // 侵蝕タイマー
+    this.enemyTimer = setInterval(() => this.spawnEnemy(), this.enemyInterval);
+    // アイテムタイマー (2秒ごと)
+    this.itemTimer = setInterval(() => this.spawnItem(), 2000);
+    // メインループ (寿命チェック用)
+    this.gameLoopTimer = setInterval(() => {
+      const now = Date.now();
+      const initialLen = this.items.length;
+      this.items = this.items.filter(i => i.expiresAt > now);
+      if (this.items.length !== initialLen) this.render();
+    }, 100);
+
+    // 最初の一つを即時生成
+    this.spawnItem();
     this.render();
   }
 
-  // 画面の再描画
+  stopAndReset() {
+    this.isPlaying = false;
+    this.clearAllTimers();
+    this.player = { x: 3, y: 3 };
+    this.score = 0;
+    this.items = [];
+    this.enemies = [];
+    this.updateUI();
+    this.render();
+  }
+
   render() {
     if (!this.boardEl) return;
     this.boardEl.innerHTML = '';
-    
+    const now = Date.now();
+
     for (let y = 0; y < this.gridSize; y++) {
       for (let x = 0; x < this.gridSize; x++) {
         const cell = document.createElement('div');
         cell.className = 'tv-cell';
-        
+
+        // プレイヤー
         if (this.player.x === x && this.player.y === y) {
           cell.classList.add('player');
-        } else if (this.coin.x === x && this.coin.y === y) {
-          cell.classList.add('coin');
-        } else if (this.enemies.some(e => e.x === x && e.y === y)) {
+        } 
+        // 敵
+        else if (this.enemies.some(e => e.x === x && e.y === y)) {
           cell.classList.add('enemy');
         }
+        // アイテム
+        else {
+          const item = this.items.find(i => i.x === x && i.y === y);
+          if (item) {
+            cell.classList.add(item.type === 'rare' ? 'coin-large' : 'coin');
+            // 寿命が1秒を切ったら点滅
+            if (item.expiresAt - now < 1000) {
+              cell.classList.add('blink-urgent');
+            }
+          }
+        }
 
-        // タップ移動（スマホ向け・PCでも動作）
         cell.onpointerdown = (e) => {
-          e.preventDefault(); // 誤作動防止
+          e.preventDefault();
           if (!this.isPlaying) return;
           const dx = x - this.player.x;
           const dy = y - this.player.y;
-          // 隣接（距離1）なら移動
           if ((Math.abs(dx) === 1 && dy === 0) || (Math.abs(dy) === 1 && dx === 0)) {
             this.movePlayer(dx, dy);
           }
         };
-        
+
         this.boardEl.appendChild(cell);
       }
     }

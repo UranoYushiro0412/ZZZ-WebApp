@@ -178,11 +178,12 @@ initGachaModals({
 const btnTVStart = document.getElementById('btn-tv-start');
 const tvBoard = document.getElementById('tv-board');
 const tvScore = document.getElementById('tv-score');
+const tvRank = document.getElementById('tv-rank');
 
 if (btnTVStart && tvBoard && tvScore) {
   const tvGrid = document.getElementById('tv-grid'); // 盤面専用コンテナ
   // インスタンスは最初の一度だけ生成する
-  window.currentGameTV = new GameTV(tvGrid || tvBoard, tvScore, (score, msg) => {
+  window.currentGameTV = new GameTV(tvGrid || tvBoard, tvScore, tvRank, (score, msg) => {
     alert(`${msg}\n最終スコア: ${score}`);
     if (btnTVStart) btnTVStart.classList.remove('v-hidden');
     window.currentGameTV.stopAndReset();
