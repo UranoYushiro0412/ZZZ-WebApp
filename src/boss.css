@@ -43,13 +43,13 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  max-width: 800px; /* PCでは広がりすぎないように */
+  max-width: 100%; /* 幅制限を解除してボタンを端へ寄せやすくする */
   margin: 0 auto 10px;
 }
 
 .btn-boss-back {
   position: absolute;
-  left: 0;
+  left: 30px; /* PCではさらに左端へ */
   top: 50%;
   transform: translateY(-50%);
   width: 42px;
@@ -65,7 +65,7 @@
   cursor: pointer;
   z-index: 10;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  /* 発光（box-shadow）を削除 */
 }
 
 .btn-boss-back:hover {
@@ -73,7 +73,7 @@
   color: #000;
   border-color: var(--boss-accent);
   transform: translateY(-50%) scale(1.1);
-  box-shadow: 0 0 15px var(--boss-accent);
+  /* ホバー時も光らないように調整 */
 }
 
 .btn-boss-back:active {

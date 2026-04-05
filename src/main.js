@@ -94,6 +94,10 @@ const bossBackBtn = document.getElementById('btn-boss-back');
 const bossBackBtnSticky = document.getElementById('btn-boss-back-sticky');
 
 const backToBossList = () => {
+  if (window.innerWidth > 900) {
+    showView('view-home');
+    return;
+  }
   if (bossLayout) {
     bossLayout.classList.remove('show-detail');
     bossLayout.classList.add('show-list');
