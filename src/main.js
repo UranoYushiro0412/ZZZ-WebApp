@@ -212,18 +212,42 @@ if (btnTVStart && tvBoard && tvScore) {
 }
 
 const btnCoinStart = document.getElementById('btn-coin-start');
-if (btnCoinStart) {
+const coinArea = document.getElementById('coin-area');
+const coinScore = document.getElementById('coin-score');
+const coinRank = document.getElementById('coin-rank');
+
+if (btnCoinStart && coinArea && coinScore) {
+  window.currentGameCoin = new GameCoin(coinArea, coinScore, coinRank, (score, msg) => {
+    alert(`${msg}\n獲得コイン: ${score}`);
+    if (btnCoinStart) btnCoinStart.classList.remove('v-hidden');
+    window.currentGameCoin.stopAndReset();
+  });
+
+  const btnCoinBack = document.getElementById('btn-coin-back');
+  if (btnCoinBack) {
+    btnCoinBack.onclick = () => {
+      if (window.currentGameCoin) window.currentGameCoin.stopAndReset();
+      showView('view-home');
+    };
+  }
+
   btnCoinStart.onclick = () => {
-    const coinArea = document.getElementById('coin-area');
-    const coinScore = document.getElementById('coin-score');
-    window.currentGameCoin = new GameCoin(coinArea, coinScore, (score, msg) => {
-      alert(`${msg}\n最終スコア: ${score}`);
-      btnCoinStart.style.display = 'block';
-    });
-    window.currentGameCoin.start();
-    btnCoinStart.style.display = 'none';
+    if (window.currentGameCoin) {
+      window.currentGameCoin.start();
+      btnCoinStart.classList.add('v-hidden');
+    }
   };
 }
+
+// 既存の showView をラップして、ホーム移動時にゲームを止める
+const originalShowView = showView;
+window.showView = (viewId) => {
+  if (viewId === 'view-home') {
+    if (window.currentGameTV) window.currentGameTV.stopAndReset();
+    if (window.currentGameCoin) window.currentGameCoin.stopAndReset();
+  }
+  originalShowView(viewId);
+};
 
 const btnSoulHoundsStart = document.getElementById('btn-sh-start');
 if (btnSoulHoundsStart) {

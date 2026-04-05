@@ -7,7 +7,7 @@
   <title>Zenless Zone Zero Tools</title>
   <link rel="stylesheet" href="./src/style.css">
   <link rel="stylesheet" href="./src/boss.css">
-  <!-- Build: 2026-04-05_17:10_HomeSwap -->
+  <!-- Build: 2026-04-05_17:25_GameCoinSync -->
 </head>
 
 <body>
@@ -61,8 +61,8 @@
         <div class="menu-card" data-target="view-game-tv">
           <div class="card-icon">🗺️</div>
           <div class="card-content">
-            <h2>ホロウ探索 避けゲー</h2>
-            <p>侵蝕を避け、ギアコインを集めろ</p>
+            <h2>ホロウ探索</h2>
+            <p>侵蝕を避け、コインを集めろ</p>
           </div>
         </div>
 
@@ -361,7 +361,7 @@
         <button id="btn-tv-back" class="tv-back-btn">◀</button>
         <h1 class="page-title">ホロウ探索</h1>
       </div>
-      <p class="subtitle">赤いマスを避け、ギアコインを集めよう！</p>
+      <p class="subtitle">赤いマスを避け、コインを集めよう！</p>
 
       <div class="game-container">
         <!-- 左側: 盤面のみ (7x7) -->
@@ -397,12 +397,19 @@
 
     <!-- 画面6: コインキャッチャー -->
     <section id="view-game-coin" class="view hidden">
-      <h1 class="page-title">COIN CATCHER</h1>
+      <div class="coin-header-nav">
+        <button id="btn-coin-back" class="tv-back-btn">◀</button>
+        <h1 class="page-title">COIN CATCHER</h1>
+      </div>
       <p class="subtitle">画面の左右をタップしてボンプを動かせ！爆弾は絶対避けて！</p>
 
       <div class="coin-container">
         <div class="coin-header">
-          <span>GET: <span id="coin-score" class="coin-score">0</span></span>
+          <div class="tv-score-box">
+            <span id="coin-rank" class="tv-rank-badge rank-x">X</span>
+            <span class="tv-score-label">SCORE</span>
+            <span id="coin-score" class="tv-score-value">0</span>
+          </div>
           <button id="btn-coin-start" class="btn-gacha">GAME START</button>
         </div>
 
