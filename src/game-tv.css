@@ -446,13 +446,11 @@
 
   .game-header {
     width: 100% !important;
-    justify-content: space-around;
+    /* 両端に寄せて、余白は padding で制御する (より綺麗な方法) */
+    justify-content: space-between;
     margin-bottom: 0 !important;
-    padding: 0.8rem 1.2rem;
-  }
-
-  .tv-rank-badge {
-    margin-left: -0.6rem;
+    /* 左側(ランク側)をさらに詰め、右側(ボタン側)も調整 */
+    padding: 0.8rem 0.5rem 0.8rem 0.5rem;
   }
 
   .tv-left-column {
