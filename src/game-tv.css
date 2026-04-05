@@ -108,7 +108,7 @@
   font-size: 1.8rem;
   font-family: 'Jura', sans-serif;
   color: var(--chara-accent);
-  text-shadow: 0 0 2px var(--chara-accent);
+  text-shadow: 0 0 5px var(--chara-accent);
 }
 
 .tv-rank-badge {
@@ -135,17 +135,17 @@
 
 .rank-b {
   color: #4da8da;
-  text-shadow: 0 0 10px #4da8da;
+  text-shadow: 0 0 5px #4da8da;
 }
 
 .rank-a {
   color: #fca5f1;
-  text-shadow: 0 0 12px #fca5f1, 0 0 5px #fff;
+  text-shadow: 0 0 5px #fca5f1, 0 0 5px #fff;
 }
 
 .rank-s {
   color: #ffd700;
-  text-shadow: 0 0 20px #ffd700, 0 0 10px #fff;
+  text-shadow: 0 0 5px #ffd700, 0 0 5px #fff;
 }
 
 /* TV Grid Board - Changed to 7x7 */

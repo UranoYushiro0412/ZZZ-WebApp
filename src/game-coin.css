@@ -42,9 +42,9 @@
   border-radius: 12px;
   position: relative;
   overflow: hidden;
-  box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
   /* ユーザーが画面を長押しした場合のドラッグ等防ぐ */
-  touch-action: none; 
+  touch-action: none;
   user-select: none;
 }
 
@@ -61,12 +61,16 @@
   justify-content: center;
   font-size: 1.5rem;
   /* jsで左からの位置(X座標)を操作します */
-  left: calc(50% - 20px); 
+  left: calc(50% - 20px);
   z-index: 10;
   box-shadow: 0 0 10px #3498db;
-  transition: left 0.1s ease-out; /* なめらかな移動のため */
+  transition: left 0.1s ease-out;
+  /* なめらかな移動のため */
 }
-.coin-player::after { content: '🐾'; }
+
+.coin-player::after {
+  content: '🐾';
+}
 
 /* 落下アイテムの基本設定 */
 .falling-item {
@@ -82,10 +86,18 @@
   /* y座標とx座標はjsで操作 */
 }
 
-.item-coin::after { content: '🪙'; text-shadow: 0 0 10px #f1c40f; }
-.item-bomb::after { content: '💣'; text-shadow: 0 0 10px #ff0000; }
-.item-poly::after { 
-  content: '💎'; 
+.item-coin::after {
+  content: '🪙';
+  text-shadow: 0 0 10px #f1c40f;
+}
+
+.item-bomb::after {
+  content: '💣';
+  text-shadow: 0 0 10px #ff0000;
+}
+
+.item-poly::after {
+  content: '💎';
   text-shadow: 0 0 15px #00f0ff, 0 0 5px #fff;
   animation: pulseCoin 0.5s infinite alternate;
 }
@@ -113,17 +125,17 @@
 
 .rank-b {
   color: #4da8da;
-  text-shadow: 0 0 10px #4da8da;
+  text-shadow: 0 0 5px #4da8da;
 }
 
 .rank-a {
   color: #fca5f1;
-  text-shadow: 0 0 12px #fca5f1, 0 0 5px #fff;
+  text-shadow: 0 0 5px #fca5f1, 0 0 5px #fff;
 }
 
 .rank-s {
   color: #ffd700;
-  text-shadow: 0 0 20px #ffd700, 0 0 10px #fff;
+  text-shadow: 0 0 5px #ffd700, 0 0 10px #fff;
 }
 
 /* スマホ用の透明な操作エリア（左半分・右半分） */
@@ -133,8 +145,16 @@
   top: 0;
   width: 50%;
   height: 100%;
-  z-index: 20; /* プレイヤーより手前 */
-  opacity: 0; /* 透明 */
+  z-index: 20;
+  /* プレイヤーより手前 */
+  opacity: 0;
+  /* 透明 */
 }
-.touch-zone-left { left: 0; }
-.touch-zone-right { right: 0; }
+
+.touch-zone-left {
+  left: 0;
+}
+
+.touch-zone-right {
+  right: 0;
+}
