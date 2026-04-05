@@ -301,6 +301,10 @@ export class GameTV {
 
         cell.onpointerdown = (e) => {
           e.preventDefault();
+          // PC (mouse) の場合のみ隣接マス移動を許可する
+          // スマホ (touch) の場合はスワイプ操作のみに限定し、タップ連打ズームのリスクを完全に排除する
+          if (e.pointerType !== 'mouse') return;
+
           if (!this.isPlaying) return;
           const dx = x - this.player.x;
           const dy = y - this.player.y;
