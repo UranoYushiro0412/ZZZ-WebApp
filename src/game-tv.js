@@ -32,41 +32,44 @@ export class GameTV {
     if (controls.left) controls.left.onpointerdown = () => this.movePlayer(-1, 0);
     if (controls.right) controls.right.onpointerdown = () => this.movePlayer(1, 0);
 
-    // --- スマホ向けスワイプ操作の実装 ---
+    // --- スマホ向けスワイプ操作の実装（高レスポンス版） ---
     let touchStartX = 0;
     let touchStartY = 0;
+    this.hasMovedThisTouch = false; // 1回のスワイプで1回だけ動かすためのフラグ
 
     this.boardEl.addEventListener('touchstart', (e) => {
       if (!this.isPlaying) return;
       touchStartX = e.changedTouches[0].clientX;
       touchStartY = e.changedTouches[0].clientY;
+      this.hasMovedThisTouch = false; // 触れた瞬間にリセット
     }, { passive: false });
 
-    // スワイプ中の画面スクロールを防止
     this.boardEl.addEventListener('touchmove', (e) => {
-      if (this.isPlaying) e.preventDefault();
-    }, { passive: false });
-
-    this.boardEl.addEventListener('touchend', (e) => {
       if (!this.isPlaying) return;
-      const touchEndX = e.changedTouches[0].clientX;
-      const touchEndY = e.changedTouches[0].clientY;
+      e.preventDefault(); // スクロールを完全に防止
 
-      const dx = touchEndX - touchStartX;
-      const dy = touchEndY - touchStartY;
+      if (this.hasMovedThisTouch) return; // すでにこのスワイプで動いていたら何もしない
+
+      const currentX = e.changedTouches[0].clientX;
+      const currentY = e.changedTouches[0].clientY;
+      const dx = currentX - touchStartX;
+      const dy = currentY - touchStartY;
       const absX = Math.abs(dx);
       const absY = Math.abs(dy);
 
-      // 一定以上の距離を動かした場合のみ「スワイプ」とみなす
+      // 30px 動いた瞬間に判定
       if (Math.max(absX, absY) > 30) {
+        this.hasMovedThisTouch = true; // 移動済みフラグを立てる（指を離すまでロック）
         if (absX > absY) {
-          // 横方向
-          this.movePlayer(dx > 0 ? 1 : -1, 0);
+          this.movePlayer(dx > 0 ? 1 : -1, 0); // 横方向
         } else {
-          // 縦方向
-          this.movePlayer(0, dy > 0 ? 1 : -1);
+          this.movePlayer(0, dy > 0 ? 1 : -1); // 縦方向
         }
       }
+    }, { passive: false });
+
+    this.boardEl.addEventListener('touchend', (e) => {
+      // 離した時の処理は、必要なければ何もしない（フラグは touchstart でリセットされるため）
     }, { passive: false });
   }
 
