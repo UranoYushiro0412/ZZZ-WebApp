@@ -113,13 +113,6 @@
   cursor: pointer;
 }
 
-.gm-back-btn::before {
-  content: '⮌';
-  display: block;
-  transform: translateY(-2.5px);
-  /* 視覚的な中央揃えのための微調整 */
-}
-
 .gm-back-btn:hover {
   border-color: var(--chara-main);
   color: var(--chara-main);
@@ -365,8 +358,8 @@
     height: calc(100vh - 150px);
   }
 
-  .gm-back-btn::before {
-    content: '⮌';
+  .gm-back-btn {
+    border-color: #333;
   }
 
   .gm-footer {
