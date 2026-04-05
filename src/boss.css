@@ -291,12 +291,12 @@
   flex-direction: column;
   gap: 12px;
   max-width: 600px;
-  margin: 20px auto;
+  margin: 0 auto 20px; /* 上側の 20px を 0 にして subtitle との距離を縮める */
   padding: 0 15px 40px;
 }
 
 .boss-mobile-select-list .section-heading {
-  margin: 20px 0 10px;
+  margin: 15px 0 10px; /* 20px から 15px へ微減 */
   padding-left: 5px;
   border-left: 3px solid var(--boss-accent);
   color: #fff;
@@ -305,7 +305,7 @@
 
 /* サブタイトル直後の余白を調整 */
 #view-boss-mobile-select .subtitle {
-  margin-bottom: 1rem;
+  margin-bottom: 0.4rem !important; /* 1.5rem を 0.4rem (約6px) まで削減 */
 }
 
 .boss-select-card {
