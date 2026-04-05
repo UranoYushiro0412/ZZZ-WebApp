@@ -103,21 +103,10 @@
   -webkit-text-stroke: 0.6px currentColor;
 }
 
-.rank-x {
-  color: #bbb;
-}
-
-.rank-b {
-  color: #4da8da;
-}
-
-.rank-a {
-  color: #fca5f1;
-}
-
-.rank-s {
-  color: #ffd700;
-}
+.rank-x { color: #bbb; }
+.rank-b { color: #4da8da; }
+.rank-a { color: #fca5f1; }
+.rank-s { color: #ffd700; }
 
 /* 4. ゲームメインエリア */
 .coin-game-area {
@@ -130,7 +119,6 @@
   position: relative;
   overflow: hidden;
   box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
-  /* ユーザーが画面を長押しした場合のドラッグ等防ぐ */
   touch-action: none;
   user-select: none;
 }
@@ -147,12 +135,10 @@
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
-  /* jsで左からの位置(X座標)を操作します */
   left: calc(50% - 20px);
   z-index: 10;
   box-shadow: 0 0 10px #3498db;
   transition: left 0.1s ease-out;
-  /* なめらかな移動のため */
 }
 
 .coin-player::after {
@@ -169,19 +155,10 @@
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
-  /* y座標とx座標はjsで操作 */
 }
 
-.item-coin::after {
-  content: '🪙';
-  text-shadow: 0 0 10px #f1c40f;
-}
-
-.item-bomb::after {
-  content: '💣';
-  text-shadow: 0 0 10px #ff0000;
-}
-
+.item-coin::after { content: '🪙'; text-shadow: 0 0 10px #f1c40f; }
+.item-bomb::after { content: '💣'; text-shadow: 0 0 10px #ff0000; }
 .item-poly::after {
   content: '💎';
   text-shadow: 0 0 15px #00f0ff, 0 0 5px #fff;
@@ -214,7 +191,6 @@
   transform: translateY(1px);
 }
 
-/* スマホ用の透明な操作エリア（左半分・右半分） */
 .touch-zone-left,
 .touch-zone-right {
   position: absolute;
@@ -222,31 +198,8 @@
   width: 50%;
   height: 100%;
   z-index: 20;
-  /* プレイヤーより手前 */
   opacity: 0;
-  /* 透明 */
 }
 
-.touch-zone-left {
-  left: 0;
-}
-
-.touch-zone-right {
-  right: 0;
-  color: #a389ff;
-  font-size: 1.3rem;
-  cursor: pointer;
-  transition: 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: 2px;
-  /* 記号をわずかに上にずらす */
-  z-index: 10;
-}
-
-.coin-back-btn:hover {
-  background: #3d2b5e;
-  color: #fff;
-  transform: scale(1.05);
-}
+.touch-zone-left { left: 0; }
+.touch-zone-right { right: 0; }
