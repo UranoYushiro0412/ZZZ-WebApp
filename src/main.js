@@ -23,6 +23,20 @@ const stickyBossName = document.getElementById('sticky-boss-name');
 const btnHome = document.getElementById('btn-home');
 
 // --- ナビゲーション(画面切り替え)処理 ---
+// ローカル環境（開発中）のみ「弾幕ゲー」を有効化する設定
+const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+if (isLocal) {
+  const coinCard = document.querySelector('.menu-card[data-target="view-game-coin"]');
+  if (coinCard) {
+    coinCard.classList.remove('disabled');
+    const statusTag = coinCard.querySelector('.status-tag');
+    if (statusTag) {
+      statusTag.textContent = 'LOCAL ONLY';
+      statusTag.style.background = '#ff4d00'; // 目立つ色（オレンジ）に
+    }
+  }
+}
+
 function showView(viewId) {
   window.scrollTo(0, 0);
   document.querySelectorAll('.view').forEach(el => {
