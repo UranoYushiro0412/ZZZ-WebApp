@@ -90,6 +90,42 @@
   animation: pulseCoin 0.5s infinite alternate;
 }
 
+/* ランクバッジと配色（個別に調整可能） */
+.tv-rank-badge {
+  background: transparent !important;
+  padding: 0;
+  border: none !important;
+  font-weight: 700;
+  font-family: 'Jura', sans-serif;
+  font-size: 2.1rem;
+  margin-right: 0.8rem;
+  min-width: 35px;
+  text-align: center;
+  transition: all 0.3s ease;
+  /* 疑似的な太字加工 */
+  -webkit-text-stroke: 0.6px currentColor;
+}
+
+.rank-x {
+  color: #bbb;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+}
+
+.rank-b {
+  color: #4da8da;
+  text-shadow: 0 0 10px #4da8da;
+}
+
+.rank-a {
+  color: #fca5f1;
+  text-shadow: 0 0 12px #fca5f1, 0 0 5px #fff;
+}
+
+.rank-s {
+  color: #ffd700;
+  text-shadow: 0 0 20px #ffd700, 0 0 10px #fff;
+}
+
 /* スマホ用の透明な操作エリア（左半分・右半分） */
 .touch-zone-left,
 .touch-zone-right {
