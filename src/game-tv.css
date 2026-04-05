@@ -53,7 +53,8 @@
 }
 
 .tv-right-column {
-  flex: 0 1 380px; /* 300px から 380px に拡大して余白を確保 */
+  flex: 0 1 380px;
+  /* 300px から 380px に拡大して余白を確保 */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -111,42 +112,41 @@
 }
 
 .tv-rank-badge {
-  color: #fff;
-  padding: 4px 10px;
-  border-radius: 4px;
+  background: transparent !important; /* 背景を削除 */
+  padding: 0;
+  border: none !important;
   font-weight: 900;
   font-family: 'Jura', sans-serif;
-  font-size: 1.4rem;
+  font-size: 1.8rem; /* 少し大きくして存在感を出す */
   margin-right: 0.8rem;
-  min-width: 45px;
+  min-width: 30px;
   text-align: center;
   transition: all 0.3s ease;
 }
 
-/* ランクごとの配色（ガチャ演出風） */
 .rank-x {
-  background: #000;
   color: #444;
-  border: 1px solid #333;
-  box-shadow: none;
+  text-shadow: none;
 }
 
 .rank-b {
-  background: #4da8da;
-  color: #fff;
-  box-shadow: 0 0 10px #4da8da;
+  color: #4da8da;
+  text-shadow: 0 0 10px #4da8da;
 }
 
 .rank-a {
-  background: #fca5f1;
-  color: #000; /* 明るい色なので文字を黒に */
-  box-shadow: 0 0 12px #fca5f1;
+  color: #fca5f1;
+  text-shadow: 0 0 12px #fca5f1, 0 0 5px #fff;
 }
 
 .rank-s {
-  background: #ffd700;
-  color: #000;
-  box-shadow: 0 0 20px #ffd700, 0 0 10px #fff;
+  color: #ffd700;
+  text-shadow: 0 0 20px #ffd700, 0 0 10px #fff;
+}
+
+.rank-s {
+  color: #ffd700;
+  text-shadow: 0 0 20px #ffd700, 0 0 10px #fff;
 }
 
 /* TV Grid Board - Changed to 7x7 */
@@ -165,7 +165,8 @@
   grid-template-columns: repeat(7, 50px);
   grid-template-rows: repeat(7, 50px);
   gap: 4px;
-  touch-action: none; /* スマホでの誤スクロール防止 */
+  touch-action: none;
+  /* スマホでの誤スクロール防止 */
 }
 
 /* ブラウン管の走査線風エフェクト */
@@ -240,9 +241,17 @@
 }
 
 @keyframes blinkFast {
-  0% { opacity: 1; }
-  50% { opacity: 0.3; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.3;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 /* 敵（侵食エリア）：赤いテレビ */
