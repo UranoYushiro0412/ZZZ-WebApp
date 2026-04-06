@@ -201,7 +201,7 @@ h3,
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 4rem;
+  min-width: 5.2rem; /* 全カード一律 5.2rem に固定してアライメントを揃える */
 }
 
 .card-icon img {
@@ -210,11 +210,21 @@ h3,
   object-fit: contain;
 }
 
-/* 特定のカード（比率が異なり、小さく見えるもの）への個別調整 */
+/* 個別アイコンのボリューム調整（比率によって小さく見えるものを補正） */
+[data-target="view-boss"] .card-icon img {
+  width: 5.2rem; /* 2.12:1 の極端な横長をカバー */
+  height: auto;
+}
+
+[data-target="view-game-tv"] .card-icon img {
+  width: 5rem; /* 4:3 の横長ボリュームアップ */
+  height: 5rem;
+}
+
 [data-target="view-soul-hounds"] .card-icon img {
-  width: 4.8rem;
-  height: 4.8rem;
-  max-width: 120%; /* 枠より少しはみ出させることで視覚的なバランスをとる */
+  width: 5rem; /* 3:4 の縦長ボリュームアップ */
+  height: 5rem;
+  max-width: 110%;
 }
 
 .card-content h2 {
