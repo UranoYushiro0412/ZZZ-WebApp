@@ -153,12 +153,11 @@ h3,
 
   .menu-grid {
     grid-template-columns: 1fr !important;
-    gap: 0.5rem !important;
+    gap: 0.8rem !important;
   }
 
   .menu-card {
-    padding: 1.5rem 1rem;
-    min-height: 8.5rem !important;
+    /* min-height: 8.5rem !important; */
     /* スマホ表示で高さを一律に揃える (案1) */
   }
 }
@@ -232,11 +231,11 @@ h3,
 [data-target="view-game-tv"] .card-icon img {
   width: 5rem;
   /* 4:3 の横長ボリュームアップ */
-  height: 5rem;
+  height: auto;
 }
 
 [data-target="view-soul-hounds"] .card-icon img {
-  width: 5rem;
+  width: auto;
   /* 3:4 の縦長ボリュームアップ */
   height: 5rem;
   max-width: 110%;
