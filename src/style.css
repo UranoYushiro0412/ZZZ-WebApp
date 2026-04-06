@@ -243,6 +243,11 @@ h3,
   max-width: 110%;
 }
 
+/* 弾幕ゲー: 絵文字の上下余白を排除して高さを最適化 */
+[data-target="view-game-coin"] .card-icon {
+  line-height: 1;
+}
+
 .card-content h2 {
   font-size: 1.2rem;
   margin-bottom: 0.3rem;
