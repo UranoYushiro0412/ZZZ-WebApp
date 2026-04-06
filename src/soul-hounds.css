@@ -230,6 +230,11 @@
   background: #a33e3e;
 }
 
+.circle-a,
+.circle-d {
+  background: #2a2245;
+}
+
 /* 中央: ゲーム筐体 (メインキャンバス) */
 .sh-main-cabinet {
   flex: 1;
