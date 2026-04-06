@@ -2,40 +2,40 @@ export default class SoulHounds {
   constructor() {
     this.canvas = document.getElementById('soul-hounds-canvas');
     this.ctx = this.canvas.getContext('2d');
-    
+
     // グリッド設定 (オリジナルの9列スタイルに合わせる)
     this.cols = 9;
     this.rows = 15; // 画面内に表示される行数
     this.blockSize = 40;
     this.grid = [];
-    
+
     this.player = {
-      x: 4, 
-      y: 2, 
-      px: 160, 
+      x: 4,
+      y: 2,
+      px: 160,
       py: 80, // スムーズな移動のためのピクセル座標
-      vx: 0, 
+      vx: 0,
       vy: 0,
-      scaleX: 1, 
+      scaleX: 1,
       scaleY: 1,
       dir: 'down',
       lastMoveDir: 'down',
       isGrounded: false
     };
-    
+
     this.energy = 100;
     this.lives = 3;
     this.depth = 0;
     this.score = 0;
     this.isPlaying = false;
     this.frameCounter = 0;
-    
+
     // エフェクト演出
     this.particles = [];
     this.shakeTime = 0;
     this.hitStop = 0;
     this.blockCache = {};
-    
+
     // カラーパレット (鮮やかなジェリーカラー)
     this.colors = [
       { main: '#ff3e88', light: '#ff6fb5', dark: '#cc1a5a', aura: 'rgba(255,62,136,0.3)', pattern: 'eye' },    // ピンク
@@ -54,7 +54,7 @@ export default class SoulHounds {
     window.addEventListener('keydown', (e) => {
       if (!this.isPlaying) return;
       const key = e.key.toLowerCase();
-      
+
       if (key === 'a' || key === 'arrowleft') {
         this.player.vx = -5;
         this.player.dir = 'left';
@@ -71,18 +71,18 @@ export default class SoulHounds {
       if (key === 's' || key === 'arrowdown') {
         this.player.lastMoveDir = 'down';
       }
-      
+
       if (key === 'k') {
         this.jump();
       }
-      
+
       if (key === 'j') {
         // 向いている方向へ掘る（基本は下、あるいは横）
         if (this.player.lastMoveDir === 'left') this.dig(-1, 0);
         else if (this.player.lastMoveDir === 'right') this.dig(1, 0);
         else if (this.player.lastMoveDir === 'up') this.dig(0, -1);
         else this.dig(0, 1);
-        
+
         // 掘った後はデフォルトで下向きに戻す（連続で横を掘らさない）
         this.player.lastMoveDir = 'down';
       }
@@ -123,11 +123,11 @@ export default class SoulHounds {
 
       // 確率的なクラスター生成
       let colorIndex = Math.floor(Math.random() * this.colors.length);
-      
+
       // 左または上のブロックと比較して同職になりやすく重み付け
       const left = c > 0 ? row[c - 1] : null;
       const up = r > 0 && this.grid[r - 1] ? this.grid[r - 1][c] : null;
-      
+
       if ((left && Math.random() < 0.6) || (up && Math.random() < 0.4)) {
         const source = (left && Math.random() < 0.6) ? left : up;
         if (source && source.type === 'normal') {
@@ -199,7 +199,7 @@ export default class SoulHounds {
         this.player.py = Math.floor(this.player.py / this.blockSize) * this.blockSize;
         this.player.vy = 0;
         this.player.isGrounded = true;
-        
+
         // トゲ接触ダメージ
         if ((belowLeft && belowLeft.type === 'spike') || (belowRight && belowRight.type === 'spike')) {
           this.loseLife("トゲ接触！");
@@ -244,7 +244,7 @@ export default class SoulHounds {
       return p.life > 0;
     });
     if (this.shakeTime > 0) this.shakeTime--;
-    
+
     // スケールの復元アニメーション
     this.player.scaleX += (1 - this.player.scaleX) * 0.15;
     this.player.scaleY += (1 - this.player.scaleY) * 0.15;
@@ -273,7 +273,7 @@ export default class SoulHounds {
     // 現在の方向または指定された方向
     const targetX = this.player.x + hDir;
     const targetY = this.player.y + (vDir || 0);
-    
+
     // ソウルハウンドでは、通常、向いている先または真下を掘る
     let finalTargetX = targetX;
     let finalTargetY = targetY;
@@ -309,8 +309,8 @@ export default class SoulHounds {
       for (let c = 0; c < this.cols; c++) {
         const b = this.grid[r][c];
         if (b && !b.isPopping && b.type !== 'spike') {
-          if (!this.grid[r+1][c] && !(this.player.x === c && this.player.y === r+1)) {
-            this.grid[r+1][c] = b;
+          if (!this.grid[r + 1][c] && !(this.player.x === c && this.player.y === r + 1)) {
+            this.grid[r + 1][c] = b;
             this.grid[r][c] = null;
           }
         }
@@ -340,9 +340,9 @@ export default class SoulHounds {
     if (group.some(p => p.c === c && p.r === r)) return group;
     const b = this.grid[r] ? this.grid[r][c] : null;
     if (!b || b.type !== 'normal' || b.colorIndex !== targetColor || b.isPopping) return group;
-    
-    group.push({c, r});
-    [[0,1],[0,-1],[1,0],[-1,0]].forEach(([dc, dr]) => {
+
+    group.push({ c, r });
+    [[0, 1], [0, -1], [1, 0], [-1, 0]].forEach(([dc, dr]) => {
       this.findGroup(c + dc, r + dr, targetColor, group);
     });
     return group;
@@ -387,10 +387,10 @@ export default class SoulHounds {
     ring.style.strokeDashoffset = offset;
     ring.style.stroke = this.energy < 25 ? '#ff3e3e' : '#a389ff';
     document.getElementById('sh-energy-text').textContent = Math.ceil(this.energy);
-    
+
     // 残機
     document.getElementById('sh-lives').textContent = this.lives;
-    
+
     // 0埋めされた統計情報
     document.getElementById('sh-depth').textContent = String(this.depth).padStart(5, '0');
     document.getElementById('sh-score').textContent = String(this.score).padStart(7, '0');
@@ -399,9 +399,9 @@ export default class SoulHounds {
   draw() {
     this.ctx.setTransform(1, 0, 0, 1, 0, 0);
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    
+
     if (this.shakeTime > 0) {
-      this.ctx.translate((Math.random()-0.5)*this.shakeTime, (Math.random()-0.5)*this.shakeTime);
+      this.ctx.translate((Math.random() - 0.5) * this.shakeTime, (Math.random() - 0.5) * this.shakeTime);
     }
     this.ctx.translate(0, -this.cameraY);
 
@@ -421,83 +421,83 @@ export default class SoulHounds {
 
   drawBlock(c, r, block) {
     const x = c * this.blockSize, y = r * this.blockSize;
-    const p = 3, s = this.blockSize - p*2;
-    
+    const p = 3, s = this.blockSize - p * 2;
+
     this.ctx.save();
     this.ctx.translate(x + p, y + p);
-    
+
     if (block.type === 'normal') {
       const clr = this.colors[block.colorIndex];
       // ブロック本体
       this.ctx.fillStyle = clr.main;
       this.roundRect(0, 0, s, s, 8);
       this.ctx.fill();
-      
+
       // 内部パターン (ディテール演出)
       this.ctx.strokeStyle = 'rgba(255,255,255,0.3)';
       this.ctx.lineWidth = 2;
       this.ctx.beginPath();
       if (clr.pattern === 'eye') {
-        this.ctx.arc(s/2, s/2, s*0.2, 0, Math.PI*2);
+        this.ctx.arc(s / 2, s / 2, s * 0.2, 0, Math.PI * 2);
         this.ctx.stroke();
-        this.ctx.fillStyle = '#fff'; this.ctx.beginPath(); this.ctx.arc(s/2-2, s/2-2, 2, 0, Math.PI*2); this.ctx.fill();
+        this.ctx.fillStyle = '#fff'; this.ctx.beginPath(); this.ctx.arc(s / 2 - 2, s / 2 - 2, 2, 0, Math.PI * 2); this.ctx.fill();
       } else if (clr.pattern === 'spiral') {
-        this.ctx.moveTo(s/2, s/2); this.ctx.arc(s/2, s/2, s*0.2, 0, Math.PI);
+        this.ctx.moveTo(s / 2, s / 2); this.ctx.arc(s / 2, s / 2, s * 0.2, 0, Math.PI);
         this.ctx.stroke();
       } else {
-        this.ctx.rect(s/4, s/4, s/2, s/2);
+        this.ctx.rect(s / 4, s / 4, s / 2, s / 2);
         this.ctx.stroke();
       }
-      
+
       if (block.isPopping) {
-        this.ctx.fillStyle = `rgba(255,255,255, ${0.5 + Math.sin(Date.now()/50)*0.5})`;
-        this.ctx.fillRect(0,0,s,s);
+        this.ctx.fillStyle = `rgba(255,255,255, ${0.5 + Math.sin(Date.now() / 50) * 0.5})`;
+        this.ctx.fillRect(0, 0, s, s);
       }
     } else if (block.type === 'spike') {
       // 発光する金属的なトゲ
       this.ctx.fillStyle = '#1a1a1a';
-      this.ctx.fillRect(0, s*0.7, s, s*0.3);
+      this.ctx.fillRect(0, s * 0.7, s, s * 0.3);
       this.ctx.fillStyle = '#ff2a6d';
       this.ctx.beginPath();
-      this.ctx.moveTo(0, s*0.7); this.ctx.lineTo(s/2, 0); this.ctx.lineTo(s, s*0.7);
+      this.ctx.moveTo(0, s * 0.7); this.ctx.lineTo(s / 2, 0); this.ctx.lineTo(s, s * 0.7);
       this.ctx.fill();
-      this.ctx.strokeStyle = '#fff'; this.ctx.lineWidth=1; this.ctx.stroke();
+      this.ctx.strokeStyle = '#fff'; this.ctx.lineWidth = 1; this.ctx.stroke();
     } else if (block.type === 'item') {
       // アイテム描画
       this.ctx.fillStyle = '#ff3e3e';
-      this.ctx.beginPath(); this.ctx.arc(s/2, s/2, s*0.3, 0, Math.PI*2); this.ctx.fill();
-      this.ctx.fillStyle = '#fff'; this.ctx.fillRect(s/2-1, s/2-5, 2, 4);
+      this.ctx.beginPath(); this.ctx.arc(s / 2, s / 2, s * 0.3, 0, Math.PI * 2); this.ctx.fill();
+      this.ctx.fillStyle = '#fff'; this.ctx.fillRect(s / 2 - 1, s / 2 - 5, 2, 4);
     }
-    
+
     this.ctx.restore();
   }
 
   drawPlayer() {
     this.ctx.save();
-    this.ctx.translate(this.player.px + this.blockSize/2, this.player.py + this.blockSize/2);
+    this.ctx.translate(this.player.px + this.blockSize / 2, this.player.py + this.blockSize / 2);
     this.ctx.scale(this.player.scaleX, this.player.scaleY);
-    
+
     // ドリルバニー (簡易アート)
     this.ctx.fillStyle = '#eee';
     this.ctx.fillRect(-12, -15, 24, 25); // 本体
     this.ctx.fillStyle = '#333';
     this.ctx.fillRect(-8, -10, 4, 4); this.ctx.fillRect(4, -10, 4, 4); // 目
-    
+
     // ドリル
     this.ctx.fillStyle = '#777';
     this.ctx.beginPath();
     this.ctx.moveTo(-10, 10); this.ctx.lineTo(10, 10); this.ctx.lineTo(0, 25);
     this.ctx.fill();
-    
+
     this.ctx.restore();
   }
-  
+
   roundRect(x, y, w, h, r) {
     this.ctx.beginPath();
-    this.ctx.moveTo(x+r, y); this.ctx.lineTo(x+w-r, y); this.ctx.quadraticCurveTo(x+w, y, x+w, y+r);
-    this.ctx.lineTo(x+w, y+h-r); this.ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
-    this.ctx.lineTo(x+r, y+h); this.ctx.quadraticCurveTo(x, y+h, x, y+h-r);
-    this.ctx.lineTo(x, y+r); this.ctx.quadraticCurveTo(x, y, x+r, y);
+    this.ctx.moveTo(x + r, y); this.ctx.lineTo(x + w - r, y); this.ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    this.ctx.lineTo(x + w, y + h - r); this.ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    this.ctx.lineTo(x + r, y + h); this.ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    this.ctx.lineTo(x, y + r); this.ctx.quadraticCurveTo(x, y, x + r, y);
     this.ctx.closePath();
   }
 
