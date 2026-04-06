@@ -197,17 +197,24 @@ h3,
 }
 
 .card-icon {
-  font-size: 3.5rem;
+  font-size: 3rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 5rem; /* 4rem から 5rem へ拡大 */
+  min-width: 4rem;
 }
 
 .card-icon img {
-  width: 5rem; /* 4rem から 5rem へ拡大 */
-  height: 5rem;
+  width: 4rem;
+  height: 4rem;
   object-fit: contain;
+}
+
+/* 特定のカード（比率が異なり、小さく見えるもの）への個別調整 */
+[data-target="view-soul-hounds"] .card-icon img {
+  width: 4.8rem;
+  height: 4.8rem;
+  max-width: 120%; /* 枠より少しはみ出させることで視覚的なバランスをとる */
 }
 
 .card-content h2 {
