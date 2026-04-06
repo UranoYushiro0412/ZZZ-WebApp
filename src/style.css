@@ -158,9 +158,7 @@ h3,
 
   .menu-card {
     padding: 1.5rem 1.0rem !important;
-    gap: 1.0rem !important;
-    /* min-height: 8.5rem !important; */
-    /* スマホ表示で高さを一律に揃える (案1) */
+    min-height: 7.2rem !important; /* スマホ表示で高さを 115px に揃える */
   }
 }
 
