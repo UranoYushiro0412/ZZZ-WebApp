@@ -200,39 +200,37 @@
   margin-top: auto;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  font-size: 12px;
+  gap: 12px;
+  font-size: 11px;
 }
 
 .hint {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+}
+
+.hint-desc {
+  color: #aaa; /* 説明テキストを薄いグレーに */
+  margin-left: 5px;
 }
 
 .btn-icon {
-  width: 25px;
-  height: 25px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
+  border: 1.5px solid #888; /* グレーの枠線 */
+  background: #000;          /* 黒背景 */
+  color: #fff;               /* 白文字 */
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: bold;
-  font-size: 12px;
-  border: 2px solid #fff;
+  font-size: 11px;
 }
 
-.circle-k {
-  background: #3d2b5e;
-}
-
-.circle-j {
-  background: #a33e3e;
-}
-
-.circle-a,
-.circle-d {
-  background: #2a2245;
+.btn-icon + .btn-icon {
+  margin-left: -2px; /* AとDが並ぶ際の微調整（少し重ねてアーケード感を出す） */
 }
 
 /* 中央: ゲーム筐体 (メインキャンバス) */
