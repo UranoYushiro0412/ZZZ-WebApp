@@ -161,10 +161,21 @@ export default class SoulHounds {
 
   stopAndReset() {
     this.isPlaying = false;
-    document.getElementById('sh-start-screen').classList.remove('hidden');
-    // スタートボタンの表示も元に戻す (main.jsで制御しているスタイルをクリア)
+    const startScreen = document.getElementById('sh-start-screen');
+    if (startScreen) startScreen.classList.remove('hidden');
+
+    // スタートボタンの表示も元に戻す (main.jsで制御しているスタイルを強制リセット)
     const startBtn = document.getElementById('btn-sh-start');
-    if (startBtn) startBtn.style.display = '';
+    if (startBtn) startBtn.style.display = 'block';
+
+    // プレイヤーの完全リセット
+    this.player.x = 4;
+    this.player.y = 2;
+    this.player.vx = 0;
+    this.player.vy = 0;
+    this.player.scaleX = 1;
+    this.player.scaleY = 1;
+    this.cameraY = 0; // カメラ位置も初期化
 
     this.energy = 100;
     this.lives = 3;
@@ -172,7 +183,7 @@ export default class SoulHounds {
     this.score = 0;
     this.init();
     this.updateUI();
-    this.draw(); // 初期状態を描画
+    this.draw(); // 初期描画
   }
 
   loop() {
