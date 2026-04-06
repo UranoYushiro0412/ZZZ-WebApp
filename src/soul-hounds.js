@@ -159,6 +159,22 @@ export default class SoulHounds {
     this.loop();
   }
 
+  stopAndReset() {
+    this.isPlaying = false;
+    document.getElementById('sh-start-screen').classList.remove('hidden');
+    // スタートボタンの表示も元に戻す (main.jsで制御しているスタイルをクリア)
+    const startBtn = document.getElementById('btn-sh-start');
+    if (startBtn) startBtn.style.display = '';
+
+    this.energy = 100;
+    this.lives = 3;
+    this.depth = 0;
+    this.score = 0;
+    this.init();
+    this.updateUI();
+    this.draw(); // 初期状態を描画
+  }
+
   loop() {
     if (!this.isPlaying) return;
     this.update();

@@ -270,6 +270,7 @@ window.showView = (viewId) => {
   if (viewId === 'view-home') {
     if (window.currentGameTV) window.currentGameTV.stopAndReset();
     if (window.currentGameCoin) window.currentGameCoin.stopAndReset();
+    if (window.soulHoundsGame) window.soulHoundsGame.stopAndReset();
   }
   originalShowView(viewId);
 };
@@ -287,7 +288,7 @@ if (btnSoulHoundsStart) {
 const btnSoulHoundsBack = document.getElementById('btn-sh-back');
 if (btnSoulHoundsBack) {
   btnSoulHoundsBack.onclick = () => {
-    if (window.soulHoundsGame) window.soulHoundsGame.isPlaying = false;
+    if (window.soulHoundsGame) window.soulHoundsGame.stopAndReset();
     showView('view-home');
   };
 }
