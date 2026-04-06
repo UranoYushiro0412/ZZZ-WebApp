@@ -406,7 +406,7 @@ h3,
   animation: fadeIn 0.4s ease forwards;
 }
 
-/* レスポンシブ構成 */
+
 @media (max-width: 768px) {
   .boss-layout {
     flex-direction: column;
