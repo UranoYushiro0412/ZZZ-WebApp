@@ -33,10 +33,9 @@ if (isLocal) {
   const coinCard = document.querySelector('.menu-card[data-target="view-game-coin"]');
   if (coinCard) {
     coinCard.classList.remove('disabled');
-    const statusTag = coinCard.querySelector('.status-tag');
-    if (statusTag) {
-      statusTag.textContent = 'LOCAL ONLY';
-      statusTag.style.background = '#ff4d00'; // 目立つ色（オレンジ）に
+    const p = coinCard.querySelector('.card-content p');
+    if (p) {
+      p.innerHTML = '現在開発中 <span style="color: #ff4d00; font-weight: bold; margin-left: 0.5rem;">LOCAL ONLY</span>';
     }
   }
 }
