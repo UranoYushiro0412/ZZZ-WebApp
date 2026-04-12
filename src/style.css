@@ -1,15 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Jura:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap');
 
 :root {
-  --chara-main: #3df36c;
-  /* ネオン系の緑 */
-  --chara-accent: #e2ff00;
-  /* 黄色 */
+  --chara-main: #ff7e00;
+  /* ゼンゼロオレンジ */
+  --chara-accent: #ffffff;
+  /* ロゴ等のホワイト */
+  --chara-hover: #e2ff00;
+  /* ホバー用のネオンイエロー */
   --bg-dark: #0f1012;
   --bg-card: #1a1c23;
   --text-main: #ffffff;
   --text-sub: #8d92a0;
-  --border-glow: 0 0 10px rgba(61, 243, 108, 0.4);
+  --border-glow: 0 0 10px rgba(226, 255, 0, 0.4);
 }
 
 /* 共通アイコン: 戻る矢印 (SVG) */
@@ -23,7 +25,6 @@
   -webkit-mask-size: contain;
   mask-size: contain;
   vertical-align: middle;
-  /* transform: translateY(0.5px); */
 }
 
 * {
@@ -44,7 +45,7 @@ body {
   font-family: 'Noto Sans JP', sans-serif;
   background-color: var(--bg-dark);
   color: var(--text-main);
-  /* ゼンゼロの少しザラッとした質感を出すイメージ */
+  /* ダークな質感のある背景 */
   background-image: radial-gradient(circle at center, #1b1e25 0%, #0f1012 100%);
   min-height: 100dvh;
   display: flex;
@@ -59,28 +60,27 @@ h3,
   font-family: 'Jura', sans-serif;
 }
 
-/* ナビゲーションバー */
+/* ナビゲーションバー (オレンジを維持) */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.9);
   border-bottom: 2px solid var(--chara-main);
-  box-shadow: var(--border-glow);
 }
 
 .logo {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--chara-accent);
+  color: var(--text-main);
   letter-spacing: 2px;
 }
 
 .btn-nav {
-  background: transparent;
-  border: 1px solid var(--text-main);
-  color: var(--text-main);
+  background: var(--text-main);
+  border: none;
+  color: var(--bg-dark);
   padding: 0.5rem 1.5rem;
   cursor: pointer;
   font-family: 'Jura', sans-serif;
@@ -92,6 +92,7 @@ h3,
 .btn-nav:hover {
   background: var(--text-main);
   color: var(--bg-dark);
+  transform: scale(1.08);
 }
 
 /* レイアウト構成 */
@@ -114,9 +115,8 @@ h3,
 
 .page-title {
   font-size: 2.2rem;
-  color: var(--chara-main);
+  color: var(--text-main);
   margin: 0.0rem 0 0.5rem 0;
-  /* PC: 上に24px、下に8px */
   text-align: center;
   text-transform: uppercase;
 }
@@ -158,7 +158,8 @@ h3,
 
   .menu-card {
     padding: 1.5rem 1.0rem !important;
-    min-height: 7.2rem !important; /* スマホ表示で高さを 115px に揃える */
+    min-height: 7.2rem !important;
+    /* スマホ表示で高さを 115px に揃える */
   }
 }
 
@@ -190,13 +191,13 @@ h3,
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(61, 243, 108, 0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(226, 255, 0, 0.1), transparent);
   transition: all 0.4s ease;
 }
 
 .menu-card:hover {
-  border-color: var(--chara-main);
-  box-shadow: 0 0 15px rgba(61, 243, 108, 0.2);
+  border-color: var(--chara-hover);
+  box-shadow: 0 0 15px rgba(226, 255, 0, 0.2);
   transform: translateY(-5px);
 }
 
@@ -301,8 +302,8 @@ h3,
 
 .boss-item.active-item {
   background: rgba(61, 243, 108, 0.1);
-  border-left-color: var(--chara-main);
-  color: var(--chara-main);
+  border-left-color: var(--chara-hover);
+  color: var(--chara-hover);
   font-weight: bold;
 }
 
@@ -378,7 +379,7 @@ h3,
 
 .info-section h3::before {
   content: '▶';
-  color: var(--chara-main);
+  color: var(--chara-hover);
   margin-right: 0.5rem;
   font-size: 0.8rem;
 }

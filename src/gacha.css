@@ -54,15 +54,15 @@
 
 @media (hover: hover) and (pointer: fine) {
   .gacha-btn:hover {
-    background: rgba(61, 243, 108, 0.1);
-    border-color: var(--chara-main);
+    background: rgba(226, 255, 0, 0.1);
+    border-color: var(--chara-hover);
     transform: translateX(5px);
   }
 }
 
 .gacha-btn:active {
-  background: rgba(61, 243, 108, 0.2);
-  border-color: var(--chara-main);
+  background: rgba(226, 255, 0, 0.2);
+  border-color: var(--chara-hover);
   transform: scale(0.98);
 }
 
@@ -118,8 +118,8 @@
 }
 
 .gm-back-btn:hover {
-  border-color: var(--chara-main);
-  color: var(--chara-main);
+  border-color: var(--chara-hover);
+  color: var(--chara-hover);
 }
 
 .gm-title {
@@ -160,12 +160,18 @@
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  color: var(--chara-main);
+  color: var(--chara-hover);
 }
 
 .gm-settings-btn:hover {
   transform: rotate(45deg);
   transition: 0.2s;
+  color: var(--chara-hover);
+}
+
+.gm-settings-btn:active {
+  color: var(--chara-hover);
+  opacity: 0.7;
 }
 
 /* Pyramid Display Area */
@@ -351,8 +357,8 @@
 }
 
 .gm-pull-btn:hover {
-  background: var(--chara-main);
-  border-color: #fff;
+  background: var(--chara-hover);
+  border-color: var(--chara-hover);
   color: #000;
 }
 
@@ -435,7 +441,7 @@
 
 .modal-content {
   background: #1a1a1a;
-  border: 2px solid var(--chara-main);
+  border: 2px solid var(--chara-hover);
   padding: 2rem;
   border-radius: 12px;
   width: 90%;
@@ -443,7 +449,7 @@
 }
 
 .modal-title {
-  color: var(--chara-main);
+  color: var(--text-main);
   margin-bottom: 1.5rem;
   font-size: 1.3rem;
 }
@@ -485,14 +491,20 @@
 }
 
 .btn-primary {
-  background: var(--chara-main);
+  background: var(--chara-hover);
   color: black;
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
+  transition: all 0.2s ease;
 }
+
+/* .btn-primary:hover {
+  background: var(--chara-hover);
+  box-shadow: 0 0 10px rgba(226, 255, 0, 0.4);
+} */
 
 /* 履歴ボタン (統計エリア内) */
 .gm-history-btn {
@@ -511,10 +523,15 @@
 }
 
 .gm-history-btn:hover {
-  background: var(--chara-main);
+  background: var(--chara-hover);
   border-color: #fff;
   color: #000;
-  /* 発光(box-shadow)を削除 */
+}
+
+.gm-history-btn:active {
+  background: var(--chara-hover);
+  border-color: var(--chara-hover);
+  color: #000;
 }
 
 /* 履歴モーダル特有のスタイル */

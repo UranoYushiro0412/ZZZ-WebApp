@@ -346,7 +346,7 @@
 }
 
 .btn-dir:active {
-  background: var(--chara-main);
+  background: var(--chara-hover);
   transform: translateY(2px);
   box-shadow: 0 2px 0 #111;
 }

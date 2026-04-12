@@ -15,7 +15,7 @@
 }
 
 .poly-card h2 {
-  color: var(--chara-main);
+  color: var(--text-main);
   margin-bottom: 1.5rem;
   font-size: 1.2rem;
   border-bottom: 1px dashed #444;
@@ -27,7 +27,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
-  background: rgba(255,255,255,0.02);
+  background: rgba(255, 255, 255, 0.02);
   padding: 1rem;
   border-radius: 4px;
 }
@@ -39,9 +39,17 @@
   font-weight: bold;
 }
 
-.input-label.poly-icon::before { content: '💎'; }
-.input-label.tape-icon::before { content: '🎫'; }
-.input-label.pity-icon::before { content: '🎯'; }
+.input-label.poly-icon::before {
+  content: '💎';
+}
+
+.input-label.tape-icon::before {
+  content: '🎫';
+}
+
+.input-label.pity-icon::before {
+  content: '🎯';
+}
 
 .input-field {
   background: #111;
@@ -58,13 +66,13 @@
 
 .input-field:focus {
   outline: none;
-  border-color: var(--chara-main);
-  box-shadow: 0 0 10px rgba(61, 243, 108, 0.2);
+  border-color: var(--chara-hover);
+  box-shadow: 0 0 10px rgba(226, 255, 0, 0.2);
 }
 
 .result-box {
   background: linear-gradient(135deg, rgba(61, 243, 108, 0.1), transparent);
-  border: 1px solid var(--chara-main);
+  border: 1px solid var(--chara-hover);
   padding: 1.5rem;
   border-radius: 8px;
   text-align: center;
@@ -102,5 +110,5 @@
 }
 
 .result-value.success {
-  color: var(--chara-main);
+  color: var(--chara-hover);
 }

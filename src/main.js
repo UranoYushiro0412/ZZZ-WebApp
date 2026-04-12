@@ -92,7 +92,10 @@ function showView(viewId) {
     const btnCoin = document.getElementById('btn-coin-start');
     if (btnCoin) btnCoin.classList.remove('v-hidden');
   }
-  if (viewId !== 'view-soul-hounds' && window.soulHoundsGame) window.soulHoundsGame.isPlaying = false;
+  // 画面遷移時にソウルハウンドを完全に初期化する
+  if (viewId !== 'view-soul-hounds' && window.soulHoundsGame) {
+    window.soulHoundsGame.stopAndReset();
+  }
 }
 
 // 全画面共通の「ホームに戻る」ボタン
@@ -264,16 +267,6 @@ if (btnCoinStart && coinArea && coinScore) {
   };
 }
 
-// 既存の showView をラップして、ホーム移動時にゲームを止める
-const originalShowView = showView;
-window.showView = (viewId) => {
-  if (viewId === 'view-home') {
-    if (window.currentGameTV) window.currentGameTV.stopAndReset();
-    if (window.currentGameCoin) window.currentGameCoin.stopAndReset();
-    if (window.soulHoundsGame) window.soulHoundsGame.stopAndReset();
-  }
-  originalShowView(viewId);
-};
 
 const btnSoulHoundsStart = document.getElementById('btn-sh-start');
 if (btnSoulHoundsStart) {

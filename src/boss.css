@@ -56,9 +56,9 @@
   transform: translateY(-50%);
   width: 42px;
   height: 42px;
-  background: #2a2a2a;
-  color: #fff;
-  border: 1px solid #444;
+  background: var(--text-main);
+  color: var(--bg-dark);
+  border: 1px solid #ccc;
   border-radius: 50%;
   display: flex;
   align-items: center;
